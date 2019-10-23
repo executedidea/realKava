@@ -11,6 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'DashboardController@index')->name('home');
+
+Route::get('/cs', 'CS\Master\CustomerController@index');
+
+Auth::routes();
