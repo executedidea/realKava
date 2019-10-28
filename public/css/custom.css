@@ -1,0 +1,48 @@
+/* DEFAULT SETTING */
+.navbar-bg,
+body {
+    background-color: #b0b0b0;
+}
+
+.card {
+    border-radius: 25px;
+}
+
+.card-body h4 {
+    text-transform: capitalize;
+}
+
+.dataTables_wrapper .dataTables_filter {
+    /* text-align: center !important; */
+}
+
+table td {
+    font-size: 14px;
+    text-transform: capitalize;
+}
+
+.form-control {
+    border-radius: 25px;
+}
+
+
+.selectric {
+    border-radius: 25px;
+}
+
+.selectric-items li,
+.selectric .label {
+    text-transform: capitalize;
+}
+
+@media (min-width: 1024px) {
+    .main-wrapper-1 .section .section-header {
+        margin-right: 0;
+    }
+
+    body.layout-3 .main-content {
+        padding-top: 80px;
+    }
+}
+
+/* END OF DEFAULT SETTING */
