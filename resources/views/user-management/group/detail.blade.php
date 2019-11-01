@@ -38,7 +38,7 @@
                         <div class="row">
                             <div class="form-group col-12 col-lg-6">
                                 <select name="module" class="form-control" id="selectModule">
-                                    <option>
+                                    <option disabled selected>
                                         --- Select Module ---
                                     </option>
                                     @foreach ($modules as $item)
@@ -62,7 +62,9 @@
                                                 <th>Print</th>
                                             </tr>
                                         </thead>
+
                                         <tbody>
+                                            <tr></tr>
                                         </tbody>
                                     </table>
                                 </form>
@@ -82,24 +84,10 @@
         $('#selectModule').selectric();
         $('#selectModule').on('change', function () {
             var id = $(this).val();
-            var url = `{{ url('/data/menu-detail-by-modul-id/') }}`;
+            var url = `/user-management/group/admin?module=` + id;
 
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $.get(url + '/' + id, function (data) {
-                $('#rightsTable tbody').empty();
-                $.each(data, function (index, obj) {
-                    $('#rightsTable tbody').append('<tr><td>' + obj.menu_detail_name +
-                        '</td><td><div class="custom-control custom-checkbox">'+'<input type="checkbox" class="custom-control-input" id="customCheck1">'+'<label class="custom-control-label" for="customCheck1"></label>'+'</div></td></tr>');
-                });
-            });
+            window.location = url;
         });
-
-
-
     });
 
 </script>
