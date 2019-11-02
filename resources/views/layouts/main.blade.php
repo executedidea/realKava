@@ -5,12 +5,13 @@
     @include('layouts.partials.head')
 </head>
 
-<body class="{{(request()->is('/') || request()->is('user-management*') ? 'layout-3' : '')}}">
+<body
+    class="{{(request()->is('/') || request()->is('user-management*') || request()->is('global-setting*') ? 'layout-3' : '')}}">
     <div id="app">
         <div class="main-wrapper main-wrapper-1">
             <div class="se-pre-con"></div>
             @include('layouts.partials.topbar')
-            @unless (request()->is('/') or request()->is('user-management*'))
+            @unless (request()->is('/') or request()->is('user-management*') || request()->is('global-setting*'))
             @include('layouts.partials.sidebar')
             @endunless
             <div class="main-content">

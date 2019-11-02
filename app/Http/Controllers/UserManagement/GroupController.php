@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Group;
 use App\Models\Menu_Detail;
 use App\Models\Module;
+use App\Models\Outlet;
 use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Support\Facades\Auth;
@@ -28,14 +29,18 @@ class GroupController extends Controller
                 })  
                 ->make();
     }
-    public function userGroupsDetail($group)
+    public function userGroupsDetail(Request $request, $group)
     {
         $id         = Auth::user()->group_id;
+        $module_id  = $request->module;
+        $outlet_id  = $request->outlet;
 
         $modules    = Module::all();
+        $menu_detail= Menu_Detail::getMenuDetailByModuleID($module_id);
         $group      = Group::where('group_name', $group)->where('group_id', $id)->value('group_name');
+        $outlet     = Outlet::getUserOutlet($outlet_id);
 
-        return view('user-management.group.detail', compact('modules', 'group'));
+        return view('user-management.group.detail', compact('modules', 'group', 'menu_detail', 'outlet'));
     }
     public function getMenuDetail($id)
     {

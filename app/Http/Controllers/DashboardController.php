@@ -17,4 +17,9 @@ class DashboardController extends Controller
 
         return view('dashboard', compact('modules'));
     }
+
+    public function newUser_1()
+    {
+        return view('auth.newUser-step1');
+    }
 }

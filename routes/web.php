@@ -11,18 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::group(['middleware' => 'guest'], function () {
-    Route::get('/', 'Auth\LoginController@showLoginForm');
-});
+
 Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/data/group', 'UserManagement\GroupController@getUserGroups')->name('userGroupData');
     Route::get('/data/menu-detail-by-modul-id/{id}', 'UserManagement\GroupController@getMenuDetail')->name('menuDetailData');
 
     Route::get('/', 'DashboardController@index');
+    Route::get('/newuser', 'DashboardController@newUser_1');
     Route::get('/logout', 'Auth\LoginController@logout');
 
     // USER MANAGEMENT
@@ -31,5 +27,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/user-management/group/{group}', 'UserManagement\GroupController@userGroupsDetail')->name('userGroupsDetail');
     // Account
     Route::get('/user-management/account', 'UserManagement\UMDashboardController@index')->name('userAccounts');
+
+    // GLOBAL SETTING
+    Route::get('global-setting', 'GlobalSetting\GlobalSettingController@index');
+    Route::get('global-setting/single-outlet', 'GlobalSetting\SingleOutletController@index');
 });
 Auth::routes();

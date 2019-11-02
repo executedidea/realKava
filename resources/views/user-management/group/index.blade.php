@@ -5,37 +5,6 @@
 <section id="userGroup">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-12 col-lg-10">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-12 col-lg-3 align-self-center text-center">
-                                <img src="{{asset('img/avatar/avatar-1.png')}}" alt="" class="rounded-circle"
-                                    height="100px">
-                            </div>
-                            <div class="col-12 col-lg-9">
-                                <div class="row">
-                                    <div class="form-group col-12 col-lg-6">
-                                        <label for="outletName">Branch</label>
-                                        <input type="text" class="form-control" id="outletName" value="Piston Lab"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group col-12 col-lg-6">
-                                        <label for="outletBrand">Brand</label>
-                                        <input type="text" class="form-control" id="outletBrand" value="Piston Lab"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group col-12">
-                                        <label for="outletBrand">Address</label>
-                                        <input type="text" class="form-control" id="outletBrand"
-                                            value="Jln Soekarno Hatta Bandung" disabled>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
