@@ -113,6 +113,11 @@
                                                             class="form-control" value="{{ old('identity') }}" required
                                                             autocomplete="identity" autofocus>
                                                         <label for="identity">{{ __('E-mail or Username') }}</label>
+                                                        @error('identity')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                        @enderror
                                                     </div>
                                                     <div class="md-form md-outline">
                                                         <input type="password" id="password" name="password"
