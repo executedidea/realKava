@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -50,7 +51,8 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'username' => ['required', 'string', 'max:255', 'unique:tbl_users'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:tbl_users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -63,10 +65,21 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        if(count(User::all()) <= 0){
+            $user_id    = 1;
+        } else{
+            $user_lastID    = DB::select('call SP_GetLastID_Select(?)', ['user_id']);
+            $user_id    = $user_lastID[0]->user_id+1;
+        };
+        
         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'user_id'   => $user_id,
+            'username'  => $data['username'],
+            'name'      => $data['name'],
+            'email'     => $data['email'],
+            'password'  => Hash::make($data['password']),
+            'is_active' => 0,
+            'flag'      => 1
         ]);
     }
 }

@@ -16,4 +16,11 @@ class Outlet extends Model
 
         return $outlet;
     }
+
+    public static function getOutletLastID()
+    {
+        $outlet_lastID  = DB::select('call SP_GetLastID_Select(?)', ['outlet_id']);
+        
+        return $outlet_lastID;
+    }
 }

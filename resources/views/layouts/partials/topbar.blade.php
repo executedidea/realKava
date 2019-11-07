@@ -1,7 +1,7 @@
   <div class="navbar-bg"></div>
   <nav class="navbar navbar-expand-lg main-navbar">
-      @if (request()->is('/') or request()->is('user-management*'))
-      <a href="index.html" class="navbar-brand">KAVA</a>
+      @if (request()->is('/') or request()->is('user-management*') or request()->is('newuser*'))
+      <a href="{{route('kava')}}" class="navbar-brand">KAVA</a>
       @else
       <ul class="navbar-nav mr-3">
           <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a>

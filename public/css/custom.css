@@ -49,4 +49,50 @@ table td {
     font-size: 50px;
 }
 
+a:hover {
+    text-decoration: none;
+}
+
+.invalid {
+    color: #f00;
+    font-size: 12px;
+    border-color: #f00;
+}
+
 /* END OF DEFAULT SETTING */
+
+
+#image-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 100%;
+    position: relative;
+    overflow: hidden;
+    background-image: url('../img/avatar/avatar-1.png');
+    background-position: center;
+    background-size: cover;
+    color: #ecf0f1;
+}
+
+#image-preview input {
+    position: absolute;
+    opacity: 0;
+    z-index: 10;
+}
+
+.outlet-type-panel {
+    background-color: rgb(39, 39, 39);
+    border-radius: 25px;
+}
+
+.flaticon-shop {
+    font-size: 50px;
+}
+
+.imagecheck-figure {
+    border-color: transparent;
+}
+
+.imagecheck-input:checked~.imagecheck-figure {
+    border-color: transparent;
+}

@@ -8,4 +8,8 @@ use Illuminate\Http\Request;
 class CSDashboardController extends Controller
 {
     //
+    public function index()
+    {
+        return view('cs.dashboard');
+    }
 }

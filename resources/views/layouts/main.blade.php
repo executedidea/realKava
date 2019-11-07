@@ -6,12 +6,13 @@
 </head>
 
 <body
-    class="{{(request()->is('/') || request()->is('user-management*') || request()->is('global-setting*') ? 'layout-3' : '')}}">
+    class="{{(request()->is('/') || request()->is('user-management*') || request()->is('global-setting*') || request()->is('newuser*') ? 'layout-3' : '')}}">
     <div id="app">
         <div class="main-wrapper main-wrapper-1">
             <div class="se-pre-con"></div>
             @include('layouts.partials.topbar')
-            @unless (request()->is('/') or request()->is('user-management*') || request()->is('global-setting*'))
+            @unless (request()->is('/') or request()->is('user-management*') || request()->is('global-setting*') ||
+            request()->is('newuser*'))
             @include('layouts.partials.sidebar')
             @endunless
             <div class="main-content">

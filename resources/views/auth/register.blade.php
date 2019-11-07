@@ -88,7 +88,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Login | KAVA</title>
+    <title>Sign Up | KAVA</title>
 
     <link rel="stylesheet" href="{{asset('/modules/bootstrap/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('/modules/fontawesome/css/all.min.css')}}">
@@ -147,13 +147,19 @@
                                                     </div>
                                                     <div class="md-form md-outline">
                                                         <input type="password" id="password" name="password"
-                                                            class="form-control" required
-                                                            autocomplete="current-password">
+                                                            class="form-control" required autocomplete="new-password">
                                                         <label for="password">Password</label>
                                                     </div>
-                                                    <a href="{{route('register')}}"
-                                                        class="btn btn-info btn-block mt-4">Sign
-                                                        Up</a>
+                                                    <div class="md-form md-outline">
+                                                        <input type="password" id="password-confirm"
+                                                            name="password_confirmation" class="form-control" required
+                                                            autocomplete="new-password">
+                                                        <label for="password-confirm">Password</label>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-info btn-block my-4">Sign
+                                                        Up</button>
+                                                    <span>Already have an account? <a
+                                                            href="{{route('login')}}">Login</a></span>
                                                 </form>
                                             </div>
                                         </div>
@@ -174,4 +180,3 @@
 </body>
 
 </html>
-c
