@@ -110,8 +110,9 @@
                                     <h4 class="mb-4">Create an Account</h4>
                                     <div class="container">
                                         <div class="row justify-content-center">
-                                            <div class="col-md-6 text-center">
-                                                <form method="POST" action="{{ route('register') }}">
+                                            <div class="col-md-6">
+                                                <form method="POST" action="{{ route('register') }}"
+                                                    class="validate-this">
                                                     @csrf
                                                     <div class="md-form md-outline">
                                                         <input type="text" name="name" id="name" class="form-control"
@@ -177,6 +178,9 @@
     <script src="{{asset('/modules/tooltip.js')}}"></script>
     <script src="{{asset('/modules/bootstrap/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('/js/mdb.min.js')}}"></script>
+
+    <script src="{{asset('/js/jquery.validate.min.js')}}"></script>
+    <script src="{{asset('/js/kava/validation.js')}}"></script>
 </body>
 
 </html>

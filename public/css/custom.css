@@ -12,10 +12,6 @@ body {
     text-transform: capitalize;
 }
 
-.dataTables_wrapper .dataTables_filter {
-    /* text-align: center !important; */
-}
-
 table td {
     font-size: 14px;
     text-transform: capitalize;
@@ -35,10 +31,9 @@ table td {
     text-transform: capitalize;
 }
 
+
 @media (min-width: 1024px) {
-    .main-wrapper-1 .section .section-header {
-        margin-right: 0;
-    }
+
 
     body.layout-3 .main-content {
         padding-top: 80px;
@@ -57,6 +52,11 @@ a:hover {
     color: #f00;
     font-size: 12px;
     border-color: #f00;
+}
+
+.tab-content {
+    max-height: 500px !important;
+    overflow-y: scroll !important;
 }
 
 /* END OF DEFAULT SETTING */

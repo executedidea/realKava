@@ -23,6 +23,8 @@ Route::group(['middleware' => 'auth'], function () {
         // USER MANAGEMENT
         Route::get('/user-management', 'UserManagement\UMDashboardController@index');
         Route::get('/user-management/group', 'UserManagement\GroupController@index')->name('userGroups');
+        Route::get('/user-management/addgroup', 'UserManagement\GroupController@addGroup')->name('addGroup');
+        Route::post('/user-management/addgroup/create', 'UserManagement\GroupController@addGroupPost')->name('addGroupPost');
         Route::get('/user-management/group/{group}', 'UserManagement\GroupController@userGroupsDetail')->name('userGroupsDetail');
         // Account
         Route::get('/user-management/account', 'UserManagement\UMDashboardController@index')->name('userAccounts');

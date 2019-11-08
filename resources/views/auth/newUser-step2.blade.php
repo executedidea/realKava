@@ -37,8 +37,8 @@
                         </div>
 
                         <div class="wizard-content my-5">
-                            <form action="{{route('newUserCreateSingleOutlet')}}" method="post" id="addOutletForm"
-                                enctype="multipart/form-data">
+                            <form action="{{route('newUserCreateSingleOutlet')}}" method="post" class="validate-this"
+                                id="addOutletForm" enctype="multipart/form-data">
                                 @csrf
                                 <div class="wizard-pane">
                                     <div class="form-group row align-items-center">
@@ -123,42 +123,6 @@
             label_selected: "Change Image", // Default: Change File
             no_label: false // Default: false
         });
-    });
-
-    // Validation
-    $('#addOutletForm').validate({
-        rules: {
-            brand: {
-                required: true,
-                minlength: 3,
-                maxlength: 32
-            },
-            outlet_name: {
-                required: true,
-                minlength: 3,
-                maxlength: 32
-            },
-            phone: {
-                required: true,
-                minlength: 9,
-                maxlength: 15,
-                number: true
-            },
-            email: {
-                required: true,
-                minlength: 3,
-                email: true
-            },
-            address: {
-                required: true,
-                minlength: 3,
-            },
-            agree: {
-                required: true,
-            }
-        },
-        errorClass: "invalid",
-        errorElement: "span"
     });
 
 </script>

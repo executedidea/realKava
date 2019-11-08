@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GroupDetail;
 use App\Models\Module;
 use App\Models\Outlet;
 use App\Models\OutletDetail;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Validator;
 use Image;
+
 
 class DashboardController extends Controller
 {
@@ -84,7 +86,7 @@ class DashboardController extends Controller
             $outlet_address = $request->address;
             $outlet_phone   = $request->phone;
             $outlet_email   = $request->email;
-
+            
             DB::select('call SP_GlobalSetting_Outlet_Insert(?,?,?,?,?,?,?,?)', [
                 $outlet_id,
                 $outlet_logo,
@@ -95,8 +97,39 @@ class DashboardController extends Controller
                 $outlet_email,
                 $outlet_detail_id
             ]);
+
+            // Group Detail ID
+            if(count(GroupDetail::all()) <= 0){
+                $group_detail_id        = 1;
+            } else{
+                $group_detail_lastID    = DB::select('call SP_GetLastID_Select(?)', ['group_detail_id']);
+                $group_detail_id        = $group_detail_lastID[0]->group_detail_id+1;
+            }
+            // Group ID
+            if(count(GroupDetail::all()) <= 0){
+                $group_id        = 1;
+            } else{
+                $group_lastID    = DB::select('call SP_GetLastID_Select(?)', ['group_id']);
+                $group_id        = $group_lastID[0]->group_id+1;
+            }
+
+            DB::select('call SP_NewUserGroup_Insert(?,?,?)', [
+                $group_id,
+                "Admin",
+                $outlet_id
+            ]);
+
+            for ($i=0; $i < 50 ; $i++) {
+                DB::select('call SP_NewUserAdmin_Insert(?,?,?)', [
+                    $group_detail_id,
+                    $i+1,
+                    $group_id
+
+                ]);
+            }
                 
             $user   = User::find(Auth::user()->id);
+            $user->group_id  = $group_id;
             $user->outlet_id = $outlet_id;
             $user->save();
 
