@@ -9,8 +9,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h4>User Group</h4>
-                        <a href="{{route('addGroup', ['outlet'=> Auth::user()->outlet_id])}}"
-                            class="btn btn-success ml-3">
+                        <a href="{{route('addGroup')}}" class="btn btn-success ml-3">
                             <i class="fas fa-plus" aria-hidden="true"></i>
                         </a>
                         <button class="btn btn-info ml-1" id="editBtn">
@@ -41,7 +40,6 @@
                                             </div>
                                         </th>
                                         <th>Group Name</th>
-                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -57,12 +55,6 @@
                                             </div>
                                         </td>
                                         <td>{{$item->group_name}}</td>
-                                        <td>
-                                            <a href="{{url('user-management/group/edit?outlet='.$item->outlet_id.'&group='.$item->group_id)}}"
-                                                class="btn btn-primary">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -81,6 +73,49 @@
 <script>
     $("#checkAll").on('change', function () {
         $(".checkitem").prop('checked', $(this).is(":checked"));
+    });
+    $('#editCustomer').on('click', function () {
+        var id = [];
+        $('.checkitem:checked').each(function () {
+            id.push($(this).val());
+        });
+        if (id.length > 1) {
+            Swal.fire(
+                "You can't edit data more than 1 at the same time!",
+                '',
+                'warning'
+            )
+        } else if (id.length == 0) {
+            Swal.fire(
+                'Please select at least 1 data!',
+                '',
+                'warning'
+            )
+        } else {
+            $.ajax({
+                url: "/user-management/group/getgroup/" + id,
+                type: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                        'content')
+                },
+                data: id,
+                success: function (data) {
+                    if (data['status'] == true) {
+                        $('#editName').val(data['customer'].customer_fullName);
+                        $('#editPhone').val(data['customer'].customer_phone);
+                        $('#editCustomerForm').attr('action',
+                            '/admin/library/customer/' + id + '/editcustomer');
+                        $('#editModal').modal('show');
+                    } else {
+                        alert('Whoops Something went wrong!!');
+                    }
+                },
+                error: function (data) {
+                    alert(data.responseText);
+                }
+            });
+        }
     });
 
 </script>

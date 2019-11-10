@@ -26,6 +26,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/user-management/addgroup', 'UserManagement\GroupController@addGroup')->name('addGroup');
         Route::post('/user-management/addgroup/create', 'UserManagement\GroupController@addGroupPost')->name('addGroupPost');
         Route::get('/user-management/group/{group}', 'UserManagement\GroupController@userGroupsDetail')->name('userGroupsDetail');
+        Route::get('/user-management/group/getgroup/{id}', 'UserManagement\GroupController@getGroup')->name('getGroup');
         // Account
         Route::get('/user-management/account', 'UserManagement\UMDashboardController@index')->name('userAccounts');
 

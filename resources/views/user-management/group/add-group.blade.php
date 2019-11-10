@@ -13,7 +13,7 @@
                 @foreach($outlet as $item)
                 <div class="card card-large-icons">
                     <div class="card-icon">
-                        <i class="fa fa-user module-icon"></i>
+                        <img src="{{asset('storage/images/outlet_logo/'.$item->outlet_logo)}}" alt="">
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -97,7 +97,7 @@
                                                             name="right[right_code][{{$item->menu_detail_id}}][]" value="0">
                                                         <div class="custom-checkbox custom-control">
                                                             <input type="checkbox" data-checkboxes="rights"
-                                                                class="custom-control-input"
+                                                                class="custom-control-input checkitem-add"
                                                                 name="right[right_code][{{$item->menu_detail_id}}][]"
                                                                 id="add{{$item->menu_detail_id}}" value="1">
                                                             <label for="add{{$item->menu_detail_id}}"
@@ -179,7 +179,7 @@
                                                             name="right[right_code][{{$item->menu_detail_id}}][]" value="0">
                                                         <div class="custom-checkbox custom-control">
                                                             <input type="checkbox" data-checkboxes="rights"
-                                                                class="custom-control-input"
+                                                                class="custom-control-input checkitem-add"
                                                                 name="right[right_code][{{$item->menu_detail_id}}][]"
                                                                 id="add{{$item->menu_detail_id}}" value="1">
                                                             <label for="add{{$item->menu_detail_id}}"
@@ -261,7 +261,7 @@
                                                             name="right[right_code][{{$item->menu_detail_id}}][]" value="0">
                                                         <div class="custom-checkbox custom-control">
                                                             <input type="checkbox" data-checkboxes="rights"
-                                                                class="custom-control-input"
+                                                                class="custom-control-input checkitem-add"
                                                                 name="right[right_code][{{$item->menu_detail_id}}][]"
                                                                 id="add{{$item->menu_detail_id}}" value="1">
                                                             <label for="add{{$item->menu_detail_id}}"
@@ -343,7 +343,7 @@
                                                             name="right[right_code][{{$item->menu_detail_id}}][]" value="0">
                                                         <div class="custom-checkbox custom-control">
                                                             <input type="checkbox" data-checkboxes="rights"
-                                                                class="custom-control-input"
+                                                                class="custom-control-input checkitem-add"
                                                                 name="right[right_code][{{$item->menu_detail_id}}][]"
                                                                 id="add{{$item->menu_detail_id}}" value="1">
                                                             <label for="add{{$item->menu_detail_id}}"
@@ -425,7 +425,7 @@
                                                             name="right[right_code][{{$item->menu_detail_id}}][]" value="0">
                                                         <div class="custom-checkbox custom-control">
                                                             <input type="checkbox" data-checkboxes="rights"
-                                                                class="custom-control-input"
+                                                                class="custom-control-input checkitem-add"
                                                                 name="right[right_code][{{$item->menu_detail_id}}][]"
                                                                 id="add{{$item->menu_detail_id}}" value="1">
                                                             <label for="add{{$item->menu_detail_id}}"
@@ -507,7 +507,7 @@
                                                             name="right[right_code][{{$item->menu_detail_id}}][]" value="0">
                                                         <div class="custom-checkbox custom-control">
                                                             <input type="checkbox" data-checkboxes="rights"
-                                                                class="custom-control-input"
+                                                                class="custom-control-input checkitem-add"
                                                                 name="right[right_code][{{$item->menu_detail_id}}][]"
                                                                 id="add{{$item->menu_detail_id}}" value="1">
                                                             <label for="add{{$item->menu_detail_id}}"
@@ -589,7 +589,7 @@
                                                             name="right[right_code][{{$item->menu_detail_id}}][]" value="0">
                                                         <div class="custom-checkbox custom-control">
                                                             <input type="checkbox" data-checkboxes="rights"
-                                                                class="custom-control-input"
+                                                                class="custom-control-input checkitem-add"
                                                                 name="right[right_code][{{$item->menu_detail_id}}][]"
                                                                 id="add{{$item->menu_detail_id}}" value="1">
                                                             <label for="add{{$item->menu_detail_id}}"
@@ -664,13 +664,11 @@
 @endsection
 @section('script')
 <script src="{{asset('/modules/jquery-selectric/jquery.selectric.min.js')}}"></script>
-<script src="{{asset('/js/kava/valdation.js')}}"></script>
+<script src="{{asset('/js/kava/validation.js')}}"></script>
 <script>
-    $(document).ready(function () {
-        $('#selectModule').selectric();
-        $('.selectgroup-item').on('click', function () {
-            $('#moduleForm').submit();
-        });
+    
+$("#checkAdd").on('click', function () {
+        $(".checkitem-add").prop('checked', $(this).is(":checked"));
     });
 
 </script>

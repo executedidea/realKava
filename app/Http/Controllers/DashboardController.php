@@ -67,16 +67,17 @@ class DashboardController extends Controller
             // Image Manager
             if($request->hasFile('outlet_image')){
                 $originalImage  = $request->file('outlet_image');
+                $imageName      = time().$originalImage->getClientOriginalName();
                 $thumbnailImage = Image::make($originalImage);
                 $thumbnailPath  = public_path('storage\images\outlet_logo\thumbnails');
                 $originalPath   = public_path('storage\images\outlet_logo');
-                $thumbnailImage->save($originalPath . '/' . time() .  $originalImage->getClientOriginalName());
+                $thumbnailImage->save($originalPath . '/' . $imageName);
                 $thumbnailImage->resize(null, 400, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 });
-                $thumbnailImage->save($thumbnailPath . '/' . time() .  $originalImage->getClientOriginalName());
-                $outlet_logo    = time().$request->file('outlet_image')->getClientOriginalName();
+                $thumbnailImage->save($thumbnailPath . '/' . $imageName);
+                $outlet_logo    = $imageName;
             } else{
                 $outlet_logo    = 'default_outlet_logo.png';
             }

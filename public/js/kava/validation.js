@@ -31,5 +31,5 @@ $('.validate-this').validate({
         }
     },
     errorClass: "invalid",
-    errorElement: "span"
+    errorElement: "em"
 });

@@ -79,7 +79,7 @@
                                     <div class="form-group row align-items-center">
                                         <label class="col-md-4 text-md-right text-left">Address</label>
                                         <div class="col-lg-4 col-md-6">
-                                            <input type="text" name="address" class="form-control">
+                                            <textarea type="text" name="address" class="form-control"></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -113,7 +113,8 @@
 @endsection
 @section('script')
 <script type="text/javascript" src="{{asset('/js/jquery.uploadPreview.min.js')}}"></script>
-<script type="text/javascript">
+<script type="text/javascript" src="{{asset('/js/kava/validation.js')}}"></script>
+<script>
     $(document).ready(function () {
         $.uploadPreview({
             input_field: "#image-upload", // Default: .image-upload

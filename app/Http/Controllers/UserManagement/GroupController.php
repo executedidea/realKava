@@ -54,8 +54,7 @@ class GroupController extends Controller
 
     public function addGroup(Request $request)
     {
-        $modul_id           = $request->module;
-        $outlet_id          = $request->outlet;
+        $outlet_id          = Auth::user()->outlet_id;
         $allModules         = Module::all();
         $outlet             = DB::select('call SP_Outlet_Select(?)', [$outlet_id]);
         $menu_detail_cs     = DB::select('call TEST_MENU_DETAIL_ALL(?)', [1]);
@@ -74,23 +73,23 @@ class GroupController extends Controller
             $group_detail_lastid = 1;
             $group_lastid        = 1;
         } else{
-            $group_id               = DB::select('call SP_GetLastID_Select(?)', ['group_id']);
-            $group_detail_id        = DB::select('call SP_GetLastID_Select(?)', ['group_detail_id']);
-            $group_detail_lastid    = $group_detail_id[0]->group_detail_id;
-            $group_lastid           = $group_id[0]->group_id;
+            $group_lastID               = DB::select('call SP_GetLastID_Select(?)', ['group_id']);
+            $group_detail_lastID        = DB::select('call SP_GetLastID_Select(?)', ['group_detail_id']);
+            $group_detail_id    = $group_detail_lastID[0]->group_detail_id;
+            $group_id           = $group_lastID[0]->group_id+1;
         };
         $group_name     = $request->group_name;
         $outlet_id      = $request->outlet;
         $plusID         = 1;
-        $i              =0;
+        $i              = 0;
+        DB::select('call SP_Group_Insert(?,?,?)', [$group_id, $group_name, $outlet_id]);
         foreach($request->right as $rights){
             $menu_detail_id     = array_keys($rights);
             foreach($rights as $value){
                 $right_code     = implode("", $value);
-                DB::select('call SP_UserManagement_Insert(?,?,?,?)', [$group_detail_lastid+$plusID++, $right_code , $menu_detail_id[$i++], $group_lastid+1]);
+                DB::select('call SP_UserManagement_Insert(?,?,?,?)', [$group_detail_id+$plusID++, $right_code , $menu_detail_id[$i++], $group_id]);
             };
         };
-        DB::select('call SP_Group_Insert(?,?,?)', [$group_lastid+1, $group_name, $outlet_id]);
         return redirect(route('userGroups'));
     }
 }

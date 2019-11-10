@@ -50,13 +50,25 @@ a:hover {
 
 .invalid {
     color: #f00;
-    font-size: 12px;
     border-color: #f00;
+}
+
+em {
+    position: absolute !important;
+    font-size: 12px;
+    top: 105%;
+    right: 25px;
 }
 
 .tab-content {
     max-height: 500px !important;
     overflow-y: scroll !important;
+}
+
+@media (min-width: 1024px) {
+    .card-icon {
+        width: 300px !important;
+    }
 }
 
 /* END OF DEFAULT SETTING */
