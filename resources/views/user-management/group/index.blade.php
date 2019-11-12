@@ -92,29 +92,7 @@
                 'warning'
             )
         } else {
-            $.ajax({
-                url: "/user-management/group/getgroup/" + id,
-                type: 'GET',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                        'content')
-                },
-                data: id,
-                success: function (data) {
-                    if (data['status'] == true) {
-                        $('#editName').val(data['customer'].customer_fullName);
-                        $('#editPhone').val(data['customer'].customer_phone);
-                        $('#editCustomerForm').attr('action',
-                            '/admin/library/customer/' + id + '/editcustomer');
-                        $('#editModal').modal('show');
-                    } else {
-                        alert('Whoops Something went wrong!!');
-                    }
-                },
-                error: function (data) {
-                    alert(data.responseText);
-                }
-            });
+            window.location = "/user-management/group"
         }
     });
 
