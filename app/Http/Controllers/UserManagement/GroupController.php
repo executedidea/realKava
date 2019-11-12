@@ -4,6 +4,7 @@ namespace App\Http\Controllers\UserManagement;
 
 use App\Http\Controllers\Controller;
 use App\Models\Group;
+use App\Models\GroupDetail;
 use App\Models\Menu_Detail;
 use App\Models\Module;
 use App\Models\Outlet;
@@ -69,25 +70,32 @@ class GroupController extends Controller
 
     public function addGroupPost(Request $request)
     {
-        if(count(Group::all()) == 0){
-            $group_detail_lastid = 1;
-            $group_lastid        = 1;
+        // Group Detail
+        if(count(GroupDetail::all()) === 0){
+            $group_detail_id = 1;
         } else{
-            $group_lastID               = DB::select('call SP_GetLastID_Select(?)', ['group_id']);
-            $group_detail_lastID        = DB::select('call SP_GetLastID_Select(?)', ['group_detail_id']);
-            $group_detail_id    = $group_detail_lastID[0]->group_detail_id;
-            $group_id           = $group_lastID[0]->group_id+1;
-        };
+            $group_detail_lastID        = GroupDetail::getGroupDetailLastID();
+            $group_detail_id            = $group_detail_lastID[0]->group_detail_id+1;
+        }
+        // Group
+        if(count(Group::all()) === 0){
+            $group_id        = 1;
+        } else{
+            $group_lastID               = Group::getGroupLastID();
+            $group_id                   = $group_lastID->group_id+1;
+        }
+
         $group_name     = $request->group_name;
         $outlet_id      = $request->outlet;
-        $plusID         = 1;
+        $plusID         = 0;
         $i              = 0;
         DB::select('call SP_Group_Insert(?,?,?)', [$group_id, $group_name, $outlet_id]);
         foreach($request->right as $rights){
             $menu_detail_id     = array_keys($rights);
             foreach($rights as $value){
                 $right_code     = implode("", $value);
-                DB::select('call SP_UserManagement_Insert(?,?,?,?)', [$group_detail_id+$plusID++, $right_code , $menu_detail_id[$i++], $group_id]);
+                GroupDetail::insertGroupDetail($group_detail_id+$plusID++, $right_code, $menu_detail_id[$i++], $group_id);
+                // DB::select('call SP_UserManagement_Insert(?,?,?,?)', [$group_detail_id+$plusID++, $right_code , $menu_detail_id[$i++], $group_id]);
             };
         };
         return redirect(route('userGroups'));
