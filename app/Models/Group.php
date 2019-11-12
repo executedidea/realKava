@@ -19,7 +19,7 @@ class Group extends Model
     public static function getGroupLastID()
     {
         $group_lastID               = DB::select('call SP_GetLastID_Select(?)', ['group_id']);
-        return $group_lastID[0];
+        return $group_lastID;
     }
 
 

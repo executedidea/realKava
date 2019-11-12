@@ -12,8 +12,8 @@
             <div class="col-12">
                 @foreach($outlet as $item)
                 <div class="card card-large-icons">
-                    <div class="card-icon">
-                        <img src="{{asset('storage/images/outlet_logo/'.$item->outlet_logo)}}" alt="">
+                    <div class="card-icon outlet-card">
+                        <img src="{{asset('storage/images/outlet_logo/thumbnails/'.$item->outlet_logo)}}" class="rounded-circle img-fluid" alt="{{$item->outlet_logo}}">
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -36,18 +36,18 @@
                 @endforeach
             </div>
         </div>
+        <form method="post" action="{{route('addGroupPost', ['outlet'=> 2])}}" class="validate-this">
         <div class="row justify-content-center">
             <div class="col-12 col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        <div class="row">
+                        <div class="row justify-content-center">
                             <div class="col-12 col-lg-3 align-self-center text-center">
                                 <img src="{{asset('img/avatar/avatar-1.png')}}" alt="" class="rounded-circle"
                                     height="70px">
                             </div>
-                            <form method="post" action="{{route('addGroupPost', ['outlet'=> 2])}}" class="validate-this">
                                 @csrf
-                            <div class="col-12">
+                            <div class="col-12 col-lg-6">
                                 <div class="form-group">
                                     <label for="outletName">Group Name</label>
                                     <input type="text" class="form-control" name="group_name" value="">
@@ -651,14 +651,15 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="form-group text-right">
+                                <div class="form-group text-right mt-4">
                                     <button class="btn btn-primary btn-lg ml-auto">Save</button>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 </section>
 @endsection

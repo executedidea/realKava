@@ -13,18 +13,40 @@
             </li>
             <li class="menu-header">Menu</li>
 
-            <!-- CUSTOMER SERVICE -->
-            {{-- @foreach ($menu as $item)
-
-            <li class="dropdown {{ (request()->is('cs/master*')) ? 'active' : '' }}">
-            <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-headset"></i>
-                <span>{{$item->menu_name}}</span></a>
-            <ul class="dropdown-menu">
-                <li class="{{ (request()->is('cs/master/customer-list*')) ? 'active' : '' }}"><a class="nav-link"
-                        href="{{url('/cs/master/customer-list')}}">{{$item->menu_detail_name}}</a>
-                </li>
-            </ul>
+            <li class="dropdown {{ (request()->is('*/master*')) ? 'active' : '' }}">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-headset"></i>
+                    <span>Master Data</span></a>
+                <ul class="dropdown-menu">
+                    @foreach ($menu_master as $item)
+                    <li class="{{ (request()->is($item->menu_detail_url)) ? 'active' : '' }}">
+                        <a class="nav-link" href="{{url($item->menu_detail_url)}}">{{$item->menu_detail_name}}</a>
+                    </li>
+                    @endforeach
+                </ul>
             </li>
-            @endforeach --}}
+
+            <li class="dropdown {{ (request()->is('*/transaction*')) ? 'active' : '' }}">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-headset"></i>
+                    <span>Transaction</span></a>
+                <ul class="dropdown-menu">
+                    @foreach ($menu_transaction as $item)
+                    <li class="{{ (request()->is($item->menu_detail_url)) ? 'active' : '' }}">
+                        <a class="nav-link" href="{{url($item->menu_detail_url)}}">{{$item->menu_detail_name}}</a>
+                    </li>
+                    @endforeach
+                </ul>
+            </li>
+
+            <li class="dropdown {{ (request()->is('*/report*')) ? 'active' : '' }}">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-headset"></i>
+                    <span>Report</span></a>
+                <ul class="dropdown-menu">
+                    @foreach ($menu_report as $item)
+                    <li class="{{ (request()->is($item->menu_detail_url)) ? 'active' : '' }}">
+                        <a class="nav-link" href="{{url($item->menu_detail_url)}}">{{$item->menu_detail_name}}</a>
+                    </li>
+                    @endforeach
+                </ul>
+            </li>
     </aside>
 </div>

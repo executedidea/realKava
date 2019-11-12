@@ -13,6 +13,7 @@
 <script src="{{asset('/modules/jquery-ui/jquery-ui.min.js')}}"></script>
 <script src="{{asset('/js/jquery.validate.min.js')}}"></script>
 <script src="{{asset('/js/kava/validation.js')}}"></script>
+<script src="{{asset('/modules/jquery-selectric/jquery.selectric.min.js')}}"></script>
 
 <!-- Page Specific JS File -->
 <script src="{{asset('/js/page/modules-datatables.js')}}"></script>

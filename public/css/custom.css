@@ -54,10 +54,7 @@ a:hover {
 }
 
 em {
-    position: absolute !important;
     font-size: 12px;
-    top: 105%;
-    right: 25px;
 }
 
 .tab-content {
@@ -65,8 +62,12 @@ em {
     overflow-y: scroll !important;
 }
 
+.sidebar-menu .nav-link {
+    text-transform: capitalize;
+}
+
 @media (min-width: 1024px) {
-    .card-icon {
+    .outlet-card {
         width: 300px !important;
     }
 }
@@ -75,8 +76,8 @@ em {
 
 
 #image-preview {
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     border-radius: 100%;
     position: relative;
     overflow: hidden;

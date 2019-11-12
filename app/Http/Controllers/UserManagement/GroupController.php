@@ -58,13 +58,13 @@ class GroupController extends Controller
         $outlet_id          = Auth::user()->outlet_id;
         $allModules         = Module::all();
         $outlet             = DB::select('call SP_Outlet_Select(?)', [$outlet_id]);
-        $menu_detail_cs     = DB::select('call TEST_MENU_DETAIL_ALL(?)', [1]);
-        $menu_detail_pos    = DB::select('call TEST_MENU_DETAIL_ALL(?)', [2]);
-        $menu_detail_sam    = DB::select('call TEST_MENU_DETAIL_ALL(?)', [3]);
-        $menu_detail_emp    = DB::select('call TEST_MENU_DETAIL_ALL(?)', [4]);
-        $menu_detail_pcs    = DB::select('call TEST_MENU_DETAIL_ALL(?)', [5]);
-        $menu_detail_gs     = DB::select('call TEST_MENU_DETAIL_ALL(?)', [6]);
-        $menu_detail_um     = DB::select('call TEST_MENU_DETAIL_ALL(?)', [7]);
+        $menu_detail_cs     = Menu_Detail::getMenuDetailByModuleID(1);
+        $menu_detail_pos    = Menu_Detail::getMenuDetailByModuleID(2);
+        $menu_detail_sam    = Menu_Detail::getMenuDetailByModuleID(3);
+        $menu_detail_emp    = Menu_Detail::getMenuDetailByModuleID(4);
+        $menu_detail_pcs    = Menu_Detail::getMenuDetailByModuleID(5);
+        $menu_detail_gs     = Menu_Detail::getMenuDetailByModuleID(6);
+        $menu_detail_um     = Menu_Detail::getMenuDetailByModuleID(7);
         return view('user-management.group.add-group', compact('menu_detail_cs', 'menu_detail_pos', 'menu_detail_sam', 'menu_detail_emp', 'menu_detail_pcs', 'menu_detail_gs', 'menu_detail_um', 'allModules', 'outlet', 'outlet_id'));
     }
 
@@ -82,7 +82,7 @@ class GroupController extends Controller
             $group_id        = 1;
         } else{
             $group_lastID               = Group::getGroupLastID();
-            $group_id                   = $group_lastID->group_id+1;
+            $group_id                   = $group_lastID[0]->group_id+1;
         }
 
         $group_name     = $request->group_name;
