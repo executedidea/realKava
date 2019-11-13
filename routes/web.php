@@ -23,8 +23,11 @@ Route::group(['middleware' => 'auth'], function () {
         // CUSTOMER SERVICE
         Route::get('/cs', 'CS\CSDashboardController@index')->name('cs');
         Route::get('/cs/master/customer', 'CS\Master\CustomerController@index')->name('customer');
-        Route::get('/cs/master/customer/{customer_id}', 'CS\Master\CustomerController@index')->name('customerDetail');
-        Route::post('/cs/master/customer/add', 'CS\Master\CustomerController@addCustomerPost')->name('addCustomerPost');
+        Route::post('/cs/master/customer/add', 'CS\Master\CustomerController@store')->name('addCustomerPost');
+        Route::delete('/cs/master/customer/delete', 'CS\Master\CustomerController@destroy')->name('deleteCustomer');
+        Route::get('/cs/master/customer/{customer_id}', 'CS\Master\CustomerController@show')->name('customerDetail');
+        Route::post('/cs/master/customer/{customer_id}/addvehicle', 'CS\Master\CustomerController@storeDetail')->name('addCustomerDetail');
+        Route::delete('/cs/master/customer/deletevehicle', 'CS\Master\CustomerController@destroyDetail')->name('deleteCustomerDetail');
 
         // USER MANAGEMENT
         Route::get('/user-management', 'UserManagement\UMDashboardController@index')->name('userManagement');

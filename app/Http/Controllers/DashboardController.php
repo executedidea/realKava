@@ -72,7 +72,7 @@ class DashboardController extends Controller
                 $thumbnailPath  = public_path('storage\images\outlet_logo\thumbnails');
                 $originalPath   = public_path('storage\images\outlet_logo');
                 $thumbnailImage->save($originalPath . '/' . $imageName);
-                $thumbnailImage->resize(null, 400, function ($constraint) {
+                $thumbnailImage->resize(null, 200, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 });

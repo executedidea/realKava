@@ -6,29 +6,78 @@
 
 @endsection
 @section('content')
-<section id="customerList">
+<section id="customerDetail">
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Customer List</h4>
-                        <button class="btn btn-success action-btn" data-toggle="modal" data-target="#addModal">
-                            <i class="fas fa-plus" aria-hidden="true"></i>
+                        <h4>Customer Detail</h4>
+                        <button class="btn btn-info ml-1" id="editCustomerBtn">
+                            <i class="fas fa-edit" aria-hidden="true"></i>
                         </button>
-                        <button class="btn btn-danger action-btn ml-1" id="deleteBtn">
-                            <i class="fas fa-trash" aria-hidden="true"></i>
-                        </button>
-                        <h4 class="ml-auto action-btn">Export to:</h4>
-                        <a href="http://" class="action-btn ml-1">
+                        <h4 class="ml-auto">Export to:</h4>
+                        <a href="http://" class="ml-1">
                             <img src="{{asset('img/icons/pdf.png')}}" alt="pdf" height="50px">
                         </a>
-                        <a href="http://" class="action-btn ml-1">
+                        <a href="http://" class="ml-1">
                             <img src="{{asset('img/icons/excel.png')}}" alt="excel" height="50px">
                         </a>
                     </div>
+                    <div class="card-body p-0">
+                        @foreach ($customer as $item)
+                        <div class="card card-large-icons card-inside">
+                            <div class="card-icon outlet-card">
+                                <div class="circular">
+                                    <img src="{{asset('storage/images/customer_images/thumbnails/'.$item->customer_image)}}"
+                                        alt="{{$item->customer_image}}">
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="form-group col-12 col-lg-6">
+                                        <label for="outletName">Name</label>
+                                        <input type="text" class="form-control" value="{{$item->customer_fullName}}"
+                                            disabled>
+                                    </div>
+                                    <div class="form-group col-12 col-lg-6">
+                                        <label for="outletName">Phone Number</label>
+                                        <input type="text" class="form-control" value="{{$item->customer_phone}}"
+                                            disabled>
+                                    </div>
+                                    <div class="form-group col-12 col-lg-6">
+                                        <label for="outletName">Membership</label>
+                                        <input type="text" class="form-control" value="Non Member" disabled>
+                                    </div>
+                                    <div class="form-group col-12 col-lg-6">
+                                        <label for="outletName">Last Visit</label>
+                                        <input type="text" class="form-control" value="--" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Customer's Vehicle</h4>
+                        <button class="btn btn-success" data-toggle="modal" data-target="#addModal">
+                            <i class="fas fa-plus" aria-hidden="true"></i>
+                        </button>
+                        <button class="btn btn-info ml-1" id="editBtn">
+                            <i class="fas fa-edit" aria-hidden="true"></i>
+                        </button>
+                        <button class="btn btn-danger ml-1" id="deleteBtn">
+                            <i class="fas fa-trash" aria-hidden="true"></i>
+                        </button>
+                    </div>
                     <div class="card-body">
-                        <table class="table table-striped" id="customerTable">
+                        <table class="table table-striped" id="customerVehicleTable">
                             <thead>
                                 <tr>
                                     <th class="th-sm text-center">
@@ -38,28 +87,33 @@
                                             <label for="checkAll" class="custom-control-label">&nbsp;</label>
                                         </div>
                                     </th>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Phone</th>
+                                    <th>License Plate</th>
+                                    <th>Category</th>
+                                    <th>Brand</th>
+                                    <th>Model</th>
+                                    <th>Color</th>
+                                    <th>Size</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($customers as $index => $item)
+                                @foreach($customer_detail as $item)
                                 <tr>
                                     <td class="text-center">
                                         <div class="custom-checkbox custom-control">
                                             <input type="checkbox" data-checkboxes="rights"
                                                 class="custom-control-input checkitem" name="id[]"
-                                                id="checkbox{{$item->customer_id}}" value="{{$item->customer_id}}">
-                                            <label for="checkbox{{$item->customer_id}}"
+                                                id="checkbox{{$item->customer_detail_id}}"
+                                                value="{{$item->customer_detail_id}}">
+                                            <label for="checkbox{{$item->customer_detail_id}}"
                                                 class="custom-control-label">&nbsp;</label>
                                         </div>
                                     </td>
-                                    <td>
-                                        <a href="{{route('customerDetail', $item->customer_id)}}">CUST{{$index+1}}</a>
-                                    </td>
-                                    <td>{{$item->customer_fullName}}</td>
-                                    <td>{{$item->customer_phone}}</td>
+                                    <td>{{$item->customer_detail_licensePlate}}</td>
+                                    <td>{{$item->vehicle_category_name}}</td>
+                                    <td>{{$item->vehicle_brand_name}}</td>
+                                    <td>{{$item->vehicle_model_name}}</td>
+                                    <td>{{$item->vehicle_color_name}}</td>
+                                    <td>{{$item->vehicle_size_name}}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -74,75 +128,53 @@
 @section('modal')
 {{-- Add Modal --}}
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <form action="{{route('addCustomerPost')}}" method="post" enctype="multipart/form-data" class="validate-this">
+    <div class="modal-dialog" role="document">
+        <form action="{{route('addCustomerDetail', $customer_id)}}" method="post" class="validate-this">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add Customer</h5>
+                    <h5 class="modal-title">Add Customer's Vehicle</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body p-lg-5">
+                <div class="modal-body">
                     <div class="container">
-                        <div class="row justify-content-center">
+                        <div class="row">
                             @csrf
-                            <div class="col-12 text-center">
-                                <div id="image-preview" class="mx-auto">
-                                    <input type="file" name="customer_image" id="image-upload" />
-                                </div>
-                                <label for="image-upload" id="image-label" class="btn btn-secondary btn-sm mt-2">Upload
-                                    Image</label>
-                            </div>
-                        </div>
-
-                        <div class="row justify-content-center mt-3">
-                            <div class="form-group col-12 col-lg-4">
-                                <label for="customerName">Name</label>
-                                <input type="text" name="customer_name" class="form-control" id="customerName">
-                            </div>
-                            <div class="form-group col-12 col-lg-4">
-                                <label for="customerPhone">Phone</label>
-                                <input type="text" name="customer_phone" class="form-control numeric-input"
-                                    id="customerPhone">
-                            </div>
-                            <div class="form-group col-12 col-lg-4">
+                            <div class="form-group col-12">
                                 <label for="customerLicensePlate">License Plate</label>
                                 <input type="text" name="customer_licensePlate" class="form-control"
-                                    id="customerLicensePlate" placeholder="e.g D123AB" required>
+                                    id="customerLicensePlate" placeholder="e.g D123AB">
                             </div>
-                            <div class="form-group col-12 col-lg-4">
-                                <select name="vehicle_category" class="form-control" id="vehicleCategory" required>
-                                    <option disabled selected>---Select Category---</option>
+                            <div class="form-group col-12 p-0 ml-3 mb-3">
+                                <span class="text-muted font-italic">Vehicle</span>
+                            </div>
+                            <div class="form-group col-12">
+                                <select name="vehicle_category" id="vehicleCategory">
+                                    <option disabled selected>--Select Category--</option>
                                     @foreach ($vehicle_category as $item)
                                     <option value="{{$item->vehicle_category_id}}">{{$item->vehicle_category_name}}
                                     </option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group col-12 col-lg-4">
+                            <div class="form-group col-12">
                                 <select name="vehicle_brand" class="form-control" id="vehicleBrand" disabled required>
                                     <option disabled selected>---Select Brand---</option>
                                 </select>
                             </div>
-                            <div class="form-group col-12 col-lg-4">
+                            <div class="form-group col-12">
                                 <select name="vehicle_model" class="form-control" id="vehicleModel" disabled required>
                                     <option disabled selected>---Select Model---</option>
                                 </select>
                             </div>
-                            <div class="form-group col-10 col-lg-5">
-                                <select name="vehicle_size" class="form-control" id="vehicleSize" disabled required>
-                                    <option disabled selected>---Select Size---</option>
-                                    @foreach($vehicle_size as $item)
-                                    <option value="{{$item->vehicle_size_id}}">{{$item->vehicle_size_name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group col-10 col-lg-5">
+                            <div class="form-group col-12">
                                 <select name="vehicle_color" class="form-control" id="vehicleColor" disabled required>
                                     <option disabled selected>---Select Color---</option>
                                     @foreach($vehicle_color as $item)
-                                    <option value="{{$item->vehicle_color_id}}">{{$item->vehicle_color_name}}</option>
+                                    <option value="{{$item->vehicle_color_id}}">{{$item->vehicle_color_name}}
+                                    </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -177,9 +209,20 @@
     });
 
     $(document).ready(function () {
+        var customerVehicleTable = $('#customerVehicleTable').dataTable({
+            bLengthChange: false,
+            bInfo: false,
+            responsive: true,
+            columnDefs: [{
+                sortable: false,
+                targets: [0]
+            }]
+        });
+
         $('#vehicleCategory').selectric();
         $('#vehicleBrand').selectric();
-        $('#vehicleModel').selectric();
+        $('#vehicleModel')
+            .selectric();
         $('#vehicleSize').selectric();
         $('#vehicleColor').selectric();
 
@@ -236,6 +279,13 @@
                     'Please select at least 1 data!',
                     'warning'
                 )
+            } else if (customerVehicleTable.fnGetData().length <= 1 || id.length == customerVehicleTable
+                .fnGetData().length) {
+                Swal.fire(
+                    'Sorry',
+                    'You can not delete all of them!',
+                    'warning'
+                )
             } else {
                 Swal.fire({
                     title: 'Are you sure?',
@@ -251,7 +301,7 @@
                         var strIds = id.join(",");
 
                         $.ajax({
-                            url: "{{ route('deleteCustomer') }}",
+                            url: "{{ route('deleteCustomerDetail') }}",
                             type: 'DELETE',
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
@@ -265,7 +315,7 @@
                                     });
                                     Swal.fire(
                                         'Deleted!',
-                                        'Your file has been deleted.',
+                                        'Your data has been deleted!',
                                         'success'
                                     );
                                 } else {

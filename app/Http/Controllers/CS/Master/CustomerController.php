@@ -28,7 +28,7 @@ class CustomerController extends Controller
         return view('cs.master.customer.index', compact('customers', 'vehicle_category', 'vehicle_color', 'vehicle_size'));
     }
 
-    public function addCustomerPost(Request $request)
+    public function store(Request $request)
     {
         $validator          = Validator::make($request->all(), [
             'customer_image'            => 'image|mimes:jpeg,png,jpg,gif,svg',
@@ -43,7 +43,7 @@ class CustomerController extends Controller
         ]);
 
         if($validator->fails()){
-            return redirectback()->withErrors($validator);
+            return redirect()->back()->withErrors($validator);
         } else{
             // IMAGE ---------------------------------------------------------------------------
             if($request->hasFile('customer_image')){
@@ -92,10 +92,81 @@ class CustomerController extends Controller
             return back()->with('customerAdded');
             // --------------------------------------------------------------------------------
         }
+
+    }
+    
+    public function destroy(Request $request)
+    {
+        $customer_id                    = $request->id;
+        // CONDITION----------------------------------------------------------------------------
+        if(!strpos($customer_id, ',') !== false){
+            Customer::deleteCustomer($customer_id);
+        } else {
+            $customer_ids               = explode(",", $customer_id);
+            foreach($customer_ids as $item){
+                Customer::deleteCustomer($item);
+            }
+        }
+        // -------------------------------------------------------------------------------------
+
+        return response()->json(['status'=>true,'message'=>'Customer deleted successfuly!']);
     }
 
+    public function show($customer_id)
+    {
+        $outlet_id                      = Auth::user()->outlet_id;
+        $customer                       = Customer::getCustomerByID($customer_id, $outlet_id);
+        $customer_detail                = Customer_Detail::getCustomerDetailByCustomerID($customer_id, $outlet_id);
+        $vehicle_category               = Vehicle_Category::getAllCategory();
+        $vehicle_color                  = Vehicle_Color::getAllColor();
+        return view('cs.master.customer.detail', compact('customer', 'customer_detail', 'vehicle_category', 'vehicle_color', 'customer_id'));
+    }
 
+    public function storeDetail(Request $request, $customer_id)
+    {
+        $validator          = Validator::make($request->all(), [
+            'customer_licensePlate'     => 'required|min:3|max:8',
+            'vehicle_category'          => 'required',
+            'vehicle_brand'             => 'required',
+            'vehicle_model'             => 'required',
+            'vehicle_color'             => 'required'
+        ]);
 
+        if($validator->fails()){
+            return back()->withErrors($validator);
+        } else{
+            $customer_detail_lastID         = Customer_Detail::getCustomerDetailLastID();
+            $vehicle_id                     = Vehicle::getVehicleIDByModel($request->vehicle_model);
+
+            // INSERT-------------------------------------------------------------------------------
+            $customer_detail_id             = $customer_detail_lastID[0]->customer_detail_id+1;
+            $customer_licensePlate          = $request->customer_licensePlate;
+            $vehicle_color                  = $request->vehicle_color;
+
+            Customer_Detail::insertCustomerDetail($customer_detail_id, $customer_licensePlate, $vehicle_id, $customer_id, $vehicle_id);
+            return back()->with('customerDetailAdded');
+            // -------------------------------------------------------------------------------------
+        }
+
+    }
+
+    public function destroyDetail(Request $request)
+    {
+        $customer_detail_id                  = $request->id;
+        // CONDITION----------------------------------------------------------------------------
+        if(!strpos($customer_detail_id, ',') !== false){
+            Customer_Detail::deleteCustomerDetail($customer_detail_id);
+        } else {
+            $customer_detail_ids             = explode(",", $customer_detail_id);
+            // INSERT---------------------------------------------------------------------------
+            foreach($customer_detail_ids as $item){
+                Customer_Detail::deleteCustomerDetail($item);
+            }
+            // ---------------------------------------------------------------------------------
+        }
+        // -------------------------------------------------------------------------------------
+        return response()->json(['status'=>true, 'message'=>'Data deleted successfuly!']);
+    }
 
 
 

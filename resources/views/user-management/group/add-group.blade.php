@@ -13,7 +13,9 @@
                 @foreach($outlet as $item)
                 <div class="card card-large-icons">
                     <div class="card-icon outlet-card">
-                        <img src="{{asset('storage/images/outlet_logo/thumbnails/'.$item->outlet_logo)}}" class="rounded-circle img-fluid" alt="{{$item->outlet_logo}}">
+                        <div class="circular">
+                            <img src="{{asset('storage/images/outlet_logo/thumbnails/'.$item->outlet_logo)}}" alt="{{$item->outlet_logo}}">
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="row">

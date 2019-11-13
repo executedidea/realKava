@@ -1,4 +1,4 @@
-// Validation
+// VALIDATION----------------------------------------------------------
 $('.validate-this').validate({
     rules: {
         brand: {
@@ -24,7 +24,7 @@ $('.validate-this').validate({
             required: true,
             minlength: 3
         },
-        phone: {
+        customer_phone: {
             required: true,
             minlength: 7,
             maxlength: 15,
@@ -41,8 +41,30 @@ $('.validate-this').validate({
         },
         agree: {
             required: true,
-        }
+        },
     },
     errorClass: "invalid",
     errorElement: "em"
 });
+// ---------------------------------------------------------------------
+
+// NUMERIC ONLY INPUT---------------------------------------------------
+(function ($) {
+    $.fn.inputFilter = function (inputFilter) {
+        return this.on("input keydown keyup mousedown mouseup select contextmenu drop",
+            function () {
+                if (inputFilter(this.value)) {
+                    this.oldValue = this.value;
+                    this.oldSelectionStart = this.selectionStart;
+                    this.oldSelectionEnd = this.selectionEnd;
+                } else if (this.hasOwnProperty("oldValue")) {
+                    this.value = this.oldValue;
+                    this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+                }
+            });
+    };
+}(jQuery))
+$(".numeric-input").inputFilter(function (value) {
+    return /^\d*$/.test(value);
+});
+// ---------------------------------------------------------------------
