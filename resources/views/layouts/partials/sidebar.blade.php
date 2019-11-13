@@ -18,7 +18,7 @@
                     <span>Master Data</span></a>
                 <ul class="dropdown-menu">
                     @foreach ($menu_master as $item)
-                    <li class="{{ (request()->is($item->menu_detail_url)) ? 'active' : '' }}">
+                    <li class="{{ (request()->is($item->menu_detail_url.'*')) ? 'active' : '' }}">
                         <a class="nav-link" href="{{url($item->menu_detail_url)}}">{{$item->menu_detail_name}}</a>
                     </li>
                     @endforeach

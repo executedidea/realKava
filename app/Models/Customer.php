@@ -43,7 +43,13 @@ class Customer extends Model
         ]);
 
         return $insert;
-    } 
+    }
+    
+    public static function updateCustomer($customer_id, $customer_name, $customer_phone, $customer_image)
+    {
+        $update         = DB::select('call SP_CS_One_CustomerList_Update(?,?,?,?)', [$customer_id, $customer_name, $customer_phone, $customer_image]);
+        return $update;
+    }
 
     public static function deleteCustomer($customer_id)
     {

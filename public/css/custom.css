@@ -107,7 +107,7 @@ em {
     border-radius: 100%;
     position: relative;
     overflow: hidden;
-    background-image: url('../img/avatar/avatar-1.png');
+    background-image: url(../storage/images/customer_images/thumbnails/default.png);
     background-position: center;
     background-size: cover;
     color: #ecf0f1;

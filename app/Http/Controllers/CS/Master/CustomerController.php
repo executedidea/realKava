@@ -13,7 +13,9 @@ use App\Models\Vehicle_Model;
 use App\Models\Vehicle_Size;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Image;
 
 class CustomerController extends Controller
 {
@@ -50,10 +52,10 @@ class CustomerController extends Controller
                 $originalImage          = $request->file('customer_image');
                 $image_name             = time().$request->file('customer_image')->getClientOriginalName();
                 $thumbnailImage         = Image::make($originalImage);
-                $thumbnailPath          = public_path('storage\customer_images\thumbnails');
-                $originalPath           = public_path('storage\customer_images');
+                $thumbnailPath          = public_path('storage\images\customer_images\thumbnails');
+                $originalPath           = public_path('storage\images\customer_images');
                 $thumbnailImage->save($originalPath . '/' . $image_name);
-                $thumbnailImage->resize(null, 400, function ($constraint) {
+                $thumbnailImage->resize(null, 120, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 });
@@ -124,7 +126,7 @@ class CustomerController extends Controller
 
     public function storeDetail(Request $request, $customer_id)
     {
-        $validator          = Validator::make($request->all(), [
+        $validator                      = Validator::make($request->all(), [
             'customer_licensePlate'     => 'required|min:3|max:8',
             'vehicle_category'          => 'required',
             'vehicle_brand'             => 'required',
@@ -135,19 +137,61 @@ class CustomerController extends Controller
         if($validator->fails()){
             return back()->withErrors($validator);
         } else{
-            $customer_detail_lastID         = Customer_Detail::getCustomerDetailLastID();
-            $vehicle_id                     = Vehicle::getVehicleIDByModel($request->vehicle_model);
+            $customer_detail_lastID      = Customer_Detail::getCustomerDetailLastID();
+            $vehicle_id                  = Vehicle::getVehicleIDByModel($request->vehicle_model);
 
-            // INSERT-------------------------------------------------------------------------------
-            $customer_detail_id             = $customer_detail_lastID[0]->customer_detail_id+1;
-            $customer_licensePlate          = $request->customer_licensePlate;
-            $vehicle_color                  = $request->vehicle_color;
+                // INSERT-------------------------------------------------------------------------------
+            $customer_detail_id          = $customer_detail_lastID[0]->customer_detail_id+1;
+            $customer_licensePlate       = $request->customer_licensePlate;
+            $vehicle_color               = $request->vehicle_color;
 
             Customer_Detail::insertCustomerDetail($customer_detail_id, $customer_licensePlate, $vehicle_id, $customer_id, $vehicle_id);
             return back()->with('customerDetailAdded');
             // -------------------------------------------------------------------------------------
         }
 
+    }
+
+    public function updateDetail(Request $request, $customer_id)
+    {
+        if($request->has('edit_customer')){
+            $validator                      = Validator::make($request->all(), [
+                'customer_image'            => 'image|mimes:jpeg,png,jpg,gif,svg',
+                'customer_name'             => 'required|min:3|max:32',
+                'customer_phone'            => 'required|min:7:max:15',
+            ]);
+            $outlet_id                      = Auth::user()->outlet_id;
+            $customer                       = Customer::getCustomerByID($customer_id, $outlet_id);
+            if($validator->fails()){
+                return back()->withErrors($validator);
+            } else{
+                if($request->hasFile('customer_image')){
+                    Storage::delete('public/images/customer_images/' . $customer[0]->customer_image);
+                    Storage::delete('public/images/customer_images/thumbnails/' . $customer[0]->customer_image);
+
+                    $originalImage          = $request->file('customer_image');
+                    $image_name             = time().$request->file('customer_image')->getClientOriginalName();
+                    $thumbnailImage         = Image::make($originalImage);
+                    $thumbnailPath          = public_path('storage\images\customer_images\thumbnails');
+                    $originalPath           = public_path('storage\images\customer_images');
+                    $thumbnailImage->save($originalPath . '/' . $image_name);
+                    $thumbnailImage->resize(null, 120, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
+                    $thumbnailImage->save($thumbnailPath . '/' . $image_name);
+                    $customer_image         = $image_name;
+                } else{
+                    $customer_image         = 'default.png';
+                }
+
+                $customer_name              = $request->customer_name;
+                $customer_phone             = $request->customer_phone;
+
+                Customer::updateCustomer($customer_id, $customer_name, $customer_phone, $customer_image);
+                return back()->with('customerEdited');
+            }
+        }
     }
 
     public function destroyDetail(Request $request)
@@ -187,5 +231,15 @@ class CustomerController extends Controller
         $vehicle_brand_id               = $request->brand_id;
         $vehicle_model                  = Vehicle_Model::getModelByBrand($vehicle_brand_id);
         return response()->json($vehicle_model);
+    }
+    public function getCustomerByID(Request $request, $customer_id)
+    {
+        $outlet_id                      = Auth::user()->outlet_id;
+
+        $customer                       = Customer::getCustomerByID($customer_id, $outlet_id);
+        return response()->json([
+            'status'    => true,
+            'customer'  => $customer
+        ]);
     }
 }

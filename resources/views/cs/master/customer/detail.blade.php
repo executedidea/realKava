@@ -13,7 +13,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h4>Customer Detail</h4>
-                        <button class="btn btn-info ml-1" id="editCustomerBtn">
+                        <button class="btn btn-info ml-1" id="editCustomerBtn" data-id="{{$customer_id}}">
                             <i class="fas fa-edit" aria-hidden="true"></i>
                         </button>
                         <h4 class="ml-auto">Export to:</h4>
@@ -188,6 +188,53 @@
         </form>
     </div>
 </div>
+{{-- Edit Customer Modal --}}
+<div class="modal fade" id="editCustomerModal" tabindex="-1" role="dialog" aria-labelledby="editCustomerModal"
+    aria-hidden="true">
+    <div class="modal-dialog lg" role="document">
+        <form action="{{ route('editCustomer', $customer_id) }}" method="post" enctype="multipart/form-data"
+            class="validate-this">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Customer Detail</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{-- Profile --}}
+                    <div class="row justify-content-center">
+                        <div class="col text-center">
+                            <div id="image-preview" class="mx-auto" @if ($customer[0]->customer_image !== 'default.png')
+                                style="background-image:
+                                url({{asset('storage/images/customer_images/thumbnails/'.$customer[0]->customer_image)}})"
+                                @endif>
+                                <input type="file" name="customer_image" id="image-upload" />
+                            </div>
+                            <label for="image-upload" id="image-label" class="btn btn-secondary btn-sm mt-2">Upload
+                                Image</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12">
+                            <label for="editCustomerName">Name</label>
+                            <input type="text" class="form-control" id="editCustomerName" name="customer_name" value="">
+                        </div>
+                        <div class="form-group col-12">
+                            <label for="editCustomerPhone">Phone</label>
+                            <input type="text" class="form-control numeric-input" id="editCustomerPhone"
+                                name="customer_phone" value="">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" name="edit_customer" class="btn btn-primary btn-block">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 @endsection
 @section('script')
 <script src="{{asset('js/sweetalert2.all.min.js')}}"></script>
@@ -210,19 +257,22 @@
 
     $(document).ready(function () {
         var customerVehicleTable = $('#customerVehicleTable').dataTable({
-            bLengthChange: false,
             bInfo: false,
             responsive: true,
             columnDefs: [{
                 sortable: false,
                 targets: [0]
-            }]
+            }],
+            language: {
+                sLengthMenu: "Show _MENU_",
+                search: "",
+                searchPlaceholder: "Search..."
+            }
         });
 
         $('#vehicleCategory').selectric();
         $('#vehicleBrand').selectric();
-        $('#vehicleModel')
-            .selectric();
+        $('#vehicleModel').selectric();
         $('#vehicleSize').selectric();
         $('#vehicleColor').selectric();
 
@@ -330,6 +380,32 @@
                     }
                 });
             };
+        });
+
+        $('#editCustomerBtn').on('click', function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: "/data/customer/getcustomer/" + id,
+                type: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                        'content')
+                },
+                data: id,
+                success: function (data) {
+                    if (data['status'] == true) {
+                        $('#editCustomerName').val(data['customer'][0].customer_fullName);
+                        $('#editCustomerPhone').val(data['customer'][0].customer_phone);
+
+                        $('#editCustomerModal').modal('show');
+                    } else {
+                        alert('Whoops Something went wrong!!');
+                    }
+                },
+                error: function (data) {
+                    alert(data.responseText);
+                }
+            });
         });
     });
 
