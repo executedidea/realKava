@@ -111,36 +111,28 @@
                                 <input type="text" name="customer_licensePlate" class="form-control"
                                     id="customerLicensePlate" placeholder="e.g D123AB" required>
                             </div>
-                            <div class="form-group col-12 col-lg-4">
+                            <div class="form-group col-12 col-lg-5">
                                 <select name="vehicle_category" class="form-control" id="vehicleCategory" required>
-                                    <option disabled selected>---Select Category---</option>
+                                    <option disabled selected>Select Category</option>
                                     @foreach ($vehicle_category as $item)
                                     <option value="{{$item->vehicle_category_id}}">{{$item->vehicle_category_name}}
                                     </option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group col-12 col-lg-4">
+                            <div class="form-group col-12 col-lg-5">
                                 <select name="vehicle_brand" class="form-control" id="vehicleBrand" disabled required>
-                                    <option disabled selected>---Select Brand---</option>
+                                    <option disabled selected>Select Brand</option>
                                 </select>
                             </div>
-                            <div class="form-group col-12 col-lg-4">
+                            <div class="form-group col-12 col-lg-5">
                                 <select name="vehicle_model" class="form-control" id="vehicleModel" disabled required>
-                                    <option disabled selected>---Select Model---</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-10 col-lg-5">
-                                <select name="vehicle_size" class="form-control" id="vehicleSize" disabled required>
-                                    <option disabled selected>---Select Size---</option>
-                                    @foreach($vehicle_size as $item)
-                                    <option value="{{$item->vehicle_size_id}}">{{$item->vehicle_size_name}}</option>
-                                    @endforeach
+                                    <option disabled selected>Select Model</option>
                                 </select>
                             </div>
                             <div class="form-group col-10 col-lg-5">
                                 <select name="vehicle_color" class="form-control" id="vehicleColor" disabled required>
-                                    <option disabled selected>---Select Color---</option>
+                                    <option disabled selected>Select Color</option>
                                     @foreach($vehicle_color as $item)
                                     <option value="{{$item->vehicle_color_id}}">{{$item->vehicle_color_name}}</option>
                                     @endforeach
@@ -180,7 +172,6 @@
         $('#vehicleCategory').selectric();
         $('#vehicleBrand').selectric();
         $('#vehicleModel').selectric();
-        $('#vehicleSize').selectric();
         $('#vehicleColor').selectric();
 
         $('#vehicleCategory').on('change', function (e) {
@@ -221,8 +212,6 @@
         $('#vehicleModel').on('change', function () {
             $('#vehicleColor').prop("disabled", false);
             $('#vehicleColor').selectric('refresh');
-            $('#vehicleSize').prop("disabled", false);
-            $('#vehicleSize').selectric('refresh');
         });
 
         $('#deleteBtn').on('click', function () {

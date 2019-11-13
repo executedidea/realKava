@@ -10,6 +10,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/data/customer/getcustomer/{customer_id}', 'CS\Master\CustomerController@getCustomerByID')->name('getCustomer');
     Route::get('/data/vehicle/vehiclebrand', 'CS\Master\CustomerController@getBrandByCategory')->name('getVehicleBrand');
     Route::get('/data/vehicle/vehiclemodel', 'CS\Master\CustomerController@getModelByBrand')->name('getVehicleModel');
+    Route::get('/data/customerdetail/get/{id}', 'CS\Master\CustomerController@getCustomerDetail')->name('getCustomerDetail');
     Route::get('/data/group', 'UserManagement\GroupController@getUserGroups')->name('userGroupData');
     Route::get('/data/menu-detail-by-modul-id/{id}', 'UserManagement\GroupController@getMenuDetail')->name('menuDetailData');
 
@@ -29,7 +30,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('/cs/master/customer/delete', 'CS\Master\CustomerController@destroy')->name('deleteCustomer');
         Route::get('/cs/master/customer/{customer_id}', 'CS\Master\CustomerController@show')->name('customerDetail');
         Route::post('/cs/master/customer/{customer_id}/addvehicle', 'CS\Master\CustomerController@storeDetail')->name('addCustomerDetail');
-        Route::post('/cs/master/customer/{customer_id}/edit', 'CS\Master\CustomerController@updateDetail')->name('editCustomer');
+        Route::post('/cs/master/customer/{customer_id}/edit/{customer_detail_id?}', 'CS\Master\CustomerController@updateDetail')->name('editCustomer');
         Route::delete('/cs/master/customer/deletevehicle', 'CS\Master\CustomerController@destroyDetail')->name('deleteCustomerDetail');
         // Vehicle
 

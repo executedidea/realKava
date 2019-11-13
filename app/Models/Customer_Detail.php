@@ -21,6 +21,12 @@ class Customer_Detail extends Model
         return $customer_detail;
     }
 
+    public static function getCustomerDetailByID($customer_detail_id, $outlet_id)
+    {
+        $customer_detail    = DB::select('call SP_CS_One_CustomerDetail_Select_ID(?,?)', [$customer_detail_id, $outlet_id]);
+        return $customer_detail;
+    }
+
     public static function insertCustomerDetail($customer_detail_id, $customer_licensePlate, $vehicle_id, $customer_id, $vehicle_color_id)
     {
         $insert             = DB::select('call SP_CS_One_CustomerDetail_Insert(?,?,?,?,?)', [
@@ -31,6 +37,12 @@ class Customer_Detail extends Model
             $vehicle_color_id
         ]);
         return $insert;
+    }
+
+    public static function updateCustomerDetail($customer_detail_id, $customer_licensePlate, $vehicle_id, $vehicle_color)
+    {
+        $update             = DB::select('call SP_CS_One_CustomerDetail_Update(?,?,?,?)', [$customer_detail_id, $customer_licensePlate, $vehicle_id, $vehicle_color]);
+        return $update;
     }
 
     public static function deleteCustomerDetail($customer_detail_id)

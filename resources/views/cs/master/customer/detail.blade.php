@@ -138,7 +138,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body p-5">
                     <div class="container">
                         <div class="row">
                             @csrf
@@ -151,8 +151,9 @@
                                 <span class="text-muted font-italic">Vehicle</span>
                             </div>
                             <div class="form-group col-12">
-                                <select name="vehicle_category" id="vehicleCategory">
-                                    <option disabled selected>--Select Category--</option>
+                                <select name="vehicle_category" class="form-control vehicle-category"
+                                    id="vehicleCategory">
+                                    <option disabled selected>Select Category</option>
                                     @foreach ($vehicle_category as $item)
                                     <option value="{{$item->vehicle_category_id}}">{{$item->vehicle_category_name}}
                                     </option>
@@ -160,18 +161,21 @@
                                 </select>
                             </div>
                             <div class="form-group col-12">
-                                <select name="vehicle_brand" class="form-control" id="vehicleBrand" disabled required>
-                                    <option disabled selected>---Select Brand---</option>
+                                <select name="vehicle_brand" class="form-control vehicle-brand" id="vehicleBrand"
+                                    disabled required>
+                                    <option disabled selected>Select Brand</option>
                                 </select>
                             </div>
                             <div class="form-group col-12">
-                                <select name="vehicle_model" class="form-control" id="vehicleModel" disabled required>
-                                    <option disabled selected>---Select Model---</option>
+                                <select name="vehicle_model" class="form-control vehicle-model" id="vehicleModel"
+                                    disabled required>
+                                    <option disabled selected>Select Model</option>
                                 </select>
                             </div>
                             <div class="form-group col-12">
-                                <select name="vehicle_color" class="form-control" id="vehicleColor" disabled required>
-                                    <option disabled selected>---Select Color---</option>
+                                <select name="vehicle_color" class="form-control vehicle-color" id="vehicleColor"
+                                    disabled required>
+                                    <option disabled selected>Select Color</option>
                                     @foreach($vehicle_color as $item)
                                     <option value="{{$item->vehicle_color_id}}">{{$item->vehicle_color_name}}
                                     </option>
@@ -202,7 +206,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body p-5">
                     {{-- Profile --}}
                     <div class="row justify-content-center">
                         <div class="col text-center">
@@ -235,6 +239,68 @@
         </form>
     </div>
 </div>
+{{-- Edit Vehicle Modal --}}
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form action="" method="post" id="editCustomerDetailForm" class="validate-this">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Customer's Vehicle</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-5">
+                    <div class="container">
+                        <div class="row">
+                            <div class="form-group col-12">
+                                <label for="editLicensePlate">License Plate</label>
+                                <input type="text" name="customer_licensePlate" class="form-control"
+                                    id="editLicensePlate" required>
+                            </div>
+                            <div class="form-group col-12">
+                                <select name="vehicle_category" class="form-control vehicle-category"
+                                    id="editVehicleCategory">
+                                    <option disabled selected>Select Category</option>
+                                    @foreach ($vehicle_category as $item)
+                                    <option value="{{$item->vehicle_category_id}}">{{$item->vehicle_category_name}}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group col-12">
+                                <select name="vehicle_brand" class="form-control vehicle-brand" id="editVehicleBrand"
+                                    disabled required>
+                                    <option disabled selected>Select Brand</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-12">
+                                <select name="vehicle_model" class="form-control vehicle-model" id="editVehicleModel"
+                                    disabled required>
+                                    <option disabled selected>Select Model</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-12">
+                                <select name="vehicle_color" class="form-control vehicle-color" id="editVehicleColor"
+                                    disabled required>
+                                    <option disabled selected>Select Color</option>
+                                    @foreach($vehicle_color as $item)
+                                    <option value="{{$item->vehicle_color_id}}">{{$item->vehicle_color_name}}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" name="edit_customer_detail" class="btn btn-primary btn-block">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 @endsection
 @section('script')
 <script src="{{asset('js/sweetalert2.all.min.js')}}"></script>
@@ -250,9 +316,9 @@
         }
     });
     $.uploadPreview({
-        input_field: "#image-upload", // Default: .image-upload
-        preview_box: "#image-preview", // Default: .image-preview
-        no_label: true // Default: false
+        input_field: "#image-upload",
+        preview_box: "#image-preview",
+        no_label: true
     });
 
     $(document).ready(function () {
@@ -270,52 +336,57 @@
             }
         });
 
-        $('#vehicleCategory').selectric();
-        $('#vehicleBrand').selectric();
-        $('#vehicleModel').selectric();
-        $('#vehicleSize').selectric();
-        $('#vehicleColor').selectric();
+        $('.vehicle-category').selectric();
+        $('.vehicle-brand').selectric();
+        $('.vehicle-model').selectric();
+        $('.vehicle-color').selectric();
 
-        $('#vehicleCategory').on('change', function (e) {
+        $('.vehicle-category').on('change', function (e) {
             var vehicle_category_id = e.target.value;
             $.get('/data/vehicle/vehiclebrand?category_id=' + vehicle_category_id, function (data) {
-                $('#vehicleBrand').empty();
-                $('#vehicleBrand').prop("disabled", false);
-                $('#vehicleBrand').append(
-                    '<option value="" disabled selected>--Select Brand--</option>'
+                $('.vehicle-brand').empty();
+                $('.vehicle-brand').prop("disabled", false);
+                $('.vehicle-brand').append(
+                    '<option value="" disabled selected>Select Brand</option>'
                 );
+                $('#editVehicleModel').prop("disabled", true);
+                $('#editVehicleModel').selectric('refresh');
+                $('#editVehicleColor').prop("disabled", true);
+                $('#editVehicleColor').selectric('refresh');
+
 
 
                 $.each(data, function (index, brandObj) {
-                    $('#vehicleBrand').append('<option value="' + brandObj
+                    $('.vehicle-brand').append('<option value="' + brandObj
                         .vehicle_brand_id +
                         '">' + brandObj.vehicle_brand_name + '</option>');
                 })
-                $('#vehicleBrand').selectric('refresh');
+                $('.vehicle-brand').selectric('refresh');
             });
         });
-        $('#vehicleBrand').on('change', function (e) {
+        $('.vehicle-brand').on('change', function (e) {
             var vehicle_brand_id = e.target.value;
             $.get('/data/vehicle/vehiclemodel?brand_id=' + vehicle_brand_id, function (data) {
-                $('#vehicleModel').empty();
-                $('#vehicleModel').prop("disabled", false);
-                $('#vehicleModel').append(
-                    '<option value="" disabled selected>--Select Model--</option>'
+                $('.vehicle-model').empty();
+                $('.vehicle-model').prop("disabled", false);
+                $('.vehicle-model').append(
+                    '<option value="" disabled selected>Select Model</option>'
                 );
+                $('#editVehicleColor').prop("disabled", true);
+                $('#editVehicleColor').selectric('refresh');
+
 
                 $.each(data, function (index, modelObj) {
-                    $('#vehicleModel').append('<option value="' + modelObj
+                    $('.vehicle-model').append('<option value="' + modelObj
                         .vehicle_model_id +
                         '">' + modelObj.vehicle_model_name + '</option>');
                 })
-                $('#vehicleModel').selectric('refresh');
+                $('.vehicle-model').selectric('refresh');
             });
         });
-        $('#vehicleModel').on('change', function () {
-            $('#vehicleColor').prop("disabled", false);
-            $('#vehicleColor').selectric('refresh');
-            $('#vehicleSize').prop("disabled", false);
-            $('#vehicleSize').selectric('refresh');
+        $('.vehicle-model').on('change', function () {
+            $('.vehicle-color').prop("disabled", false);
+            $('.vehicle-color').selectric('refresh');
         });
 
         $('#deleteBtn').on('click', function () {
@@ -406,6 +477,107 @@
                     alert(data.responseText);
                 }
             });
+        });
+
+        $('#editBtn').on('click', function () {
+            var id = [];
+            $('.checkitem:checked').each(function () {
+                id.push($(this).val());
+            });
+            if (id.length > 1) {
+                Swal.fire(
+                    "",
+                    "You can't edit data more than 1 at the same time!",
+                    'warning'
+                )
+            } else if (id.length == 0) {
+                Swal.fire(
+                    '',
+                    'Please select at least 1 data!',
+                    'warning'
+                )
+            } else {
+                $('#editCustomerDetailForm').attr('action',
+                    '/cs/master/customer/{{$customer_id}}/edit/' +
+                    id);
+
+                $.ajax({
+                    url: "/data/customerdetail/get/" + id,
+                    type: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                            'content')
+                    },
+                    data: id,
+                    success: function (data) {
+                        if (data['status'] == true) {
+                            $('#editLicensePlate').val(data['customerDetail'][
+                                0
+                            ].customer_detail_licensePlate);
+                            $('#editVehicleCategory option[value="' + data['customerDetail']
+                                [0]
+                                .vehicle_category_id + '"]').prop('selected',
+                                'selected');
+                            $('#editVehicleCategory').selectric('refresh');
+
+                            $.get("/data/vehicle/vehiclebrand?category_id=" + data[
+                                    'customerDetail'][0].vehicle_category_id,
+                                function (dataVehicle) {
+                                    $('#editVehicleBrand').empty();
+                                    $('#editVehicleBrand').prop("disabled", false);
+
+
+                                    $.each(dataVehicle, function (index, brandObj) {
+                                        $('#editVehicleBrand').append(
+                                            '<option value="' +
+                                            brandObj.vehicle_brand_id +
+                                            '">' + brandObj
+                                            .vehicle_brand_name +
+                                            '</option>');
+                                    })
+                                    $('#editVehicleBrand option[value="' + data[
+                                            'customerDetail'][0]
+                                        .vehicle_brand_id + '"]').prop('selected',
+                                        'selected');
+                                    $('#editVehicleBrand').selectric('refresh');
+                                });
+                            $.get("/data/vehicle/vehiclemodel?brand_id=" + id,
+                                function (dataVehicle) {
+                                    $('#editVehicleModel').empty();
+                                    $('#editVehicleModel').prop("disabled", false);
+
+
+                                    $.each(dataVehicle, function (index, brandObj) {
+                                        $('#editVehicleModel').append(
+                                            '<option value="' +
+                                            brandObj.vehicle_model_id +
+                                            '">' + brandObj
+                                            .vehicle_model_name +
+                                            '</option>');
+                                    })
+                                    $('#editVehicleModel option[value="' + data[
+                                            'customerDetail'][0]
+                                        .vehicle_model_id + '"]').prop('selected',
+                                        'selected');
+                                    $('#editVehicleModel').selectric('refresh');
+                                });
+                            $('#editVehicleColor').prop("disabled", false);
+                            $('#editVehicleColor option[value="' + data['customerDetail'][0]
+                                .vehicle_color_id + '"]').prop('selected',
+                                'selected');
+                            $('#editVehicleColor').selectric('refresh');
+
+                            $('#editModal').modal('show');
+
+                        } else {
+                            alert('Whoops Something went wrong!!');
+                        }
+                    },
+                    error: function (data) {
+                        alert(data.responseText);
+                    }
+                });
+            }
         });
     });
 

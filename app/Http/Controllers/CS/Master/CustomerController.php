@@ -26,8 +26,7 @@ class CustomerController extends Controller
         $customers                      = Customer::getCustomerByOutlet($outlet_id);
         $vehicle_category               = Vehicle_Category::getAllCategory();
         $vehicle_color                  = Vehicle_Color::getAllColor();
-        $vehicle_size                   = Vehicle_Size::getAllSize();
-        return view('cs.master.customer.index', compact('customers', 'vehicle_category', 'vehicle_color', 'vehicle_size'));
+        return view('cs.master.customer.index', compact('customers', 'vehicle_category', 'vehicle_color'));
     }
 
     public function store(Request $request)
@@ -40,7 +39,6 @@ class CustomerController extends Controller
             'vehicle_category'          => 'required',
             'vehicle_brand'             => 'required',
             'vehicle_model'             => 'required',
-            'vehicle_size'              => 'required',
             'vehicle_color'             => 'required'
         ]);
 
@@ -87,9 +85,8 @@ class CustomerController extends Controller
             $customer_phone             = $request->customer_phone;
             $customer_licensePlate      = $request->customer_licensePlate;
             $vehicle_color              = $request->vehicle_color;
-            $vehicle_size               = $request->vehicle_size;
 
-            Customer::insertCustomer($customer_id, $customer_name, $customer_phone, $customer_image, $customer_detail_id, $customer_licensePlate, $vehicle_id, $vehicle_color, $vehicle_size, $outlet_id);
+            Customer::insertCustomer($customer_id, $customer_name, $customer_phone, $customer_image, $customer_detail_id, $customer_licensePlate, $vehicle_id, $vehicle_color, $outlet_id);
 
             return back()->with('customerAdded');
             // --------------------------------------------------------------------------------
@@ -152,7 +149,7 @@ class CustomerController extends Controller
 
     }
 
-    public function updateDetail(Request $request, $customer_id)
+    public function updateDetail(Request $request, $customer_id, $customer_detail_id = null)
     {
         if($request->has('edit_customer')){
             $validator                      = Validator::make($request->all(), [
@@ -189,7 +186,25 @@ class CustomerController extends Controller
                 $customer_phone             = $request->customer_phone;
 
                 Customer::updateCustomer($customer_id, $customer_name, $customer_phone, $customer_image);
-                return back()->with('customerEdited');
+                return back()->with('customerUpdated');
+            }
+        } elseif($request->has('edit_customer_detail')){
+            $validator                      = Validator::make($request->all(), [
+                'customer_licensePlate'     => 'required|min:3',
+                'vehicle_category'          => 'required',
+                'vehicle_brand'             => 'required',
+                'vehicle_model'             => 'required',
+                'vehicle_color'             => 'required'
+            ]);
+
+            if($validator->fails()){
+                return back()->withErrors($validator);
+            } else{
+                $customer_licensePlate        = $request->customer_licensePlate;
+                $vehicle_id                   = Vehicle::getVehicleIDByModel($request->vehicle_model);
+                $vehicle_color                = $request->vehicle_color;
+                Customer_Detail::updateCustomerDetail($customer_detail_id, $customer_licensePlate, $vehicle_id, $vehicle_color);
+                return back()->with('customerDetailUpdated');
             }
         }
     }
@@ -241,5 +256,15 @@ class CustomerController extends Controller
             'status'    => true,
             'customer'  => $customer
         ]);
+    }
+    public function getCustomerDetail($customer_detail_id)
+    {
+        $outlet_id                      = Auth::user()->outlet_id;
+        $customer_detail                = Customer_Detail::getCustomerDetailByID($customer_detail_id, $outlet_id);
+        return response()->json([
+            'customerDetail' => $customer_detail,
+            'status'         => true
+        ]);
+
     }
 }

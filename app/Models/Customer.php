@@ -27,9 +27,9 @@ class Customer extends Model
         return $customer;
     }
 
-    public static function insertCustomer($customer_id, $customer_name, $customer_phone, $customer_image, $customer_detail_id, $customer_licensePlate, $vehicle_id, $vehicle_color, $vehicle_size, $outlet_id)
+    public static function insertCustomer($customer_id, $customer_name, $customer_phone, $customer_image, $customer_detail_id, $customer_licensePlate, $vehicle_id, $vehicle_color, $outlet_id)
     {
-        $insert         = DB::select('call SP_CS_One_CustomerList_Insert(?,?,?,?,?,?,?,?,?,?)', [
+        $insert         = DB::select('call SP_CS_One_CustomerList_Insert(?,?,?,?,?,?,?,?,?)', [
             $customer_id,
             $customer_name,
             $customer_phone,
@@ -38,7 +38,6 @@ class Customer extends Model
             $customer_licensePlate,
             $vehicle_id,
             $vehicle_color,
-            $vehicle_size,
             $outlet_id
         ]);
 
