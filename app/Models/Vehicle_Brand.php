@@ -13,9 +13,13 @@ class Vehicle_Brand extends Model
 
     public static function getBrandByCategory($vehicle_category_id)
     {
-        $brand                  = DB::select('call SP_CS_One_VehicleBrandList_Select(?)', [$vehicle_category_id]);
+        $brand          = DB::select('call SP_CS_One_VehicleBrandList_Select(?)', [$vehicle_category_id]);
         return $brand;
-
     }
 
+    public static function getVehicleBrandLastID()
+    {
+        $brand          = DB::select('call SP_GetLastID_Select(?)', ['vehicle_brand_id']);
+        return $brand;
+    }
 }

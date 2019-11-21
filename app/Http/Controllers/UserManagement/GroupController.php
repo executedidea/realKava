@@ -12,48 +12,27 @@ use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+
 
 class GroupController extends Controller
 {
     //
     public function index()
     {
-        $outlet_id         = Auth::user()->outlet_id;
+        $outlet_id          = Auth::user()->outlet_id;
 
-        $groups     = Group::where('outlet_id', $outlet_id)->get();
+        $groups             = Group::where('outlet_id', $outlet_id)->get();
         return view('user-management.group.index', compact('groups', 'outlet_id'));
     }
-    public function getUserGroups()
-    {
-        $outlet_id  = Auth::user()->outlet_id;
-        $groups     = Group::where('outlet_id', $outlet_id)->get();
-        return Datatables::of($groups)
-                ->addIndexColumn()      
-                ->addColumn('action', function ($groups) {
-                    return '<a href="'.route('userGroupsDetail', $groups->group_name).'" class="btn btn-primary"><i class="fas fa-edit"></i></a>';
-                })  
-                ->make();
-    }
-    public function userGroupsDetail(Request $request, $group)
-    {
-        $id         = Auth::user()->group_id;
-        $module_id  = $request->module;
-        $outlet_id  = $request->outlet;
 
-        $modules    = Module::all();
-        $menu_detail= Menu_Detail::getMenuDetailByModuleID($module_id);
-        $group      = Group::where('group_name', $group)->where('group_id', $id)->value('group_name');
-        $outlet     = Outlet::getUserOutlet($outlet_id);
-
-        return view('user-management.group.detail', compact('modules', 'group', 'menu_detail', 'outlet'));
-    }
     public function getMenuDetail($id)
     {
-        $menu_detail= Menu_Detail::getMenuDetailByModuleID($id);
-        return response()->json($menu_detail);        
+        $menu_detail = Menu_Detail::getMenuDetailByModuleID($id);
+        return response()->json($menu_detail);
     }
 
-    public function addGroup(Request $request)
+    public function create(Request $request)
     {
         $outlet_id          = Auth::user()->outlet_id;
         $allModules         = Module::all();
@@ -68,36 +47,76 @@ class GroupController extends Controller
         return view('user-management.group.add-group', compact('menu_detail_cs', 'menu_detail_pos', 'menu_detail_sam', 'menu_detail_emp', 'menu_detail_pcs', 'menu_detail_gs', 'menu_detail_um', 'allModules', 'outlet', 'outlet_id'));
     }
 
-    public function addGroupPost(Request $request)
+    public function store(Request $request)
     {
         // Group Detail
-        if(count(GroupDetail::all()) === 0){
+        if (count(GroupDetail::all()) === 0) {
             $group_detail_id = 1;
-        } else{
+        } else {
             $group_detail_lastID        = GroupDetail::getGroupDetailLastID();
-            $group_detail_id            = $group_detail_lastID[0]->group_detail_id+1;
+            $group_detail_id            = $group_detail_lastID[0]->group_detail_id + 1;
         }
         // Group
-        if(count(Group::all()) === 0){
+        if (count(Group::all()) === 0) {
             $group_id        = 1;
-        } else{
+        } else {
             $group_lastID               = Group::getGroupLastID();
-            $group_id                   = $group_lastID[0]->group_id+1;
+            $group_id                   = $group_lastID[0]->group_id + 1;
         }
 
-        $group_name     = $request->group_name;
-        $outlet_id      = $request->outlet;
-        $plusID         = 0;
-        $i              = 0;
+        $group_name                     = $request->group_name;
+        $outlet_id                      = Auth::user()->outlet_id;
+        $plusID                         = 0;
+        $i                              = 0;
         DB::select('call SP_Group_Insert(?,?,?)', [$group_id, $group_name, $outlet_id]);
-        foreach($request->right as $rights){
+        foreach ($request->right as $rights) {
             $menu_detail_id     = array_keys($rights);
-            foreach($rights as $value){
+            foreach ($rights as $value) {
                 $right_code     = implode("", $value);
-                GroupDetail::insertGroupDetail($group_detail_id+$plusID++, $right_code, $menu_detail_id[$i++], $group_id);
+                GroupDetail::insertGroupDetail($group_detail_id + $plusID++, $right_code, $menu_detail_id[$i++], $group_id);
                 // DB::select('call SP_UserManagement_Insert(?,?,?,?)', [$group_detail_id+$plusID++, $right_code , $menu_detail_id[$i++], $group_id]);
             };
         };
         return redirect(route('userGroups'));
+    }
+
+    public function edit($group_id)
+    {
+        $outlet_id          = Auth::user()->outlet_id;
+        $allModules         = Module::all();
+        $outlet             = DB::select('call SP_Outlet_Select(?)', [$outlet_id]);
+        $menu_detail_cs     = GroupDetail::getGroupDetailRights($group_id, 1);
+        $menu_detail_pos    = GroupDetail::getGroupDetailRights($group_id, 2);
+        $menu_detail_sam    = GroupDetail::getGroupDetailRights($group_id, 3);
+        $menu_detail_emp    = GroupDetail::getGroupDetailRights($group_id, 4);
+        $menu_detail_pcs    = GroupDetail::getGroupDetailRights($group_id, 5);
+        $menu_detail_gs     = GroupDetail::getGroupDetailRights($group_id, 6);
+        $menu_detail_um     = GroupDetail::getGroupDetailRights($group_id, 7);
+        $group_detail       = GroupDetail::getGroupDetailByID($group_id);
+
+        return view('user-management.group.edit', compact('menu_detail_cs', 'menu_detail_pos', 'menu_detail_sam', 'menu_detail_emp', 'menu_detail_pcs', 'menu_detail_gs', 'menu_detail_um', 'allModules', 'outlet', 'outlet_id', 'group_detail', 'group_id'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validator                      = Validator::make($request->all(), [
+            'group_name'                => 'required'
+        ]);
+        if ($validator->fails()) {
+            return back()->withErrors($validator);
+        } else {
+            $group_id                   = (int) $id;
+            $group_name                 = $request->group_name;
+            $i                          = 0;
+
+            foreach ($request->right as $rights) {
+                $menu_detail_id         = array_keys($rights);
+                foreach ($rights as $value) {
+                    $right_code         = implode("", $value);
+                    GroupDetail::updateGroupDetail($right_code, $menu_detail_id[$i++], $group_id, $group_name);
+                };
+            };
+            return back()->with('groupEdited');
+        }
     }
 }

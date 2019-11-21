@@ -11,7 +11,7 @@
                     <div class="card-icon text-dark">
                         <i class="{{$item->modul_icon}}"></i>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body text-center text-md-left">
                         <h4>{{$item->modul_name}}</h4>
                         <p>General settings such as, site title, site description, address and so on.</p>
                         <a href="{{url($item->modul_url)}}" class="card-cta">Go To Page<i

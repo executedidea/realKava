@@ -9,9 +9,15 @@ class Customer_Detail extends Model
 {
     protected $table        = 'tbl_customer_detail';
     //
+    public static function getAllCustomerDetail($outlet_id)
+    {
+        $customer_detail    = DB::select('call SP_CS_One_CustomerDetail_Select_All(?)', [$outlet_id]);
+        return $customer_detail;
+    }
+
     public static function getCustomerDetailLastID()
     {
-        $lastID             = DB::select('call SP_GetLastID_Select(?)',['customer_detail_id']);
+        $lastID             = DB::select('call SP_GetLastID_Select(?)', ['customer_detail_id']);
         return $lastID;
     }
 
@@ -49,5 +55,11 @@ class Customer_Detail extends Model
     {
         $delete         = DB::select('call SP_CS_One_CustomerDetail_Delete(?)', [$customer_detail_id]);
         return $delete;
+    }
+
+    public static function searchCustomerDetailByKey($key)
+    {
+        $customer_detail    = DB::select('call SP_CS_CustomerDetail_Search(?)', ['%' . $key . '%']);
+        return $customer_detail;
     }
 }

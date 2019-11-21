@@ -4,12 +4,16 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 Route::group(['middleware' => 'auth'], function () {
-    
+
     Route::get('/logout', 'Auth\LoginController@logout');
-    
+
     Route::get('/data/customer/getcustomer/{customer_id}', 'CS\Master\CustomerController@getCustomerByID')->name('getCustomer');
     Route::get('/data/vehicle/vehiclebrand', 'CS\Master\CustomerController@getBrandByCategory')->name('getVehicleBrand');
     Route::get('/data/vehicle/vehiclemodel', 'CS\Master\CustomerController@getModelByBrand')->name('getVehicleModel');
+    Route::get('/data/vehicle/get/{id}', 'CS\Master\VehicleController@getVehicleByID')->name('getVehicle');
+    Route::get('/data/service/get/{id}', 'CS\Master\ServiceController@getServiceByID')->name('getService');
+    Route::get('/data/customer/search', 'CS\Transaction\CheckInOutController@searchCustomer')->name('searchCustomer');
+
     Route::get('/data/customerdetail/get/{id}', 'CS\Master\CustomerController@getCustomerDetail')->name('getCustomerDetail');
     Route::get('/data/group', 'UserManagement\GroupController@getUserGroups')->name('userGroupData');
     Route::get('/data/menu-detail-by-modul-id/{id}', 'UserManagement\GroupController@getMenuDetail')->name('menuDetailData');
@@ -19,8 +23,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/newuser/single-outlet', 'DashboardController@newUser_2');
         Route::post('/newuser/single-outlet/create', 'DashboardController@newOutlet')->name('newUserCreateSingleOutlet');
     });
-    
-    Route::group(['middleware' => 'UserHasOutlet'], function (){
+
+    Route::group(['middleware' => 'UserHasOutlet'], function () {
         Route::get('/', 'DashboardController@index')->name('kava');
         // CUSTOMER SERVICE
         // Customer
@@ -33,21 +37,40 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/cs/master/customer/{customer_id}/edit/{customer_detail_id?}', 'CS\Master\CustomerController@updateDetail')->name('editCustomer');
         Route::delete('/cs/master/customer/deletevehicle', 'CS\Master\CustomerController@destroyDetail')->name('deleteCustomerDetail');
         // Vehicle
+        Route::get('/cs/master/vehicle', 'CS\Master\VehicleController@index')->name('vehicle');
+        Route::post('/cs/master/vehicle/add', 'CS\Master\VehicleController@store')->name('storeVehicle');
+        Route::delete('/cs/master/vehicle/delete', 'CS\Master\VehicleController@destroy')->name('destroyVehicle');
+        Route::post('/cs/master/vehicle/{id}/edit', 'CS\Master\VehicleController@update')->name('updateVehicle');
+        // Service
+        Route::get('/cs/master/service', 'CS\Master\ServiceController@index')->name('service');
+        Route::post('/cs/master/service/add', 'CS\Master\ServiceController@store')->name('storeService');
+        Route::delete('/cs/master/service/delete', 'CS\Master\ServiceController@destroy')->name('destroyService');
+        Route::post('/cs/master/service/{id}/edit', 'CS\Master\ServiceController@update')->name('updateService');
+        // Membership
+        Route::get('/cs/master/membership', 'CS\Master\MembershipController@index')->name('membership');
+        // Feedback
+        Route::get('/cs/master/feedback', 'CS\Master\FeedbackController@index')->name('feedback');
+
+
+        // Check In
+        Route::get('/cs/transaction/check-in-out', 'CS\Transaction\CheckInOutController@index')->name('checkInOut');
+
+
 
 
         // USER MANAGEMENT
         Route::get('/user-management', 'UserManagement\UMDashboardController@index')->name('userManagement');
         Route::get('/user-management/group', 'UserManagement\GroupController@index')->name('userGroups');
-        Route::get('/user-management/group/{group}', 'UserManagement\GroupController@userGroupsDetail')->name('userGroupsDetail');
+        Route::get('/user-management/group/{group}', 'UserManagement\GroupController@edit')->name('userGroupsEdit');
+        Route::post('/user-management/group/{group}/edit', 'UserManagement\GroupController@update')->name('userGroupUpdate');
         Route::get('/user-management/group/getgroup/{id}', 'UserManagement\GroupController@getGroup')->name('getGroup');
-        Route::get('/user-management/addgroup', 'UserManagement\GroupController@addGroup')->name('addGroup');
-        Route::post('/user-management/addgroup/create', 'UserManagement\GroupController@addGroupPost')->name('addGroupPost');
+        Route::get('/user-management/addgroup', 'UserManagement\GroupController@create')->name('addGroup');
+        Route::post('/user-management/addgroup/create', 'UserManagement\GroupController@store')->name('addGroupPost');
         // Account
-        Route::get('/user-management/account', 'UserManagement\UMDashboardController@index')->name('userAccounts');
+        Route::get('/user-management/account', 'UserManagement\AccountController@index')->name('userAccounts');
 
         // GLOBAL SETTING
         Route::get('global-setting', 'GlobalSetting\GlobalSettingController@index');
         Route::get('global-setting/single-outlet', 'GlobalSetting\SingleOutletController@index');
     });
-
 });

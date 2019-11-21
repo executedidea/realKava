@@ -336,7 +336,10 @@
             }
         });
 
-        $('.vehicle-category').selectric();
+        $('.vehicle-category').selectric({
+            disableOnMobile: false,
+            nativeOnMobile: false
+        });
         $('.vehicle-brand').selectric();
         $('.vehicle-model').selectric();
         $('.vehicle-color').selectric();
@@ -349,10 +352,10 @@
                 $('.vehicle-brand').append(
                     '<option value="" disabled selected>Select Brand</option>'
                 );
-                $('#editVehicleModel').prop("disabled", true);
-                $('#editVehicleModel').selectric('refresh');
-                $('#editVehicleColor').prop("disabled", true);
-                $('#editVehicleColor').selectric('refresh');
+                $('.vehicle-model').prop("disabled", true);
+                $('.vehicle-model').selectric('refresh');
+                $('.vehicle-color').prop("disabled", true);
+                $('.vehicle-color').selectric('refresh');
 
 
 
@@ -372,8 +375,8 @@
                 $('.vehicle-model').append(
                     '<option value="" disabled selected>Select Model</option>'
                 );
-                $('#editVehicleColor').prop("disabled", true);
-                $('#editVehicleColor').selectric('refresh');
+                $('.vehicle-color').prop("disabled", true);
+                $('.vehicle-color').selectric('refresh');
 
 
                 $.each(data, function (index, modelObj) {
@@ -510,6 +513,8 @@
                     },
                     data: id,
                     success: function (data) {
+                        console.log(data);
+
                         if (data['status'] == true) {
                             $('#editLicensePlate').val(data['customerDetail'][
                                 0
@@ -541,17 +546,18 @@
                                         'selected');
                                     $('#editVehicleBrand').selectric('refresh');
                                 });
-                            $.get("/data/vehicle/vehiclemodel?brand_id=" + id,
+                            $.get("/data/vehicle/vehiclemodel?brand_id=" + data[
+                                    'customerDetail'][0].vehicle_brand_id,
                                 function (dataVehicle) {
                                     $('#editVehicleModel').empty();
                                     $('#editVehicleModel').prop("disabled", false);
 
 
-                                    $.each(dataVehicle, function (index, brandObj) {
+                                    $.each(dataVehicle, function (index, modelObj) {
                                         $('#editVehicleModel').append(
                                             '<option value="' +
-                                            brandObj.vehicle_model_id +
-                                            '">' + brandObj
+                                            modelObj.vehicle_model_id +
+                                            '">' + modelObj
                                             .vehicle_model_name +
                                             '</option>');
                                     })

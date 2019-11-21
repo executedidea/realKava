@@ -31,6 +31,10 @@ table td {
     text-transform: capitalize;
 }
 
+.select2 {
+    width: 100% !important;
+    border-radius: 25px !important;
+}
 
 @media (min-width: 1024px) {
 

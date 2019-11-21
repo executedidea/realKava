@@ -14,7 +14,11 @@ class Vehicle_Model extends Model
     {
         $model                  = DB::select('call SP_CS_One_VehicleModelList_Select(?)', [$vehicle_brand_id]);
         return $model;
-
     }
 
+    public static function getVehicleModelLastID()
+    {
+        $last_id                = DB::select('call SP_GetLastID_Select(?)', ['vehicle_model_id']);
+        return $last_id;
+    }
 }
