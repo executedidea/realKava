@@ -185,7 +185,7 @@
         }
     });
 
-    $('#accountGroup').selectric();
+    $('.group').selectric();
     $('#editBtn').on('click', function () {
         var id = [];
         $('.checkitem:checked').each(function () {
