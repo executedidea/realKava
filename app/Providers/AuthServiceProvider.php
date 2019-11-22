@@ -24,7 +24,7 @@ class AuthServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Register any authentication / authorization services.
+     * Register any authentication / authorization services. 
      *
      * @return void
      */
@@ -32,8 +32,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        view()->composer('*', function($view)
-        {     
+        view()->composer('*', function ($view) {
             if (Auth::check()) {
                 $group_id           = Auth::user()->group_id;
                 $outlet_id          = Auth::user()->outlet_id;
@@ -48,9 +47,9 @@ class AuthServiceProvider extends ServiceProvider
                     'modules'           => $modules,
                     'menu_master'       => $menu_master,
                     'menu_transaction'  => $menu_transaction,
-                    'menu_report'       => $menu_report 
+                    'menu_report'       => $menu_report
                 ]);
-            } else{
+            } else {
                 redirect('/login');
             }
         });

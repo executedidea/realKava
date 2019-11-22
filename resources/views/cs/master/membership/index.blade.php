@@ -81,7 +81,7 @@
 @section('modal')
 {{-- Add Modal --}}
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <form action="" method="post" class="validate-this">
             <div class="modal-content">
                 <div class="modal-header">

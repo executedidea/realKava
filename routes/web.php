@@ -13,6 +13,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/data/vehicle/get/{id}', 'CS\Master\VehicleController@getVehicleByID')->name('getVehicle');
     Route::get('/data/service/get/{id}', 'CS\Master\ServiceController@getServiceByID')->name('getService');
     Route::get('/data/customer/search', 'CS\Transaction\CheckInOutController@searchCustomer')->name('searchCustomer');
+    Route::get('/data/account/get/{id}', 'UserManagement\AccountController@getAccountByID')->name('getAccount');
 
     Route::get('/data/customerdetail/get/{id}', 'CS\Master\CustomerController@getCustomerDetail')->name('getCustomerDetail');
     Route::get('/data/group', 'UserManagement\GroupController@getUserGroups')->name('userGroupData');
@@ -68,6 +69,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/user-management/addgroup/create', 'UserManagement\GroupController@store')->name('addGroupPost');
         // Account
         Route::get('/user-management/account', 'UserManagement\AccountController@index')->name('userAccounts');
+        Route::post('/user-management/account/add', 'UserManagement\AccountController@store')->name('storeAccount');
+        Route::post('/user-management/account/{account}/edit', 'UserManagement\AccountController@update')->name('updateAccount');
 
         // GLOBAL SETTING
         Route::get('global-setting', 'GlobalSetting\GlobalSettingController@index');

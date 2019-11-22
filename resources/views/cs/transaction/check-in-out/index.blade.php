@@ -65,7 +65,7 @@
                                     @foreach ($customer_checked_in as $index => $item)
                                         <tr>
                                             <td>{{ $index+1 }}</td>
-                                            <td>{{ $item->customer_fullName }}</td>
+                                            <td><a href="#customerCheckedInDetailModal" data-target="#customerCheckedInDetailModal" data-toggle="modal">{{ $item->customer_fullName }}</a></td>
                                             <td>{{ $item->customer_detail_licensePlate }}</td>
                                             <td>{{ $item->vehicle_brand_name . " " . $item->vehicle_model_name }}</td>
                                             <td>{{ $item->service_name }}</td>
@@ -85,6 +85,51 @@
         </div>
     </div>
 </section>
+@endsection
+@section('modal')
+{{-- Detail Modal --}}
+<div class="modal fade" id="customerCheckedInDetailModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Customer Detail</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label for="customerName">Name</label>
+                            <input type="text" class="form-control" id="customerName">
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="customerPhone">Phone Number</label>
+                            <input type="text" class="form-control" id="customerPhone">
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="customerPlate">License Plate</label>
+                            <input type="text" class="form-control" id="customerPlate">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-block">Check Out</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#exampleModal').on('show.bs.modal', event => {
+        var button = $(event.relatedTarget);
+        var modal = $(this);
+        // Use above variables to manipulate the DOM
+        
+    });
+</script>
 @endsection
 @section('script')
 <script src="{{ asset('/modules/select2/dist/js/select2.full.min.js') }}"></script>

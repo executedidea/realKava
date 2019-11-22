@@ -67,7 +67,7 @@
                                     <div class="form-group row align-items-center">
                                         <label class="col-md-4 text-md-right text-left">Phone</label>
                                         <div class="col-lg-4 col-md-6">
-                                            <input type="text" name="phone" class="form-control">
+                                            <input type="text" name="phone" class="form-control numeric-input">
                                         </div>
                                     </div>
                                     <div class="form-group row align-items-center">
