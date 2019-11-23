@@ -1,4 +1,3 @@
-
 @extends('layouts.main')
 @section('title', 'User Account | KAVA')
 @section('css')
@@ -36,8 +35,8 @@
                                     <tr>
                                         <th class="th-sm text-center">
                                             <div class="custom-checkbox custom-control">
-                                                <input type="checkbox"
-                                                    class="custom-control-input" name="id[]" id="checkAll" value="">
+                                                <input type="checkbox" class="custom-control-input" name="id[]"
+                                                    id="checkAll" value="">
                                                 <label for="checkAll" class="custom-control-label">&nbsp;</label>
                                             </div>
                                         </th>
@@ -52,9 +51,8 @@
                                     <tr>
                                         <td class="text-center">
                                             <div class="custom-checkbox custom-control">
-                                                <input type="checkbox"
-                                                    class="custom-control-input checkitem" name="id[]"
-                                                    id="check{{$item->user_id}}" value="{{$item->user_id}}">
+                                                <input type="checkbox" class="custom-control-input checkitem"
+                                                    name="id[]" id="check{{$item->user_id}}" value="{{$item->user_id}}">
                                                 <label for="check{{$item->user_id}}"
                                                     class="custom-control-label">&nbsp;</label>
                                             </div>
@@ -87,7 +85,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    </div>
+                </div>
                 <div class="modal-body">
                     <div class="container">
                         <div class="row justify-content-center">
@@ -97,7 +95,8 @@
                             </div>
                             <div class="form-group col-4">
                                 <label for="accountUsername">Username</label>
-                                <input type="text" name="account_username" class="form-control" id="accountUsername" required>
+                                <input type="text" name="account_username" class="form-control" id="accountUsername"
+                                    required>
                             </div>
                             <div class="form-group col-4">
                                 <label for="accountEmail">Email</label>
@@ -105,17 +104,19 @@
                             </div>
                             <div class="form-group col-6">
                                 <label for="accountPassword">Password</label>
-                                <input type="password" name="password" class="form-control" id="accountPassword" required>
+                                <input type="password" name="password" class="form-control" id="accountPassword"
+                                    required>
                             </div>
                             <div class="form-group col-6">
                                 <label for="accountPasswordConfirmation">Password Confirmation</label>
-                                <input type="password" name="password_confirmation" class="form-control" id="accountPasswordConfirmation" required>
+                                <input type="password" name="password_confirmation" class="form-control"
+                                    id="accountPasswordConfirmation" required>
                             </div>
                             <div class="form-group col-10">
                                 <label for="accountGroup">Group</label>
-                                <select name="account_group" id="accountGroup" class="form-control" required>
+                                <select name="account_group" id="accountGroup" class="form-control group" required>
                                     @foreach ($group as $item)
-                                        <option value="{{ $item->group_id }}">{{ $item->group_name }}</option>
+                                    <option value="{{ $item->group_id }}">{{ $item->group_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -128,7 +129,7 @@
             </div>
         </form>
     </div>
-</div>   
+</div>
 {{-- EditModal --}}
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -140,7 +141,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    </div>
+                </div>
                 <div class="modal-body">
                     <div class="container">
                         <div class="row">
@@ -150,13 +151,14 @@
                             </div>
                             <div class="form-group col-12">
                                 <label for="editAccountEmail">Email</label>
-                                <input type="text" name="account_email" class="form-control" id="editAccountEmail" disabled>
+                                <input type="text" name="account_email" class="form-control" id="editAccountEmail"
+                                    disabled>
                             </div>
                             <div class="form-group col-12">
                                 <label for="editAccountGroup">Group</label>
                                 <select name="account_group" id="editAccountGroup" class="form-control group">
                                     @foreach ($group as $item)
-                                        <option value="{{ $item->group_id }}">{{ $item->group_name }}</option>
+                                    <option value="{{ $item->group_id }}">{{ $item->group_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -169,71 +171,76 @@
             </div>
         </form>
     </div>
-</div>   
+</div>
 @endsection
 @section('script')
 <script src="{{asset('js/sweetalert2.all.min.js')}}"></script>
 <script>
-    $("#checkAll").on('change', function () {
-        $(".checkitem").prop('checked', $(this).is(":checked"));
-    });
-    $('.checkitem').on('change', function () {
-        if ($('.checkitem:checked').length !== $('.checkitem').length) {
-            $('#checkAll').prop('checked', false);
-        } else {
-            $('#checkAll').prop('checked', true);
-        }
-    });
+    $(document).ready(function () {
 
-    $('.group').selectric();
-    $('#editBtn').on('click', function () {
-        var id = [];
-        $('.checkitem:checked').each(function () {
-            id.push($(this).val());
+        $("#checkAll").on('change', function () {
+            $(".checkitem").prop('checked', $(this).is(":checked"));
         });
-        if (id.length > 1) {
-            Swal.fire(
-                '',
-                "You can't edit data more than 1 at the same time!",
-                'warning'
-            )
-        } else if (id.length == 0) {
-            Swal.fire(
-                '',
-                'Please select at least 1 data!',
-                'warning'
-            )
-        } else {
-            $('#editAccountForm').attr('action',
-                    '/user-management/account/'+id+'/edit');
+        $('.checkitem').on('change', function () {
+            if ($('.checkitem:checked').length !== $('.checkitem').length) {
+                $('#checkAll').prop('checked', false);
+            } else {
+                $('#checkAll').prop('checked', true);
+            }
+        });
 
-            $.ajax({
-                url: "/data/account/get/" + id,
-                type: 'GET',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                        'content')
-                },
-                data: id,
-                success: function (data) {
-
-                    if (data['status'] == true) {
-                        $('#editAccountName').val(data['account'][0].name);
-                        $('#editAccountEmail').val(data['account'][0].email);
-                        $('#editAccountGroup option[value="' + data['account'][0].group_id + '"]').prop('selected','selected');
-                        $('#editAccountGroup').selectric('refresh');
-
-                        $('#editModal').modal('show');
-
-                    } else {
-                        alert('Whoops Something went wrong!!');
-                    }
-                },
-                error: function (data) {
-                    alert(data.responseText);
-                }
+        $('.group').selectric();
+        $('#editBtn').on('click', function () {
+            var id = [];
+            $('.checkitem:checked').each(function () {
+                id.push($(this).val());
             });
-        }
+            if (id.length > 1) {
+                Swal.fire(
+                    '',
+                    "You can't edit data more than 1 at the same time!",
+                    'warning'
+                )
+            } else if (id.length == 0) {
+                Swal.fire(
+                    '',
+                    'Please select at least 1 data!',
+                    'warning'
+                )
+            } else {
+                $('#editAccountForm').attr('action',
+                    '/user-management/account/' + id + '/edit');
+
+                $.ajax({
+                    url: "/data/account/get/" + id,
+                    type: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                            'content')
+                    },
+                    data: id,
+                    success: function (data) {
+
+                        if (data['status'] == true) {
+                            $('#editAccountName').val(data['account'][0].name);
+                            $('#editAccountEmail').val(data['account'][0].email);
+                            $('#editAccountGroup option[value="' + data['account'][0]
+                                    .group_id + '"]')
+                                .prop('selected', 'selected');
+                            $('#editAccountGroup').selectric('refresh');
+
+                            $('#editModal').modal('show');
+
+                        } else {
+                            alert('Whoops Something went wrong!!');
+                        }
+                    },
+                    error: function (data) {
+                        alert(data.responseText);
+                    }
+                });
+            }
+        });
     });
 
 </script>

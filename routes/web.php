@@ -14,6 +14,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/data/service/get/{id}', 'CS\Master\ServiceController@getServiceByID')->name('getService');
     Route::get('/data/customer/search', 'CS\Transaction\CheckInOutController@searchCustomer')->name('searchCustomer');
     Route::get('/data/account/get/{id}', 'UserManagement\AccountController@getAccountByID')->name('getAccount');
+    Route::get('/data/checkin/customer/{id}', 'CS\Transaction\CheckInOutController@getCustomerDetailByID')->name('getCustomerCheckIn');
 
     Route::get('/data/customerdetail/get/{id}', 'CS\Master\CustomerController@getCustomerDetail')->name('getCustomerDetail');
     Route::get('/data/group', 'UserManagement\GroupController@getUserGroups')->name('userGroupData');
@@ -55,6 +56,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         // Check In
         Route::get('/cs/transaction/check-in-out', 'CS\Transaction\CheckInOutController@index')->name('checkInOut');
+        Route::get('/cs/transaction/membership', 'CS\Transaction\MembershipController@index')->name('membershipTransaction');
 
 
 

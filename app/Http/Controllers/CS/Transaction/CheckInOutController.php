@@ -25,4 +25,12 @@ class CheckInOutController extends Controller
         $customer               = Customer_Detail::searchCustomerDetailByKey($request->q);
         return response()->json($customer);
     }
+
+    public function getCustomerDetailByID($customer_detail)
+    {
+        $outlet_id              = Auth::user()->outlet_id;
+        $customer               = Customer_Detail::getCustomerDetailByID($customer_detail, $outlet_id);
+
+        return response()->json($customer);
+    }
 }

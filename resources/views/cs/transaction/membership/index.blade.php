@@ -13,17 +13,17 @@
             <div class="col-6">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Check In</h4>
+                        <h4>Membership</h4>
                     </div>
                     <div class="card-body">
                         <div class="row justify-content-center">
                             <div class="form-group col-12">
                                 <select name="key" id="customerSearch">
-                                    <option value="" disabled selected>Search Name, License Plate, or Phone Number
+                                    <option value="" disabled selected>Search Name or Phone Number
                                     </option>
-                                    @foreach ($customer_detail as $item)
-                                    <option value="{{$item->customer_detail_id}}"><b>{{ $item->customer_fullName}}</b>
-                                        <span class="text-muted">{{ $item->customer_detail_licensePlate }}</span>
+                                    @foreach ($customer as $item)
+                                    <option value="{{$item->customer_id}}"><b>{{ $item->customer_fullName}}</b>
+                                        <span class="text-muted">{{ $item->customer_phone }}</span>
                                     </option>
                                     @endforeach
                                 </select>
@@ -43,7 +43,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Today's Customer</h4>
+                        <h4>Membership</h4>
                         <h4 class="ml-auto action-btn">Export to:</h4>
                         <a href="http://" class="action-btn ml-1">
                             <img src="{{asset('img/icons/pdf.png')}}" alt="pdf" height="50px">
@@ -56,33 +56,17 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>Ticket No</th>
+                                    <th>ID</th>
                                     <th>Name</th>
-                                    <th>License Plate</th>
-                                    <th>Vehicle</th>
-                                    <th>Service</th>
-                                    <th>Status</th>
+                                    <th>Phone</th>
+                                    <th>Category</th>
+                                    <th>Member Since</th>
+                                    <th>Expired</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($customer_checked_in as $index => $item)
-                                <tr>
-                                    <td>{{ $index+1 }}</td>
-                                    <td><a href="#customerCheckedInDetailModal"
-                                            data-target="#customerCheckedInDetailModal"
-                                            data-toggle="modal">{{ $item->customer_fullName }}</a></td>
-                                    <td>{{ $item->customer_detail_licensePlate }}</td>
-                                    <td>{{ $item->vehicle_brand_name . " " . $item->vehicle_model_name }}</td>
-                                    <td>{{ $item->service_name }}</td>
-                                    <td>
-                                        <div class="badge badge-info">In Progress</div>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-danger">Check Out</button>
-                                    </td>
-                                </tr>
-                                @endforeach
+
                             </tbody>
                         </table>
                     </div>
@@ -99,14 +83,14 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Customer Check In</h5>
+                <h5 class="modal-title">Customer Membership</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body p-lg-5">
                 <div class="container">
-                    <div class="row">
+                    <div class="row justify-content-center">
                         <div class="form-group col-4">
                             <label for="checkInCustomerName">Customer Name</label>
                             <input type="text" class="form-control" id="checkInCustomerName" disabled>
@@ -116,22 +100,72 @@
                             <input type="text" class="form-control" id="checkInCustomerPhone" disabled>
                         </div>
                         <div class="form-group col-4">
-                            <label for="checkInCustomerLicensePlate">License Plate</label>
-                            <input type="text" class="form-control" id="checkInCustomerLicensePlate" disabled>
+                            <label for="checkInCustomerPhone">No. Membership</label>
+                            <input type="text" class="form-control" id="checkInCustomerPhone" value="001201911230012"
+                                disabled>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="checkInCustomerPhone">Membership Category</label>
+                            <select name="" id="" class="form-control membership-category">
+                                <option value="">Bronze</option>
+                                <option value="">Gold</option>
+                                <option value="">Platinum</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="checkInCustomerPhone">Memberhip Name</label>
+                            <input type="text" class="form-control" id="checkInCustomerPhone">
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="checkInCustomerPhone">Start Date</label>
+                            <input type="date" class="form-control" id="checkInCustomerPhone">
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="checkInCustomerPhone">End Date</label>
+                            <input type="date" class="form-control" id="checkInCustomerPhone">
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4>Service</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row justify-content-center">
-                                        <div class="custom-checkbox custom-control col-4 my-2">
-                                            <input type="checkbox" data-checkboxes="customers"
-                                                class="custom-control-input" name="service[]" id="checkAll" value="">
-                                            <label for="checkAll" class="custom-control-label">Full Wash</label>
+                        <div class="container">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Customer Detail</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row justify-content-center">
+                                            <div class="form-group col-4">
+                                                <label for="">Birth Date</label>
+                                                <input type="date" class="form-control">
+                                            </div>
+                                            <div class="form-group col-4">
+                                                <label for="">NIK</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+                                            <div class="form-group col-4">
+                                                <label for="">Religion</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+                                            <div class="form-group col-4">
+                                                <label for="">Status</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+                                            <div class="form-group col-4">
+                                                <label for="">Email</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+                                            <div class="form-group col-4">
+                                                <label for="">Address</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+                                            <div class="form-group col-4">
+                                                <label for="">City</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+                                            <div class="form-group col-12">
+                                                <label for="">Note</label>
+                                                <textarea type="text" class="form-control"></textarea>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -187,6 +221,7 @@
 <script>
     $(document).ready(function () {
         $('#customerSearch').select2();
+        $('.membership-category').selectric();
         $('#customerSearch').on('change', function () {
             var id = $(this).val();
             $.get('/data/checkin/customer/' + id, function (data) {
