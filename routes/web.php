@@ -53,10 +53,22 @@ Route::group(['middleware' => 'auth'], function () {
         // Feedback
         Route::get('/cs/master/feedback', 'CS\Master\FeedbackController@index')->name('feedback');
 
-
         // Check In
         Route::get('/cs/transaction/check-in-out', 'CS\Transaction\CheckInOutController@index')->name('checkInOut');
         Route::get('/cs/transaction/membership', 'CS\Transaction\MembershipController@index')->name('membershipTransaction');
+
+
+        // POS
+        // Master---------
+        // Cash Account
+        Route::get('/pos', 'POS\POSDashboardController@index')->name('pos');
+        Route::get('/pos/master/cash-account', 'POS\Master\CashAccountController@index');
+        Route::post('/pos/master/cash-account/add-bank-account', 'POS\Master\CashAccountController@storeBankAccount')->name('storeBankAccount');
+        // Cashier
+        Route::get('/pos/master/cashier', 'POS\Master\CashierController@index')->name('cashier');
+        // Transaction-----
+        // Cash Register
+        Route::get('/pos/transaction/cash-register', 'POS\Transaction\CashRegisterController@index')->name('cashRegister');
 
 
 

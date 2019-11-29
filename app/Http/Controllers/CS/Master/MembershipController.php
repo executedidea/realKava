@@ -18,4 +18,7 @@ class MembershipController extends Controller
         $vehicle_category   = Vehicle_Category::getAllCategory();
         return view('cs.master.membership.index', compact('memberships', 'vehicle_category'));
     }
+
+    public function store(Request $request)
+    { }
 }
