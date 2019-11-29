@@ -15,4 +15,5 @@ class CheckInOut extends Model
         $customer           = DB::select('call SP_CS_CheckIn_Select(?)', [$outlet_id]);
         return $customer;
     }
+
 }
