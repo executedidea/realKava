@@ -15,6 +15,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/data/customer/search', 'CS\Transaction\CheckInOutController@searchCustomer')->name('searchCustomer');
     Route::get('/data/account/get/{id}', 'UserManagement\AccountController@getAccountByID')->name('getAccount');
     Route::get('/data/checkin/customer/{id}', 'CS\Transaction\CheckInOutController@getCustomerDetailByID')->name('getCustomerCheckIn');
+    Route::get('/data/items/getitem/{id}', 'POS\Transaction\CashRegisterController@getItemByID')->name('getItemID');
+    Route::get('/data/items/getitems', 'POS\Transaction\CashRegisterController@getAllItems')->name('getItems');
+    Route::get('/data/cashier/getcashierbyid', 'POS\Transaction\CashRegisterController@getCashierByID')->name('getcashierByID');
 
     Route::get('/data/customerdetail/get/{id}', 'CS\Master\CustomerController@getCustomerDetail')->name('getCustomerDetail');
     Route::get('/data/group', 'UserManagement\GroupController@getUserGroups')->name('userGroupData');
@@ -66,6 +69,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/pos/master/cash-account/add-bank-account', 'POS\Master\CashAccountController@storeBankAccount')->name('storeBankAccount');
         // Cashier
         Route::get('/pos/master/cashier', 'POS\Master\CashierController@index')->name('cashier');
+        Route::post('/pos/master/cashier/addcashier', 'POS\Master\CashierController@store')->name('storeCashier');
         // Transaction-----
         // Cash Register
         Route::get('/pos/transaction/cash-register', 'POS\Transaction\CashRegisterController@index')->name('cashRegister');

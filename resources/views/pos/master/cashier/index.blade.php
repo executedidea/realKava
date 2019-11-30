@@ -11,7 +11,7 @@
             <div class="card">
                 <div class="card-header">
                     <h4>Cashier</h4>
-                    <button class="btn btn-success" data-toggle="modal" data-target="#addModal">
+                    <button class="btn btn-success" data-toggle="modal" data-target="#addCashierModal">
                         <i class="fas fa-plus" aria-hidden="true"></i>
                     </button>
                     <button class="btn btn-info ml-1" id="editBtn">
@@ -45,11 +45,12 @@
                                 <th>Shift Code</th>
                                 <th>Start Time</th>
                                 <th>End Time</th>
-                                <th>Max Discount Allowed</th>
+                                <th>Max Discount</th>
+                                <th>Max Add Discount</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($cashier as $index => $item)
+                            @foreach($cashier_list as $index => $item)
                             <tr>
                                 <td class="text-center">
                                     <div class="custom-checkbox custom-control">
@@ -68,6 +69,7 @@
                                 <td>{{ $item->shift_startTime }}</td>
                                 <td>{{ $item->shift_endTime }}</td>
                                 <td>{{ $item->disc_percent }}%</td>
+                                <td>{{ $item->disc_add_1 }}%</td>
                             </tr>
                         </tbody>
                         @endforeach
@@ -79,51 +81,121 @@
 </div>
 @endsection
 @section('modal')
-{{-- BankAccount AddModal --}}
-<div class="modal fade" id="addBankAccountModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+{{-- Add Cashier Modal --}}
+<div class="modal fade" id="addCashierModal" tabindex="-1" role="dialog" aria-labelledby="addBankModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <form action="{{ route('storeBankAccount') }}" method="post" class="validate-this">
-            @csrf
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Bank Account</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="container">
-                        <div class="row">
-                            <div class="form-group col-12 col-lg-6">
-                                <label for="bank">Bank</label>
-                                <select name="bank" id="bank" required>
-                                    <option value="" disabled selected>Select Bank</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-12 col-lg-6">
-                                <label for="branch">Branch</label>
-                                <input type="text" name="branch" class="form-control" id="branch" required>
-                            </div>
-                            <div class="form-group col-12 col-lg-4">
-                                <label for="accountNumber">Account Number</label>
-                                <input type="text" name="account_number" class="form-control" id="accountNumber" required>
-                            </div>
-                            <div class="form-group col-12 col-lg-4">
-                                <label for="openingBalance">Opening Balance</label>
-                                <input type="text" name="opening_balance" class="form-control" id="openingBalance" required>
-                            </div>
-                            <div class="form-group col-12 col-lg-4">
-                                <label for="openingDate">Opening Date</label>
-                                <input type="text" name="opening_date" class="form-control datepicker" id="openingDate" required>
-                            </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Add Cashier List</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-md-12">
+                        <form action="{{ route('storeCashier') }}" method="post"
+                                id="addCashierForm">
+                                @csrf
+
+                                {{-- Form --}}
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="form-group col-6">
+                                                <label for="">Group</label>
+                                                <select name="group_id" class="form-control category">
+                                                    <option disabled selected>--Select Group--</option>
+
+                                                    @foreach ($group as $item)
+                                                    <option value="">
+                                                        {{$item->group_name}}</option>
+                                                    @endforeach
+
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-6">
+                                                <label for="">Name</label>
+                                                <select name="user_id" class="form-control category">
+                                                    <option disabled selected>--Select Name--</option>
+
+                                                    @foreach ($user_name as $item)
+                                                    <option value="{{$item->user_id}}">
+                                                        {{$item->name}}</option>
+                                                    @endforeach
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row justify-content-center">
+                                            <div class="form-group col-6">
+                                                <label for="">Shift</label>
+                                                <select name="shift_id" class="form-control category">
+                                                    <option disabled selected>--Select Shift Time--</option>
+
+                                                    @foreach ($shift_code_all as $item)
+                                                    <option value="{{$item->shift_id}}">
+                                                        {{$item->shift_code}}</option>
+                                                    @endforeach
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group col-6">
+                                                <label for="startTime">Start Time</label>
+                                                <input type="time" name="shift_startTime" step="1" class="form-control"
+                                                    value="">
+                                            </div>
+
+                                            <div class="form-group col-6">
+                                                <label for="endTime">End Time</label>
+                                                <input type="time" name="shift_endTime" step="1" class="form-control"
+                                                    value="">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group col-6">
+                                                <label>Max Discount</label>
+                                                <div class="input-group" data-colorpicker-id="2">
+                                                    <input type="number" class="form-control" name="disc_percent" value="0">
+                                                    <div class="input-group-append">
+                                                        <div class="input-group-text">
+                                                            <i class="fas fa-percent"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-6">
+                                                <label>Max Add Discount</label>
+                                                <div class="input-group" data-colorpicker-id="2">
+                                                    <input type="number" class="form-control" name="add_disc_percent" value="0">
+                                                    <div class="input-group-append">
+                                                        <div class="input-group-text">
+                                                            <i class="fas fa-percent"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                </div>
+                                {{-- End Form --}}
+
+                            </form>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary btn-block">Save</button>
-                </div>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 @endsection

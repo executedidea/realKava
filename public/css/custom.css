@@ -102,6 +102,11 @@ em {
     }
 }
 
+.input-group>.input-group-append>.input-group-text {
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+
 /* END OF DEFAULT SETTING */
 
 
