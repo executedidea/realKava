@@ -141,8 +141,7 @@
                                                             placeholder="Rp 0,-" id="itemTotalPrice" disabled>
                                                     </div>
                                                 </td>
-                                                <td >
-                                                    
+                                                <td>
                                                 </td>
                                                 <td class="py-2 d-none">
                                                     <div class="form-group">
@@ -188,6 +187,60 @@
             </div>
         </div>
     </section>
+</div>
+<div class="container">
+<section id="paymentMethodSection">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Payment</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row justify-content-center">
+                        <div class="form-group col-4">
+                            <label for="paymentMethod">Payment Method</label>
+                            <select name="" id="paymentMethod">
+                                <option value="1">Cash</option>
+                                <option value="2">Debit</option>
+                                <option value="3">Credit</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="paymentBank">Bank</label>
+                            <select name="" id="paymentBank" disabled>
+                                <option value="">BCA</option>
+                                <option value="">Mandiri</option>
+                                <option value="">Suzuki</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="cardNo">Card No.</label>
+                            <input type="text" class="form-control" id="cardNo" disabled>
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="Payment">Payment</label>
+                            <input type="text" class="form-control" id="Payment">
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="Balance">Balance</label>
+                            <input type="text" class="form-control" id="Balance" disabled>
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="Change">Change</label>
+                            <input type="text" class="form-control" id="Change" disabled>
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="ccCharge">CC Charge</label>
+                            <input type="text" class="form-control" id="ccCharge" disabled>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 </div>
 @endsection
 @section('modal')
@@ -471,16 +524,36 @@
             $('.total-discount').each(function(){
                 totalAllDiscount += +$(this).val();
             });
-            
+
             
             $('#totalPrice').val(totalPrice);
             $('#ppn').val($('#totalPrice').val()*10/100);
             $('#totalAllDiscount').val(totalAllDiscount);
             $('#Total').html(parseFloat($('#totalPrice').val())+parseFloat($('#ppn').val()));
+            $('#Balance').val(parseFloat($('#totalPrice').val())+parseFloat($('#ppn').val()));
         });
+        $('#paymentMethod').selectric();
+        $('#paymentBank').selectric();
 
-
-
+        $('#Payment').on('keyup', function(){
+            $('#Balance').val(parseFloat($('#totalPrice').val())+parseFloat($('#ppn').val()) - $(this).val());
+            if( $('#Balance').val() <= 0 ) {
+                var value = parseFloat($('#totalPrice').val())+parseFloat($('#ppn').val()) - $(this).val();
+                $('#Change').val(Math.abs(value));
+                $('#Balance').val(0);
+            }
+        });
+        $('#paymentMethod').on('change', function(){
+            if($(this).val() == 2 || $(this).val() == 3){
+                $('#paymentBank').prop('disabled', false);
+                $('#paymentBank').selectric('refresh');
+                $('#cardNo').prop('disabled', false);
+            } else {
+                $('#paymentBank').prop('disabled', true);
+                $('#paymentBank').selectric('refresh');
+                $('#cardNo').prop('disabled', true);
+            }
+        });
     });
 </script>
 @endsection
