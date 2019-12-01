@@ -13,16 +13,14 @@
             <div class="row justify-content-center">
                 <div class="col-6">
                     <div class="card">
-                        <div class="card-header">
-                            <h4>Checked In Customer</h4>
-                        </div>
                         <div class="card-body">
                             <form action="" method="get">
                                 <div class="row justify-content-center">
                                     <div class="form-group col-12">
-                                        <input type="text" name="license_plate" class="form-control">
+                                        <input type="text" name="license_plate" class="form-control"
+                                            placeholder="Search Checked In Customer">
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Search</button>
+                                    <button type="submit" class="btn btn-primary btn-block">Search</button>
                                 </div>
                             </form>
                         </div>
@@ -37,18 +35,17 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="container">
-                            <div class="row my-4">
+                            <div class="row">
                                 <div class="form-group col-4">
-                                    <label for="customerName">Customer Name</label>
-                                    <input type="text" class="form-control" id="customerName" value="" disabled>
+                                    <input type="text" class="form-control" id="customerName" value="Customer Name"
+                                        disabled>
                                 </div>
                                 <div class="form-group col-4">
-                                    <label for="vehicle">Vehicle</label>
-                                    <input type="text" class="form-control" id="vehicle" value="" disabled>
+                                    <input type="text" class="form-control" id="vehicle" value="Vehicle" disabled>
                                 </div>
                                 <div class="form-group col-4">
-                                    <label for="licensePlate">License Plate</label>
-                                    <input type="text" class="form-control" id="licensePlate" value="" disabled>
+                                    <input type="text" class="form-control" id="licensePlate" value="License Plate"
+                                        disabled>
                                 </div>
                             </div>
                         </div>
@@ -90,30 +87,32 @@
                                         @endif
                                         <form action="" method="post" id="customerItemsForm">
                                             <tr id="row1">
-                                                <td class="py-2" width="20%">
-                                                    <div class="form-group">
+                                                <td class="pt-3" width="20%">
+                                                    <div class="form-group mx-auto">
                                                         <select name="item" class="items px-3" id="itemSelect">
                                                             <option value="" disabled selected>Item Name</option>
                                                         </select>
                                                     </div>
                                                 </td>
-                                                <td class="py-2" width="10%">
+                                                <td class="pt-3" width="10%">
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control numeric-input text-right item-quantity"
+                                                        <input type="text"
+                                                            class="form-control numeric-input text-right item-quantity"
                                                             value="0" id="quantity" disabled>
                                                     </div>
                                                 </td>
-                                                <td class="py-2">
+                                                <td class="pt-3">
                                                     <div class="form-group">
                                                         <input type="text" class="form-control text-right item-price"
-                                                            placeholder="Rp 0,-" id="itemPrice" disabled>
+                                                            placeholder="0" id="itemPrice" disabled>
                                                     </div>
                                                 </td>
-                                                <td class="py-2" width="10%">
+                                                <td class="pt-3" width="10%">
                                                     <div class="form-group">
                                                         <div class="input-group">
-                                                            <input type="text" class="form-control item-discount" name="discount"
-                                                                id="itemDiscount" disabled>
+                                                            <input type="text"
+                                                                class="form-control text-right item-discount"
+                                                                name="discount" id="itemDiscount" value="0" disabled>
                                                             <div class="input-group-append">
                                                                 <div class="input-group-text">
                                                                     <i class="fas fa-percent"></i>
@@ -122,11 +121,13 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="py-2" width="10%">
+                                                <td class="pt-3" width="10%">
                                                     <div class="form-group">
                                                         <div class="input-group">
-                                                            <input type="text" class="form-control item-add-discount" name="add_discount"
-                                                                id="itemAddDiscount" disabled>
+                                                            <input type="text"
+                                                                class="form-control text-right item-add-discount"
+                                                                name="add_discount" id="itemAddDiscount" value="0"
+                                                                disabled>
                                                             <div class="input-group-append">
                                                                 <div class="input-group-text">
                                                                     <i class="fas fa-percent"></i>
@@ -135,17 +136,18 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="py-2">
+                                                <td class="pt-3">
                                                     <div class="form-group">
                                                         <input type="text" class="form-control text-right total-price"
-                                                            placeholder="Rp 0,-" id="itemTotalPrice" disabled>
+                                                            placeholder="0" id="itemTotalPrice" disabled>
                                                     </div>
                                                 </td>
                                                 <td>
                                                 </td>
-                                                <td class="py-2 d-none">
+                                                <td class="pt-3 d-none">
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control text-right total-discount"
+                                                        <input type="text"
+                                                            class="form-control text-right total-discount"
                                                             placeholder="0" id="itemTotalDiscount" disabled>
                                                     </div>
                                                 </td>
@@ -156,32 +158,39 @@
                                     <button type="submit" class="btn btn-success">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
                                     </button>
-                                    <button type="button" class="btn btn-info" id="calculatePrice">
+                                    <button type="button" class="btn btn-primary" id="calculatePrice">
                                         Calculate
                                     </button>
                                 </div>
                                 </form>
                             </div>
                         </div>
-                        <div class="row justify-content-center mt-4">
-                            
-                            <div class="col-3 bg-success p-3 align-self-center text-right">
-                                <h1 class="text-white align-items-center totaltotal" id="Total">0</h1>
+                        <div class="row justify-content-center mt-4" id="calculated">
+                            <div class="col-3 p-4 align-self-center text-right">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h1 class="text-white totaltotal" id="Total">0</h1>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group col-3 totalPrice">
+                            <div class="form-group col-2 totalPrice">
                                 <label for="">Total Price</label>
                                 <input type="text" id="totalPrice" class="form-control text-center" value="" disabled>
                             </div>
-                            <div class="form-group col-3">
+                            <div class="form-group col-2">
                                 <label for="">PPN</label>
                                 <input type="text" class="form-control text-center" id="ppn" disabled>
                             </div>
-                            <div class="form-group col-3">
+                            <div class="form-group col-2">
                                 <label for="">Total Discount</label>
                                 <input type="text" class="form-control text-center" id="totalAllDiscount" disabled>
                             </div>
+                            <div class="form-group col-2">
+                                <label for="ccCharge">CC Charge</label>
+                                <input type="text" class="form-control" id="ccCharge" value="0" disabled>
+                            </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -189,58 +198,99 @@
     </section>
 </div>
 <div class="container">
-<section id="paymentMethodSection">
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h4>Payment</h4>
-                </div>
-                <div class="card-body">
-                    <div class="row justify-content-center">
-                        <div class="form-group col-4">
-                            <label for="paymentMethod">Payment Method</label>
-                            <select name="" id="paymentMethod">
-                                <option value="1">Cash</option>
-                                <option value="2">Debit</option>
-                                <option value="3">Credit</option>
-                            </select>
+    <section id="paymentMethodSection">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Payment</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row justify-content-center">
+                            <div class="form-group col-3">
+                                <select name="" id="paymentMethod">
+                                    <option value="" selected disabled>Payment Method</option>
+                                    <option value="1">Cash</option>
+                                    <option value="2">Debit</option>
+                                    <option value="3">Credit Card</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-3">
+                                <select name="" id="paymentCC" disabled>
+                                    <option value="" selected disabled>Credit Card</option>
+                                    <option value="1">Master Card</option>
+                                    <option value="2">Visa</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-3">
+                                <select name="" id="paymentBank" disabled>
+                                    <option value="" selected disabled>Bank</option>
+                                    <option value="">BCA</option>
+                                    <option value="">Mandiri</option>
+                                    <option value="">Suzuki</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-3">
+                                <input type="text" class="form-control" id="cardNo" placeholder="Card Number" disabled>
+                            </div>
+                            <div class="form-group col-4">
+                                <label for="Payment">Payment</label>
+                                <input type="text" class="form-control" id="Payment">
+                            </div>
+                            <div class="form-group col-4">
+                                <label for="Balance">Balance</label>
+                                <input type="text" class="form-control" id="Balance" disabled>
+                            </div>
+                            <div class="form-group col-4">
+                                <label for="Change">Change</label>
+                                <input type="text" class="form-control" id="Change" disabled>
+                            </div>
+                            <div class="form-group col-12 text-right">
+                                <button id="addPaymentMethodBtn" class="btn btn-info">Additional Payment</button>
+                            </div>
                         </div>
-                        <div class="form-group col-4">
-                            <label for="paymentBank">Bank</label>
-                            <select name="" id="paymentBank" disabled>
-                                <option value="">BCA</option>
-                                <option value="">Mandiri</option>
-                                <option value="">Suzuki</option>
-                            </select>
+                        <div class="card d-none" id="addPaymentMethodSection">
+                            <div class="card-body">
+                                <div class="row justify-content-center">
+                                    <div class="form-group col-3">
+                                        <select name="" id="AddpaymentMethod">
+                                            <option value="" selected disabled>Payment Method</option>
+                                            <option value="1">Cash</option>
+                                            <option value="2">Debit</option>
+                                            <option value="3">Credit Card</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-3">
+                                        <select name="" id="AddpaymentCC" disabled>
+                                            <option value="" selected disabled>Credit Card</option>
+                                            <option value="1">Master Card</option>
+                                            <option value="2">Visa</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-3">
+                                        <select name="" id="AddpaymentBank" disabled>
+                                            <option value="" selected disabled>Bank</option>
+                                            <option value="">BCA</option>
+                                            <option value="">Mandiri</option>
+                                            <option value="">Suzuki</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-3">
+                                        <input type="text" class="form-control" id="AddcardNo" placeholder="Card Number"
+                                            disabled>
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <label for="Payment">Payment</label>
+                                        <input type="text" class="form-control" id="AddPayment">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group col-4">
-                            <label for="cardNo">Card No.</label>
-                            <input type="text" class="form-control" id="cardNo" disabled>
-                        </div>
-                        <div class="form-group col-4">
-                            <label for="Payment">Payment</label>
-                            <input type="text" class="form-control" id="Payment">
-                        </div>
-                        <div class="form-group col-4">
-                            <label for="Balance">Balance</label>
-                            <input type="text" class="form-control" id="Balance" disabled>
-                        </div>
-                        <div class="form-group col-4">
-                            <label for="Change">Change</label>
-                            <input type="text" class="form-control" id="Change" disabled>
-                        </div>
-                        <div class="form-group col-4">
-                            <label for="ccCharge">CC Charge</label>
-                            <input type="text" class="form-control" id="ccCharge" disabled>
-                        </div>
-                        
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 </div>
 @endsection
 @section('modal')
@@ -300,260 +350,5 @@
 <script src="{{ asset('/modules/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}"></script>
 <script src="{{ asset('/modules/select2/dist/js/select2.full.min.js') }}"></script>
 <script src="{{ asset('/modules/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
-<script>
-    $(document).ready(function () {
-        $("#checkAllBankAccount").on('change', function () {
-            $(".checkitem-bankaccount").prop('checked', $(this).is(":checked"));
-        });
-        $('.checkitem-bankaccount').on('change', function () {
-            if ($('.checkitem-bankaccount:checked').length !== $('.checkitem-bankaccount').length) {
-                $('#checkAllBankAccount').prop('checked', false);
-            } else {
-                $('#checkAllBankAccount').prop('checked', true);
-            }
-        });
-
-        $("#checkAllPettyCash").on('change', function () {
-            $(".checkitem-pettycash").prop('checked', $(this).is(":checked"));
-        });
-        $('.checkitem-pettycash').on('change', function () {
-            if ($('.checkitem-pettycash:checked').length !== $('.checkitem-pettycash').length) {
-                $('#checkAllPettyCash').prop('checked', false);
-            } else {
-                $('#checkAllPettyCash').prop('checked', true);
-            }
-        });
-
-        $('#bank').selectric();
-        $('#customerSearch').select2();
-        $('#itemSelect').select2();
-        $('#itemSelect').on('select2:open', function(){
-            $.get('/data/items/getitems', function(items) {
-                $.each(items, function(index, Obj){
-                    $('#itemSelect').append('<option value="' + Obj.item_id + '">' + Obj.item_name + '</option>');
-                });
-            });
-        });
-        
-        $('#itemSelect').on('change', function () {
-            var id = $(this).val();
-            $('#quantity').prop('disabled', false);
-            $('#quantity').val(1);
-            $('#itemDiscount').val(0);
-            $('#itemAddDiscount').val(0);
-
-
-            $.get('/data/items/getitem/' + id, function (item) {
-                $('#itemPrice').val(item[0].item_price);
-                $('#itemTotalPrice').val($('#itemPrice').val());
-            });
-            $.get('/data/cashier/getcashierbyid', function(cashier){
-                if(cashier[0].disc_percent <= 0){
-                    $('#itemDiscount').prop('disabled', true);
-                } else {
-                    $('#itemDiscount').prop('disabled', false);
-                }
-                if(cashier[0].disc_add_1 <= 0){
-                    $('#itemAddDiscount').prop('disabled', true);
-                } else{
-                    $('#itemAddDiscount').prop('disabled', false);
-                }
-            });
-        });
-        $('#quantity').on('keyup', function () {
-            $('#itemTotalPrice').val($('#quantity').val() * $('#itemPrice').val());
-            
-        });
-        // $('#itemDiscount').on('keyup', function () {
-        //     $.get('/data/cashier/getcashierbyid', function(cashier){
-        //         if ($('#itemDiscount').val() > cashier[0].disc_percent) {
-        //             alert('You are not allowed to give discount that much!');
-        //             $('#itemDiscount').val(0);
-        //             console.log(cashier[0].disc_percent);
-        //         }
-        //     });
-        //     var priceQuantity = $('#quantity').val() * $('#itemPrice').val();
-        //     var discount = priceQuantity * $('#itemDiscount').val() / 100;
-        //     $('#itemTotalPrice').val(priceQuantity - discount);
-
-        // });
-        $('#itemDiscount').on('change', function () {
-            $.get('/data/cashier/getcashierbyid', function(cashier){
-                if ($('#itemDiscount').val() > cashier[0].disc_percent || $('#itemDiscount').val() >= 100) {
-                    alert('You are not allowed to give discount that much!');
-                    $('#itemDiscount').val(0);
-                }
-                var priceQuantity = $('#quantity').val() * $('#itemPrice').val();
-                var discount = priceQuantity * $('#itemDiscount').val() / 100;
-                var priceAfterDisc = priceQuantity - discount;
-                var addDisc = priceAfterDisc * $('#itemAddDiscount').val() / 100;
-                // $('#itemTotalPrice').val(priceQuantity - discount);
-                $('#itemTotalPrice').val(priceAfterDisc - addDisc);
-
-                
-            });
-        });
-
-        $('#itemAddDiscount').on('change', function () {
-            $.get('/data/cashier/getcashierbyid', function(cashier){
-                if ($('#itemAddDiscount').val() > cashier[0].disc_add_1 || $('#itemAddDiscount').val() >= 100) {
-                    alert('You are not allowed to give discount that much!');
-                    $('#itemAddDiscount').val(0);
-                }
-                // var priceQuantity = $('#quantity').val() * $('#itemPrice').val();
-                // var discount = priceQuantity * $('#itemDiscount').val() / 100;
-                // var priceAfterDisc = priceQuantity - discount;
-                // var addDisc = priceAfterDisc * $('#itemAddDiscount').val() / 100;
-                // $('#itemTotalPrice').val(priceAfterDisc - addDisc);
-                var priceQuantity = $('#quantity').val() * $('#itemPrice').val();
-                var discount = priceQuantity * $('#itemDiscount').val() / 100;
-                var priceAfterDisc = priceQuantity - discount;
-                var addDisc = priceAfterDisc * $('#itemAddDiscount').val() / 100;
-                // $('#itemTotalPrice').val(priceQuantity - discount);
-                $('#itemTotalPrice').val(priceAfterDisc - addDisc);
-            });
-            
-        });
-
-
-        $('#bankAccountBtn').on('click', function () {
-            $('#pettyCash').hide();
-            $('#bankAccount').show(200, 'swing');
-        });
-        $('#pettyCashBtn').on('click', function () {
-            $('#bankAccount').hide();
-            $('#pettyCash').show(200, 'swing');
-        });
-        var i = 1;
-        $('#customerItemsForm').on('submit', function (e) {
-            e.preventDefault();
-            i++;
-            $('#itemSelect').prop('disabled', true);
-            $('#quantity').prop('disabled', true);
-            $('#itemDiscount').prop('disabled', true);
-            $('#itemAddDiscount').prop('disabled', true);
-            $('#itemAddDiscount').prop('disabled', true);
-
-            var totalWithoutDisc = $('#itemPrice').val()*$('#quantity').val();
-            var disc = totalWithoutDisc*$('#itemDiscount').val()/100;
-            var totalDisc   = totalWithoutDisc - disc;
-            var addDisc     = totalDisc*$('#itemAddDiscount').val()/100;
-            $('#itemTotalDiscount').val(addDisc+disc);
-
-            var id  = $('#itemSelect').val();
-            $('#itemSelect').removeAttr('id');
-            $('#quantity').removeAttr('id');
-            $('#itemPrice').removeAttr('id');
-            $('#itemDiscount').removeAttr('id');
-            $('#itemAddDiscount').removeAttr('id');
-            $('#itemTotalPrice').removeAttr('id');
-            $('#itemTotalDiscount').removeAttr('id');
-            $.get('/data/items/getitem/' + id, function (item) {
-                $('#customerItems tbody').append(
-                    '<tr id="row'+i+'"><td class="" width="20%"><div class="form-group"><select name="item" class="items px-3" id="itemSelect"><option value="" disabled selected>Item Name</option></select></div></td><td class="" width="10%"><div class="form-group"><input type="text" class="form-control numeric-input text-right item-quantity" value="0" id="quantity" disabled></div></td><td class=""><div class="form-group"><input type="text" class="form-control text-right item-price" placeholder="Rp 0,-" id="itemPrice" disabled></div></td><td class="" width="10%"><div class="form-group"><div class="input-group"><input type="text" class="form-control item-discount" name="discount" id="itemDiscount" disabled><div class="input-group-append"><div class="input-group-text"><i class="fas fa-percent"></i></div></div></div></div></td><td class="" width="10%"><div class="form-group"><div class="input-group"><input type="text" class="form-control item-add-discount" name="add_discount" id="itemAddDiscount" disabled><div class="input-group-append"><div class="input-group-text"><i class="fas fa-percent"></i></div></div></div></div></td><td class=""><div class="form-group"><input placeholder="Rp 0,-" id="itemTotalPrice" class="form-control total-price text-right" disabled></div></td><td><button type="button" class="btn btn-danger remove-row" data-id="'+i+'"><i class="fas fa-trash" aria-hidden="true"></i></button></td><td class="py-2"><div class="form-group"><input type="text" class="form-control text-right total-discount d-none" placeholder="0" id="itemTotalDiscount" disabled></div></td></tr>'
-                );
-                $('#itemSelect').select2();
-                $('#itemSelect').on('select2:open', function(){
-                    $.get('/data/items/getitems', function(items) {
-                        $.each(items, function(index, Obj){
-                            $('#itemSelect').append('<option value="' + Obj.item_id + '">' + Obj.item_name + '</option>');
-                        });
-                    });
-                });
-                $('#quantity').on('keyup', function () {
-                    $('#itemTotalPrice').val($('#quantity').val() * $('#itemPrice').val());
-                });
-                $('#itemDiscount').on('change', function () {
-                    $.get('/data/cashier/getcashierbyid', function(cashier){
-                        if ($('#itemDiscount').val() > cashier[0].disc_percent || $('#itemDiscount').val() >= 100) {
-                            alert('You are not allowed to give discount that much!');
-                            $('#itemDiscount').val(0);
-                        }
-                        var priceQuantity = $('#quantity').val() * $('#itemPrice').val();
-                        var discount = priceQuantity * $('#itemDiscount').val() / 100;
-                        $('#itemTotalPrice').val(priceQuantity - discount);
-                        console.log(cashier[0].disc_percent);
-                    });
-                });
-
-                $('#itemAddDiscount').on('keyup', function () {
-                    if ($('#itemAddDiscount').val() > 100) {
-                        alert('Max 100%');
-                        $('#itemAddDiscount').val(0);
-                    }
-                    var priceQuantity = $('#quantity').val() * $('#itemPrice').val();
-                    var discount = priceQuantity * $('#itemDiscount').val() / 100;
-                    var priceAfterDisc = priceQuantity - discount;
-                    var addDisc = priceAfterDisc * $('#itemAddDiscount').val() / 100;
-                    $('#itemTotalPrice').val(priceAfterDisc - addDisc);
-                });
-                $('#itemSelect').on('change', function () {
-                    var id = $(this).val();
-                    $('#quantity').prop('disabled', false);
-                    $('#quantity').val(1);
-                    $('#itemTotalDiscount').prop('disabled', false);
-                    $.get('/data/items/getitem/' + id, function (item) {
-                        $('#itemPrice').val(item[0].item_price);
-                        $('#itemTotalPrice').val($('#itemPrice').val());
-                    });
-                    $.get('/data/cashier/getcashierbyid', function(cashier){
-                        if(cashier[0].disc_percent <= 0){
-                            $('#itemDiscount').prop('disabled', true);
-                        } else {
-                            $('#itemDiscount').prop('disabled', false);
-                        }
-                        if(cashier[0].disc_add_1 <= 0){
-                            $('#itemAddDiscount').prop('disabled', true);
-                        } else{
-                            $('#itemAddDiscount').prop('disabled', false);
-                        }
-                    });
-                });
-            });
-        });
-        $(document).on('click', '.remove-row', function(){
-            var id = $(this).data('id');
-            $('#row'+id).remove();
-        });
-        $('#calculatePrice').on('click', function(){
-            var totalPrice   = 0;
-            $('.total-price').each(function(){
-                totalPrice += +$(this).val();
-            });
-            var totalAllDiscount = 0;
-            $('.total-discount').each(function(){
-                totalAllDiscount += +$(this).val();
-            });
-
-            
-            $('#totalPrice').val(totalPrice);
-            $('#ppn').val($('#totalPrice').val()*10/100);
-            $('#totalAllDiscount').val(totalAllDiscount);
-            $('#Total').html(parseFloat($('#totalPrice').val())+parseFloat($('#ppn').val()));
-            $('#Balance').val(parseFloat($('#totalPrice').val())+parseFloat($('#ppn').val()));
-        });
-        $('#paymentMethod').selectric();
-        $('#paymentBank').selectric();
-
-        $('#Payment').on('keyup', function(){
-            $('#Balance').val(parseFloat($('#totalPrice').val())+parseFloat($('#ppn').val()) - $(this).val());
-            if( $('#Balance').val() <= 0 ) {
-                var value = parseFloat($('#totalPrice').val())+parseFloat($('#ppn').val()) - $(this).val();
-                $('#Change').val(Math.abs(value));
-                $('#Balance').val(0);
-            }
-        });
-        $('#paymentMethod').on('change', function(){
-            if($(this).val() == 2 || $(this).val() == 3){
-                $('#paymentBank').prop('disabled', false);
-                $('#paymentBank').selectric('refresh');
-                $('#cardNo').prop('disabled', false);
-            } else {
-                $('#paymentBank').prop('disabled', true);
-                $('#paymentBank').selectric('refresh');
-                $('#cardNo').prop('disabled', true);
-            }
-        });
-    });
-</script>
+<script src="{{ asset('/js/kava/pos/cash-register/index.js') }}"></script>
 @endsection

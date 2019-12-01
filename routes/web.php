@@ -18,6 +18,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/data/items/getitem/{id}', 'POS\Transaction\CashRegisterController@getItemByID')->name('getItemID');
     Route::get('/data/items/getitems', 'POS\Transaction\CashRegisterController@getAllItems')->name('getItems');
     Route::get('/data/cashier/getcashierbyid', 'POS\Transaction\CashRegisterController@getCashierByID')->name('getcashierByID');
+    Route::get('/data/local-setting/getsetting', 'POS\Transaction\CashRegisterController@getSetting')->name('getSetting');
 
     Route::get('/data/customerdetail/get/{id}', 'CS\Master\CustomerController@getCustomerDetail')->name('getCustomerDetail');
     Route::get('/data/group', 'UserManagement\GroupController@getUserGroups')->name('userGroupData');
@@ -72,8 +73,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/pos/master/cashier', 'POS\Master\CashierController@index')->name('cashier');
         Route::post('/pos/master/cashier/addcashier', 'POS\Master\CashierController@store')->name('storeCashier');
         // Transaction-----
+        // Open Store
+        Route::get('/pos/transaction/open-store', 'POS\Transaction\OpenStoreController@index')->name('openStore');
+        Route::post('/pos/transaction/open-store/add', 'POS\Transaction\OpenStoreController@store')->name('storeOpenStore');
         // Cash Register
         Route::get('/pos/transaction/cash-register', 'POS\Transaction\CashRegisterController@index')->name('cashRegister');
+        Route::get('/pos/local-setting', 'POS\LocalSettingController@index')->name('POSLocalSetting');
+        Route::post('/pos/local-setting/number', 'POS\LocalSettingController@store')->name('storePOSLocalSetting');
+        // 
 
 
 

@@ -107,6 +107,63 @@ em {
     border-bottom-right-radius: 25px;
 }
 
+#Total {
+    outline: none;
+}
+
+#customerItems th {
+    font-size: 18px !important;
+    font-weight: bold !important;
+    color: #fff;
+}
+
+#customerItems thead {
+    background-color: #eb8242;
+}
+
+#customerItems :disabled {
+    background-color: #fcf5b0;
+}
+
+#customerName {
+    background-color: #eafbea;
+}
+
+#vehicle {
+    background-color: #eafbea;
+}
+
+#licensePlate {
+    background-color: #eafbea;
+}
+
+#calculated input {
+    background-color: #ecfcff !important;
+}
+
+#calculated .card {
+    background-color: #393e46;
+}
+
+#paymentMethodSection :disabled {
+    background-color: #ffe3ed;
+
+}
+
+.select2-container--default.select2-container--disabled .select2-selection--single {
+    color: #fcf5b0;
+}
+
+#customerItems th {
+    height: 45px !important;
+}
+
+#customerItems .form-group {
+    margin-bottom: 1rem;
+}
+
+
+
 /* END OF DEFAULT SETTING */
 
 
