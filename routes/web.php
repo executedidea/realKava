@@ -41,6 +41,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/cs/master/customer/{customer_id}/addvehicle', 'CS\Master\CustomerController@storeDetail')->name('addCustomerDetail');
         Route::post('/cs/master/customer/{customer_id}/edit/{customer_detail_id?}', 'CS\Master\CustomerController@updateDetail')->name('editCustomer');
         Route::delete('/cs/master/customer/deletevehicle', 'CS\Master\CustomerController@destroyDetail')->name('deleteCustomerDetail');
+        Route::get('/cs/local-setting', 'CS\LocalSettingController@index')->name('CSLocalSetting');
         // Vehicle
         Route::get('/cs/master/vehicle', 'CS\Master\VehicleController@index')->name('vehicle');
         Route::post('/cs/master/vehicle/add', 'CS\Master\VehicleController@store')->name('storeVehicle');
