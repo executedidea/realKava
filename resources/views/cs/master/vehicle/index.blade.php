@@ -22,13 +22,7 @@
                         <button class="btn btn-danger action-btn ml-1" id="deleteBtn">
                             <i class="fas fa-trash-alt" aria-hidden="true"></i>
                         </button>
-                        <h4 class="ml-auto action-btn">Export to:</h4>
-                        <a href="http://" class="action-btn ml-1">
-                            <img src="{{asset('img/icons/pdf.png')}}" alt="pdf" height="50px">
-                        </a>
-                        <a href="http://" class="action-btn ml-1">
-                            <img src="{{asset('img/icons/excel.png')}}" alt="excel" height="50px">
-                        </a>
+
                     </div>
                     <div class="card-body">
                         <table class="table table-striped" id="vehicleTable">
@@ -101,12 +95,12 @@
                                 </select>
                             </div>
                             <div class="form-group col-12">
-                                <input type="text" name="vehicle_brand" class="form-control" placeholder="Vehicle Brand"
-                                    required>
+                                <input type="text" name="vehicle_brand" class="form-control vehicle-brand-name"
+                                    id="vehicleBrandName" placeholder="Vehicle Brand" required>
                             </div>
                             <div class="form-group col-12">
-                                <input type="text" name="vehicle_model" class="form-control" placeholder="Vehicle Model"
-                                    required>
+                                <input type="text" name="vehicle_model" class="form-control vehicle-model-name"
+                                    placeholder="Vehicle Model" required>
                             </div>
                             <div class="form-group col-12">
                                 <select name="vehicle_size" class="form-control vehicle-size" id="vehicleSize" required>
@@ -329,6 +323,18 @@
                 });
             }
         });
+        $(document).ready(function () {
+            $('#vehicleBrandName').on('input', function () {
+                var vehicleBrandName = $('#vehicleBrandName').val();
+                if (vehicleBrandName == "asd") {
+                    $('#vehicleBrandName').css("border", "1px solid red");
+                } else {
+                    $('#vehicleBrandName').css("border", "1px solid red");
+                }
+            });
+        });
+
+
     });
 
 </script>

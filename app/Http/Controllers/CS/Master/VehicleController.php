@@ -87,6 +87,7 @@ class VehicleController extends Controller
             'vehicle_size_id'          => 'required'
         ]);
         if ($validator->fails()) {
+
             return back()->withErrors($validator);
         } else {
             $vehicle_category_id        = $request->vehicle_category_id;
