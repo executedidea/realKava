@@ -91,6 +91,15 @@ class CashierController extends Controller
         ]);
     }
 
+    public function getCashierByID($cashier_id)
+    {
+        $cashier_by_id = Cashier::getCashierByID($cashier_id);
+        return response()->json([
+            'status'    => true,
+            'cashier_by_id'  => $cashier_by_id
+        ]);
+    }
+
     public function user()
     {
         $group_id        = Input::get('group_id');
@@ -99,4 +108,5 @@ class CashierController extends Controller
 
         return response()->json($user);
     }
+    
 }

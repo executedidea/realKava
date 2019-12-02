@@ -15,4 +15,10 @@ class Cashier extends Model
         $cashier            = DB::select('call SP_POS_Three_CashierList_Select(?)', [$outlet_id]);
         return $cashier;
     }
+
+    public static function getCashierByID($cashier_id)
+    {
+        $cashier                = DB::select('call SP_POS_CashierList_ByID_Select(?)', [$cashier_id]);
+        return $cashier;
+    }
 }

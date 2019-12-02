@@ -11,7 +11,7 @@ class Debit_credit_note extends Model
 
     public static function getDebitCreditNoteLastID()
     {
-        $last_id                = DB::select('call SP_GetLastID_Select(?)', ['petty_cash_id']);
+        $last_id                = DB::select('call SP_GetLastID_Select(?)', ['debit_credit_note_id']);
         return $last_id;
     }
 

@@ -23,6 +23,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/data/customerdetail/get/{id}', 'CS\Master\CustomerController@getCustomerDetail')->name('getCustomerDetail');
     Route::get('/data/group', 'UserManagement\GroupController@getUserGroups')->name('userGroupData');
     Route::get('/data/menu-detail-by-modul-id/{id}', 'UserManagement\GroupController@getMenuDetail')->name('menuDetailData');
+    Route::get('/data/cashier/get/{id}', 'CS\Master\CashierController@getCashier')->name('getCashier');
+
 
     Route::group(['middleware' => 'UserHasNoOutlet'], function () {
         Route::get('/newuser', 'DashboardController@newUser_1');
@@ -55,12 +57,17 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/cs/master/service/{id}/edit', 'CS\Master\ServiceController@update')->name('updateService');
         // Membership
         Route::get('/cs/master/membership', 'CS\Master\MembershipController@index')->name('membership');
+        Route::post('/cs/master/membership/add', 'CS\Master\MembershipController@store')->name('storeMembership');
+        Route::post('/cs/master/membership/{id}/edit', 'CS\Master\MembershipController@update')->name('updateMembership');
         // Feedback
         Route::get('/cs/master/feedback', 'CS\Master\FeedbackController@index')->name('feedback');
-
         // Check In
         Route::get('/cs/transaction/check-in-out', 'CS\Transaction\CheckInOutController@index')->name('checkInOut');
         Route::get('/cs/transaction/membership', 'CS\Transaction\MembershipController@index')->name('membershipTransaction');
+        // Promo Item
+        Route::get('/cs/master/promo-item', 'CS\Master\PromoItemController@index')->name('promoItem');
+        Route::post('/cs/master/promo-item/add', 'CS\Master\PromoItemController@store')->name('storePromoItem');
+        Route::post('/cs/master/membership/{id}/edit', 'CS\Master\MembershipController@update')->name('updateMembership');
 
 
         // POS

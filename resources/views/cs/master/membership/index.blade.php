@@ -17,7 +17,8 @@
                         <button class="btn btn-success action-btn" data-toggle="modal" data-target="#addModal">
                             <i class="fas fa-plus" aria-hidden="true"></i>
                         </button>
-                        <button class="btn btn-info action-btn ml-1" id="editBtn">
+                        <button class="btn btn-info action-btn ml-1" id="editBtn" data-toggle="modal"
+                            data-target="#editModal">
                             <i class="fas fa-edit" aria-hidden="true"></i>
                         </button>
                         <button class="btn btn-danger action-btn ml-1" id="deleteBtn">
@@ -42,12 +43,11 @@
                                             <label for="checkAll" class="custom-control-label">&nbsp;</label>
                                         </div>
                                     </th>
-                                    <th>ID</th>
+                                    {{-- <th>ID</th> --}}
+                                    <th>Membership Name</th>
+                                    <th>Type</th>
                                     <th>Start Date</th>
-                                    <th>End Date</th>
-                                    <th>Membership Category</th>
-                                    <th>Vehicle Category</th>
-                                    <th>Discount</th>
+                                    <th>Expired Date</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -62,11 +62,11 @@
                                                 class="custom-control-label">&nbsp;</label>
                                         </div>
                                     </td>
-                                    <td>MBR{{ $item->membership_id }}</td>
+                                    {{-- <td>MBR{{ $item->membership_id }}</td> --}}
+                                    <td>{{ $item->membership_name }}</td>
+                                    <td>{{ $item->membership_type }}</td>
                                     <td>{{ $item->membership_startDate }}</td>
                                     <td>{{ $item->membership_endDate }}</td>
-                                    <td>{{ $item->membership_category }}</td>
-                                    <td>{{ $item->vehicle_category_name }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -82,7 +82,7 @@
 {{-- Add Modal --}}
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form action="" method="post" class="validate-this">
+        <form action="{{ route('storeMembership') }}" method="post" class="validate-this">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Add Membership</h5>
@@ -96,12 +96,16 @@
                             @csrf
                             <div class="form-group col-12">
                                 <label for="membershipName">Membership Name</label>
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control" name="membership_name">
                             </div>
                             <div class="form-group col-12">
                                 <label for="membershipType">Membership Type</label>
                                 <select name="membership_type" id="membershipType" required>
-                                    <option value=""selected disabled>Select Membership type</option>
+                                    <option value="" selected disabled>Select Membership type</option>
+                                    <option value="personal">Personal</option>
+                                    <option value="corporate">Corporate</option>
+                                    <option value="family">Family</option>
+
                                 </select>
                             </div>
                             <div class="form-group col-lg-12 col-lg-6">
@@ -109,10 +113,10 @@
                                 <input type="text" name="membership_startDate" class="form-control datepicker" required>
                             </div>
                             <div class="form-group col-lg-12 col-lg-6">
-                                <label>Start Date</label>
+                                <label>Expired Date</label>
                                 <input type="text" name="membership_endDate" class="form-control datepicker" required>
                             </div>
-                        </div>     
+                        </div>
                     </div>
                 </div>
                 <div class=" modal-footer">
@@ -122,62 +126,54 @@
         </form>
     </div>
 </div>
-{{-- Edit --}}
-{{-- <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="edtModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header ">
-                <h5 class="modal-title" id="deleteModalLabel">Edit Vehicle</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-12 py-5">
-                            <form method="post" id="editVehicleForm">
-                                {{ csrf_field() }}
-                                <div class="form-group">
-                                    <label for="editVehicleCategory">Category</label>
-                                    <select name="vehicle_category_id" class="form-control category" id="editVehicleCategory">
-                                        <option value="" selected disabled>--Select Category--</option>
-                                        @foreach ($vehicle_category as $item)
-                                        <option value="{{$item->vehicle_category_id}}">{{$item->vehicle_category_name}}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="editVehicleBrand">Brand</label>
-                                    <input type="text" name="vehicle_brand_name" class="form-control" id="editVehicleBrand" value="">
-                                    <input type="hidden" name="vehicle_brand_id" value="" id="editVehicleBrandID">
-                                </div>
-                                <div class="form-group">
-                                    <label for="editVehicleModel">Model</label>
-                                    <input type="text" name="vehicle_model_name" class="form-control" id="editVehicleModel" value="">
-                                    <input type="hidden" name="vehicle_model_id" value="" id="editVehicleModelID">
 
-                                </div>
-                                <div class="form-group">
-                                    <label for="editVehicleSize">Size</label>
-                                    <select name="vehicle_size_id" class="form-control size" id="editVehicleSize">
-                                        <option value="" selected disabled>--Select Size--</option>
-                                        @foreach ($vehicle_size as $item)
-                                        <option value="{{$item->vehicle_size_id}}">{{$item->vehicle_size_name}}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </form>
+{{-- Edit Modal --}}
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form method="post" id="editMembershipForm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Membership</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-lg-5">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            @csrf
+                            <div class="form-group col-12">
+                                <label for="membershipName">Membership Name</label>
+                                <input type="text" class="form-control" name="membership_name">
+                            </div>
+                            <div class="form-group col-12">
+                                <label for="membershipType">Membership Type</label>
+                                <select name="membership_type" id="membershipType" required>
+                                    <option value="" selected disabled>Select Membership type</option>
+                                    <option value="personal">Personal</option>
+                                    <option value="corporate">Corporate</option>
+                                    <option value="family">Family</option>
+
+                                </select>
+                            </div>
+                            <div class="form-group col-lg-12 col-lg-6">
+                                <label>Start Date</label>
+                                <input type="text" name="membership_startDate" class="form-control datepicker" required>
+                            </div>
+                            <div class="form-group col-lg-12 col-lg-6">
+                                <label>Expired Date</label>
+                                <input type="text" name="membership_endDate" class="form-control datepicker" required>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class=" modal-footer">
+                    <button type="submit" class="btn btn-primary btn-block">Save</button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
-</div> --}}
+</div>
 @endsection
 @section('script')
 <script src="{{asset('js/sweetalert2.all.min.js')}}"></script>
@@ -284,7 +280,7 @@
                 )
             } else {
                 $('#editVehicleForm').attr('action',
-                    '/cs/master/vehicle/'+id+'/edit');
+                    '/cs/master/vehicle/' + id + '/edit');
 
                 $.ajax({
                     url: "/data/vehicle/get/" + id,
@@ -301,10 +297,14 @@
                                 .vehicle_category_id + '"]').prop('selected',
                                 'selected');
                             $('#editVehicleCategory').selectric('refresh');
-                            $('#editVehicleBrand').val(data['vehicle'][0].vehicle_brand_name);
-                            $('#editVehicleBrandID').val(data['vehicle'][0].vehicle_brand_id);
-                            $('#editVehicleModel').val(data['vehicle'][0].vehicle_model_name);
-                            $('#editVehicleModelID').val(data['vehicle'][0].vehicle_model_id);
+                            $('#editVehicleBrand').val(data['vehicle'][0]
+                                .vehicle_brand_name);
+                            $('#editVehicleBrandID').val(data['vehicle'][0]
+                                .vehicle_brand_id);
+                            $('#editVehicleModel').val(data['vehicle'][0]
+                                .vehicle_model_name);
+                            $('#editVehicleModelID').val(data['vehicle'][0]
+                                .vehicle_model_id);
                             $('#editVehicleSize option[value="' + data['vehicle'][0]
                                 .vehicle_size_id + '"]').prop('selected',
                                 'selected');
@@ -323,5 +323,6 @@
             }
         });
     });
+
 </script>
 @endsection
