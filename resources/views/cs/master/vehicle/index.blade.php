@@ -22,13 +22,7 @@
                         <button class="btn btn-danger action-btn ml-1" id="deleteBtn">
                             <i class="fas fa-trash-alt" aria-hidden="true"></i>
                         </button>
-                        <h4 class="ml-auto action-btn">Export to:</h4>
-                        <a href="http://" class="action-btn ml-1">
-                            <img src="{{asset('img/icons/pdf.png')}}" alt="pdf" height="50px">
-                        </a>
-                        <a href="http://" class="action-btn ml-1">
-                            <img src="{{asset('img/icons/excel.png')}}" alt="excel" height="50px">
-                        </a>
+
                     </div>
                     <div class="card-body">
                         <table class="table table-striped" id="vehicleTable">
@@ -101,14 +95,15 @@
                                 </select>
                             </div>
                             <div class="form-group col-12">
-                                <input type="text" name="vehicle_brand" class="form-control" placeholder="Vehicle Brand" required>
+                                <input type="text" name="vehicle_brand" class="form-control vehicle-brand-name"
+                                    id="vehicleBrandName" placeholder="Vehicle Brand" required>
                             </div>
                             <div class="form-group col-12">
-                                <input type="text" name="vehicle_model" class="form-control" placeholder="Vehicle Model" required>
+                                <input type="text" name="vehicle_model" class="form-control vehicle-model-name"
+                                    placeholder="Vehicle Model" required>
                             </div>
                             <div class="form-group col-12">
-                                <select name="vehicle_size" class="form-control vehicle-size"
-                                    id="vehicleSize" required>
+                                <select name="vehicle_size" class="form-control vehicle-size" id="vehicleSize" required>
                                     <option disabled selected>Select Category</option>
                                     @foreach ($vehicle_size as $item)
                                     <option value="{{$item->vehicle_size_id}}">{{$item->vehicle_size_name}}
@@ -116,7 +111,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                        </div>     
+                        </div>
                     </div>
                 </div>
                 <div class=" modal-footer">
@@ -145,7 +140,8 @@
                                 {{ csrf_field() }}
                                 <div class="form-group">
                                     <label for="editVehicleCategory">Category</label>
-                                    <select name="vehicle_category_id" class="form-control category" id="editVehicleCategory">
+                                    <select name="vehicle_category_id" class="form-control category"
+                                        id="editVehicleCategory">
                                         <option value="" selected disabled>--Select Category--</option>
                                         @foreach ($vehicle_category as $item)
                                         <option value="{{$item->vehicle_category_id}}">{{$item->vehicle_category_name}}
@@ -155,12 +151,14 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="editVehicleBrand">Brand</label>
-                                    <input type="text" name="vehicle_brand_name" class="form-control" id="editVehicleBrand" value="">
+                                    <input type="text" name="vehicle_brand_name" class="form-control"
+                                        id="editVehicleBrand" value="">
                                     <input type="hidden" name="vehicle_brand_id" value="" id="editVehicleBrandID">
                                 </div>
                                 <div class="form-group">
                                     <label for="editVehicleModel">Model</label>
-                                    <input type="text" name="vehicle_model_name" class="form-control" id="editVehicleModel" value="">
+                                    <input type="text" name="vehicle_model_name" class="form-control"
+                                        id="editVehicleModel" value="">
                                     <input type="hidden" name="vehicle_model_id" value="" id="editVehicleModelID">
 
                                 </div>
@@ -283,7 +281,7 @@
                 )
             } else {
                 $('#editVehicleForm').attr('action',
-                    '/cs/master/vehicle/'+id+'/edit');
+                    '/cs/master/vehicle/' + id + '/edit');
 
                 $.ajax({
                     url: "/data/vehicle/get/" + id,
@@ -300,10 +298,14 @@
                                 .vehicle_category_id + '"]').prop('selected',
                                 'selected');
                             $('#editVehicleCategory').selectric('refresh');
-                            $('#editVehicleBrand').val(data['vehicle'][0].vehicle_brand_name);
-                            $('#editVehicleBrandID').val(data['vehicle'][0].vehicle_brand_id);
-                            $('#editVehicleModel').val(data['vehicle'][0].vehicle_model_name);
-                            $('#editVehicleModelID').val(data['vehicle'][0].vehicle_model_id);
+                            $('#editVehicleBrand').val(data['vehicle'][0]
+                                .vehicle_brand_name);
+                            $('#editVehicleBrandID').val(data['vehicle'][0]
+                                .vehicle_brand_id);
+                            $('#editVehicleModel').val(data['vehicle'][0]
+                                .vehicle_model_name);
+                            $('#editVehicleModelID').val(data['vehicle'][0]
+                                .vehicle_model_id);
                             $('#editVehicleSize option[value="' + data['vehicle'][0]
                                 .vehicle_size_id + '"]').prop('selected',
                                 'selected');
@@ -321,6 +323,19 @@
                 });
             }
         });
+        $(document).ready(function () {
+            $('#vehicleBrandName').on('input', function () {
+                var vehicleBrandName = $('#vehicleBrandName').val();
+                if (vehicleBrandName == "asd") {
+                    $('#vehicleBrandName').css("border", "1px solid red");
+                } else {
+                    $('#vehicleBrandName').css("border", "1px solid red");
+                }
+            });
+        });
+
+
     });
+
 </script>
 @endsection

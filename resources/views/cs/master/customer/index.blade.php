@@ -98,18 +98,16 @@
 
                         <div class="row justify-content-center mt-3">
                             <div class="form-group col-12 col-lg-4">
-                                <label for="customerName">Name</label>
-                                <input type="text" name="customer_name" class="form-control" id="customerName">
+                                <input type="text" name="customer_name" class="form-control" id="customerName"
+                                    placeholder="Customer Name">
                             </div>
                             <div class="form-group col-12 col-lg-4">
-                                <label for="customerPhone">Phone</label>
                                 <input type="text" name="customer_phone" class="form-control numeric-input"
-                                    id="customerPhone">
+                                    id="customerPhone" placeholder="Phone">
                             </div>
                             <div class="form-group col-12 col-lg-4">
-                                <label for="customerLicensePlate">License Plate</label>
                                 <input type="text" name="customer_licensePlate" class="form-control"
-                                    id="customerLicensePlate" placeholder="e.g D123AB" required>
+                                    id="customerLicensePlate" placeholder="License Plate" required>
                             </div>
                             <div class="form-group col-12 col-lg-5">
                                 <select name="vehicle_category" class="form-control" id="vehicleCategory" required>

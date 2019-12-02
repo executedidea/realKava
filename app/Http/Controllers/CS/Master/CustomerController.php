@@ -63,7 +63,7 @@ class CustomerController extends Controller
                 $customer_image         = 'default.png';
             }
             // --------------------------------------------------------------------------------
-
+            
             // INSERT -------------------------------------------------------------------------
             $customer_lastID            = Customer::getCustomerLastID();
             $customer_detail_lastID     = Customer_Detail::getCustomerDetailLastID();
@@ -85,9 +85,8 @@ class CustomerController extends Controller
             $customer_phone             = $request->customer_phone;
             $customer_licensePlate      = $request->customer_licensePlate;
             $vehicle_color              = $request->vehicle_color;
-
             Customer::insertCustomer($customer_id, $customer_name, $customer_phone, $customer_image, $customer_detail_id, $customer_licensePlate, $vehicle_id, $vehicle_color, $outlet_id);
-
+            
             return back()->with('customerAdded');
             // --------------------------------------------------------------------------------
         }
@@ -179,9 +178,9 @@ class CustomerController extends Controller
                     $thumbnailImage->save($thumbnailPath . '/' . $image_name);
                     $customer_image         = $image_name;
                 } else{
-                    $customer_image         = 'default.png';
+                    $customer_image         = $request->customer_image;
                 }
-
+                
                 $customer_name              = $request->customer_name;
                 $customer_phone             = $request->customer_phone;
 
