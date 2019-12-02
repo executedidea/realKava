@@ -80,7 +80,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/pos/transaction/cash-register', 'POS\Transaction\CashRegisterController@index')->name('cashRegister');
         Route::get('/pos/local-setting', 'POS\LocalSettingController@index')->name('POSLocalSetting');
         Route::post('/pos/local-setting/number', 'POS\LocalSettingController@store')->name('storePOSLocalSetting');
-        // 
+        // Debit Credit Note
+        Route::get('/pos/transaction/debit-credit-note', 'POS\Transaction\DebitCreditNoteController@index')->name('debitCreditNote');
+        Route::post('/pos/transaction/debit-credit-note/add', 'POS\Transaction\DebitCreditNoteController@store')->name('storeDebitCreditNote');
+
 
 
 

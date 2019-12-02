@@ -34,11 +34,6 @@
                                         value="Alfathya Dzisulthani" readonly>
                                 </div>
                                 <div class="form-group col-10">
-                                    <label for="lastCashDrawer">Last Cash Drawer</label>
-                                    <input type="text" name="last_cashdrawer" class="form-control text-right"
-                                        id="lastCashDrawer" value="20000" readonly>
-                                </div>
-                                <div class="form-group col-10">
                                     <label for="openDate">Open Date</label>
                                     <input type="text" name="open_date" class="form-control datepicker" id="openDate">
                                 </div>
@@ -46,11 +41,6 @@
                                     <label for="openCashDrawer">Opening Cash Drawer</label>
                                     <input type="text" name="open_cashdrawer" class="form-control text-right rupiah"
                                         id="openCashDrawer" placeholder="0">
-                                </div>
-                                <div class="form-group col-10">
-                                    <label for="totalCashDrawer">Total Cash Drawer</label>
-                                    <input type="text" name="total_cashdrawer" class="form-control text-right rupiah"
-                                        value="0" id="totalCashDrawer" readonly>
                                 </div>
                                 <div class="form-group col-10">
                                     <button type="submit" class="btn btn-primary btn-block">Save</button>

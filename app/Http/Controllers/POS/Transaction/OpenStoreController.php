@@ -35,9 +35,8 @@ class OpenStoreController extends Controller
 
             $open_date              = $request->open_date;
             $open_cashdrawer        = $request->open_cashdrawer;
-            $total_cashdrawer       = $request->total_cashdrawer;
 
-            OpenStore::insertOpenStore($open_store_id, $open_date, $open_cashdrawer, $total_cashdrawer, $user_id);
+            OpenStore::insertOpenStore($open_store_id, $open_date, $open_cashdrawer, $user_id);
 
             return back()->with('storeOpened', 'thank you');
         }

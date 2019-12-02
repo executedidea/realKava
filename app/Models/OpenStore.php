@@ -16,10 +16,10 @@ class OpenStore extends Model
         return $lastID;
     }
 
-    public static function insertOpenStore($open_store_id, $open_store_date, $open_store_amount, $open_store_total, $user_id)
+    public static function insertOpenStore($open_store_id, $open_store_date, $open_store_amount, $user_id)
     {
-        $insert             = DB::select('call SP_POS_OpenStore_Insert(?,?,?,?,?)', [
-            $open_store_id, $open_store_date, $open_store_amount, $open_store_total, $user_id
+        $insert             = DB::select('call SP_POS_OpenStore_Insert(?,?,?,?)', [
+            $open_store_id, $open_store_date, $open_store_amount,  $user_id
         ]);
         return $insert;
     }
