@@ -84,7 +84,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/pos/transaction/open-store', 'POS\Transaction\OpenStoreController@index')->name('openStore');
         Route::post('/pos/transaction/open-store/add', 'POS\Transaction\OpenStoreController@store')->name('storeOpenStore');
         // Cash Register
-        Route::get('/pos/transaction/cash-register', 'POS\Transaction\CashRegisterController@index')->name('cashRegister');
+        Route::get('/pos/transaction/cash-drawer', 'POS\Transaction\CashRegisterController@index')->name('cashRegister');
         Route::get('/pos/local-setting', 'POS\LocalSettingController@index')->name('POSLocalSetting');
         Route::post('/pos/local-setting/number', 'POS\LocalSettingController@store')->name('storePOSLocalSetting');
         // Debit Credit Note

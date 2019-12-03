@@ -22,9 +22,9 @@ class Shift extends Model
         return $shift_code;
     }
 
-    public static function getCashierByID($outlet_id, $user_id)
+    public static function getCashierByID($user_id)
     {
-        $cashier            = DB::select('call SP_POS_CashierList_ByID_Select(?,?)', [$outlet_id, $user_id]);
+        $cashier            = DB::select('call SP_POS_CashierList_ByID_Select(?)', [$user_id]);
         return $cashier;
     }
 

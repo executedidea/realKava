@@ -6,8 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CashRegister;
 use App\Models\Item;
+use App\Models\PromoDetail;
+use App\Models\PromoItem;
+use App\Models\PromoType;
 use App\Models\SettingPOS;
 use App\Models\Shift;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class PromoItemController extends Controller
 {
@@ -17,8 +22,10 @@ class PromoItemController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        return view('cs.master.promo-item.index');
+    {   
+        $promo_type     = PromoType::getAllPromoType();
+        $items          = Item::getAllItem(Auth::user()->outlet_id);
+        return view('cs.master.promo-item.index', compact('items', 'promo_type'));
     }
 
     /**
@@ -30,16 +37,67 @@ class PromoItemController extends Controller
     {
         //
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $validator      = Validator::make($request->all(), [
+            'promo_code'        => 'required|string',
+            'promo_name'        => 'required|string',
+            'promo_type'        => 'required',
+        ]);
+        if($validator->fails()){
+            return back()->withErrors($validator);
+        } else {
+            if($request->has('promo_all_item')){
+                $promo_code         = $request->promo_code;
+                $promo_name         = $request->promo_name;
+                $promo_type         = $request->promo_type;
+                $promo_maxValue     = $request->promo_maxValue;
+                $promo_free         = $request->promo_free;
+                if(!$request->has('promo_periode')){
+                    $promo_startDate    = $request->promo_startDate;
+                    $promo_endDate      = $request->promo_endDate;
+                } else{
+                    $promo_startDate    = null;
+                    $promo_endDate      = null;
+                }
+
+                $outlet_id          = Auth::user()->outlet_id;
+                $promo_status       = 1;
+                
+                PromoItem::insertPromo($promo_code, $promo_name, $promo_type, $promo_maxValue, $promo_free, $promo_startDate, $promo_endDate, $outlet_id, $promo_status);
+    
+                return back()->with('promoStored');
+                die;
+            } else {
+                if(count(PromoDetail::all()) == 0){
+                    $promo_detail_id    = 1;
+                } else {
+                    $promo_detail_lastID = PromoDetail::getPromoDetailLastID();
+                    $promo_detail_id     = $promo_detail_lastID[0]->promo_detail_id+1;
+                }
+                $promo_code         = $request->promo_code;
+                $promo_name         = $request->promo_name;
+                $promo_type         = $request->promo_type;
+                $promo_maxValue     = 0;
+                $promo_free         = 0;
+                if(!$request->has('promo_periode')){
+                    $promo_startDate    = $request->promo_startDate;
+                    $promo_endDate      = $request->promo_endDate;
+                } else{
+                    $promo_startDate    = null;
+                    $promo_endDate      = null;
+                }
+                $outlet_id          = Auth::user()->outlet_id;
+                $promo_status       = 1;
+                
+                PromoItem::insertPromo($promo_code, $promo_name, $promo_type, $promo_maxValue, $promo_free, $promo_startDate, $promo_endDate, $outlet_id, $promo_status);
+                foreach($request->promo_item as $key => $item){
+                    PromoDetail::insertPromoDetail($promo_detail_id, $promo_code, $request->promo_maxValue[$key], $request->promo_freeValue[$key], $request->promo_item[$key], $request->promo_freeItem[$key], $outlet_id );
+                }
+    
+                return back()->with('promoDetailStored');
+            }
+        }
     }
 
     /**
