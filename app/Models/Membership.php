@@ -40,4 +40,10 @@ class Membership extends Model
         return $set_update_membership;
     }
 
+    public static function setDeleteMembership($membership_id)
+    {
+        $delete                = DB::select('call SP_CS_MembershipList_Delete(?)', [$membership_id]);
+        return $delete;
+    }
+
 }

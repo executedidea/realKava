@@ -121,7 +121,7 @@
         </form>
     </div>
 </div>
-{{-- Edit --}}
+{{-- Edit Modal --}}
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="edtModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -323,16 +323,18 @@
                 });
             }
         });
-        $(document).ready(function () {
-            $('#vehicleBrandName').on('input', function () {
-                var vehicleBrandName = $('#vehicleBrandName').val();
-                if (vehicleBrandName == "asd") {
-                    $('#vehicleBrandName').css("border", "1px solid red");
-                } else {
-                    $('#vehicleBrandName').css("border", "1px solid red");
-                }
-            });
-        });
+
+
+        // $(document).ready(function () {
+        //     $('#vehicleBrandName').on('input', function () {
+        //         var vehicleBrandName = $('#vehicleBrandName').val();
+        //         if (vehicleBrandName == "asd") {
+        //             $('#vehicleBrandName').css("border", "1px solid red");
+        //         } else {
+        //             $('#vehicleBrandName').css("border", "1px solid red");
+        //         }
+        //     });
+        // });
 
 
     });

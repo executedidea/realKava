@@ -68,7 +68,6 @@ class MembershipController extends Controller
         $membership_startDate           = $request->membership_startDate;
         $membership_endDate             = $request->membership_endDate;
 
-
         Membership::setUpdateMembership(
             $membership_id,
             $membership_name,
@@ -77,6 +76,36 @@ class MembershipController extends Controller
             $membership_endDate
         );
         
-        return back()->with('debitCreditNoteAdded');
+        return back()->with('membershipEdited');
     }
+
+    public function destroy(Request $request)
+    {
+        $membership_id                  = $request->id;
+        // CONDITION----------------------------------------------------------------------------
+        if(!strpos($membership_id, ',') !== false){
+            Membership::setDeleteMembership($membership_id);
+        } else {
+            $membership_ids             = explode(",", $membership_id);
+            // INSERT---------------------------------------------------------------------------
+            foreach($membership_ids as $item){
+                Membership::setDeleteMembership($item);
+            }
+            // ---------------------------------------------------------------------------------
+        }
+        // -------------------------------------------------------------------------------------
+        return response()->json(['status'=>true, 'message'=>'Data deleted successfuly!']);
+    }
+
+    public function getMembershipByID($membership_id)
+    {
+        $outlet_id                      = Auth::user()->outlet_id;
+        $membership                     = Membership::getMembershipByID($membership_id, $outlet_id);
+        return response()->json([
+            'status'    => true,
+            'membership'  => $membership
+        ]);
+    }
+
+    
 }

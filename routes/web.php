@@ -11,6 +11,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/data/vehicle/vehiclebrand', 'CS\Master\CustomerController@getBrandByCategory')->name('getVehicleBrand');
     Route::get('/data/vehicle/vehiclemodel', 'CS\Master\CustomerController@getModelByBrand')->name('getVehicleModel');
     Route::get('/data/vehicle/get/{id}', 'CS\Master\VehicleController@getVehicleByID')->name('getVehicle');
+    Route::get('/data/membership/get/{id}', 'CS\Master\MembershipController@getMembershipByID')->name('getMembership');
     Route::get('/data/service/get/{id}', 'CS\Master\ServiceController@getServiceByID')->name('getService');
     Route::get('/data/customer/search', 'CS\Transaction\CheckInOutController@searchCustomer')->name('searchCustomer');
     Route::get('/data/account/get/{id}', 'UserManagement\AccountController@getAccountByID')->name('getAccount');
@@ -58,6 +59,7 @@ Route::group(['middleware' => 'auth'], function () {
         // Membership
         Route::get('/cs/master/membership', 'CS\Master\MembershipController@index')->name('membership');
         Route::post('/cs/master/membership/add', 'CS\Master\MembershipController@store')->name('storeMembership');
+        Route::delete('/cs/master/membership/delete', 'CS\Master\MembershipController@destroy')->name('destroyMembership');
         Route::post('/cs/master/membership/{id}/edit', 'CS\Master\MembershipController@update')->name('updateMembership');
         // Feedback
         Route::get('/cs/master/feedback', 'CS\Master\FeedbackController@index')->name('feedback');

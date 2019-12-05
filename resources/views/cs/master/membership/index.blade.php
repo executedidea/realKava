@@ -17,8 +17,7 @@
                         <button class="btn btn-success action-btn" data-toggle="modal" data-target="#addModal">
                             <i class="fas fa-plus" aria-hidden="true"></i>
                         </button>
-                        <button class="btn btn-info action-btn ml-1" id="editBtn" data-toggle="modal"
-                            data-target="#editModal">
+                        <button class="btn btn-info action-btn ml-1" id="editBtn">
                             <i class="fas fa-edit" aria-hidden="true"></i>
                         </button>
                         <button class="btn btn-danger action-btn ml-1" id="deleteBtn">
@@ -128,7 +127,7 @@
 </div>
 
 {{-- Edit Modal --}}
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="edtModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <form method="post" id="editMembershipForm">
             <div class="modal-content">
@@ -143,12 +142,13 @@
                         <div class="row justify-content-center">
                             @csrf
                             <div class="form-group col-12">
-                                <label for="membershipName">Membership Name</label>
-                                <input type="text" class="form-control" name="membership_name">
+                                <label for="editMembershipName">Membership Name</label>
+                                <input type="text" class="form-control" name="membership_name" id="editMembershipName">
+                                <input type="hidden" name="membership_id" value="" id="editMembershipNameID">
                             </div>
                             <div class="form-group col-12">
-                                <label for="membershipType">Membership Type</label>
-                                <select name="membership_type" id="membershipType" required>
+                                <label for="editMembershipType">Membership Type</label>
+                                <select name="membership_type" id="editMembershipType" required>
                                     <option value="" selected disabled>Select Membership type</option>
                                     <option value="personal">Personal</option>
                                     <option value="corporate">Corporate</option>
@@ -158,11 +158,13 @@
                             </div>
                             <div class="form-group col-lg-12 col-lg-6">
                                 <label>Start Date</label>
-                                <input type="text" name="membership_startDate" class="form-control datepicker" required>
+                                <input type="text" name="membership_startDate" class="form-control datepicker"
+                                    id="editMembershipStartDate" required>
                             </div>
                             <div class="form-group col-lg-12 col-lg-6">
                                 <label>Expired Date</label>
-                                <input type="text" name="membership_endDate" class="form-control datepicker" required>
+                                <input type="text" name="membership_endDate" class="form-control datepicker"
+                                    id="editMembershipEndDate" required>
                             </div>
                         </div>
                     </div>
@@ -230,7 +232,7 @@
                         var strIds = id.join(",");
 
                         $.ajax({
-                            url: "{{ route('destroyVehicle') }}",
+                            url: "{{ route('destroyMembership') }}",
                             type: 'DELETE',
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
@@ -279,11 +281,11 @@
                     'warning'
                 )
             } else {
-                $('#editVehicleForm').attr('action',
-                    '/cs/master/vehicle/' + id + '/edit');
+                $('#editMembershipForm').attr('action',
+                    '/cs/master/membership/' + id + '/edit');
 
                 $.ajax({
-                    url: "/data/vehicle/get/" + id,
+                    url: "/data/membership/get/" + id,
                     type: 'GET',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
@@ -293,23 +295,16 @@
                     success: function (data) {
                         if (data['status'] == true) {
                             console.log(data);
-                            $('#editVehicleCategory option[value="' + data['vehicle'][0]
-                                .vehicle_category_id + '"]').prop('selected',
+                            $('#editMembershipName').val(data['membership'][0]
+                                .membership_name);
+                            $('#editMembershipType option[value="' + data['membership'][0]
+                                .membership_type + '"]').prop('selected',
                                 'selected');
-                            $('#editVehicleCategory').selectric('refresh');
-                            $('#editVehicleBrand').val(data['vehicle'][0]
-                                .vehicle_brand_name);
-                            $('#editVehicleBrandID').val(data['vehicle'][0]
-                                .vehicle_brand_id);
-                            $('#editVehicleModel').val(data['vehicle'][0]
-                                .vehicle_model_name);
-                            $('#editVehicleModelID').val(data['vehicle'][0]
-                                .vehicle_model_id);
-                            $('#editVehicleSize option[value="' + data['vehicle'][0]
-                                .vehicle_size_id + '"]').prop('selected',
-                                'selected');
-                            $('#editVehicleSize').selectric('refresh');
-
+                            $('#editMembershipType').selectric('refresh');
+                            $('#editMembershipStartDate').val(data['membership'][0]
+                                .membership_startDate);
+                            $('#editMembershipEndDate').val(data['membership'][0]
+                                .membership_endDate);
                             $('#editModal').modal('show');
 
                         } else {
