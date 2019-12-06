@@ -42,7 +42,7 @@ class PromoItemController extends Controller
     public function store(Request $request)
     {
         $validator      = Validator::make($request->all(), [
-            'promo_code'        => 'required|string',
+            'promo_id'        => 'required|string',
             'promo_name'        => 'required|string',
             'promo_type'        => 'required',
         ]);
@@ -50,7 +50,7 @@ class PromoItemController extends Controller
             return back()->withErrors($validator);
         } else {
             if ($request->has('promo_all_item')) {
-                $promo_code         = $request->promo_code;
+                $promo_id         = $request->promo_id;
                 $promo_name         = $request->promo_name;
                 $promo_type         = $request->promo_type;
                 $promo_maxValue     = $request->promo_maxValue;
@@ -66,7 +66,7 @@ class PromoItemController extends Controller
                 $outlet_id          = Auth::user()->outlet_id;
                 $promo_status       = 1;
 
-                PromoItem::insertPromo($promo_code, $promo_name, $promo_type, $promo_maxValue, $promo_free, $promo_startDate, $promo_endDate, $outlet_id, $promo_status);
+                PromoItem::insertPromo($promo_id, $promo_name, $promo_type, $promo_maxValue, $promo_free, $promo_startDate, $promo_endDate, $outlet_id, $promo_status);
 
                 return back()->with('promoStored');
                 die;
@@ -77,7 +77,7 @@ class PromoItemController extends Controller
                     $promo_detail_lastID = PromoDetail::getPromoDetailLastID();
                     $promo_detail_id     = $promo_detail_lastID[0]->promo_detail_id + 1;
                 }
-                $promo_code         = $request->promo_code;
+                $promo_id         = $request->promo_id;
                 $promo_name         = $request->promo_name;
                 $promo_type         = $request->promo_type;
                 $promo_maxValue     = 0;
@@ -92,9 +92,9 @@ class PromoItemController extends Controller
                 $outlet_id          = Auth::user()->outlet_id;
                 $promo_status       = 1;
 
-                PromoItem::insertPromo($promo_code, $promo_name, $promo_type, $promo_maxValue, $promo_free, $promo_startDate, $promo_endDate, $outlet_id, $promo_status);
+                PromoItem::insertPromo($promo_id, $promo_name, $promo_type, $promo_maxValue, $promo_free, $promo_startDate, $promo_endDate, $outlet_id, $promo_status);
                 foreach ($request->promo_item as $key => $item) {
-                    PromoDetail::insertPromoDetail($promo_detail_id, $promo_code, $request->promo_maxValue[$key], $request->promo_freeValue[$key], $request->promo_item[$key], $request->promo_freeItem[$key], $outlet_id);
+                    PromoDetail::insertPromoDetail($promo_detail_id, $request->promo_maxValue[$key], $request->promo_freeValue[$key], $promo_id, $request->promo_item[$key], $request->promo_freeItem[$key], $outlet_id);
                 }
 
                 return back()->with('promoDetailStored');

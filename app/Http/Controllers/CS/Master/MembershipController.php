@@ -62,7 +62,6 @@ class MembershipController extends Controller
      */
     public function update(Request $request, $membership_id)
     {
-        
         $membership_name                = $request->membership_name;
         $membership_type                = $request->membership_type;
         $membership_startDate           = $request->membership_startDate;
