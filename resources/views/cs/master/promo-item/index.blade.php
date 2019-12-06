@@ -74,8 +74,20 @@
                                     </td>
                                     <td>{{ $item->promo_name }}</td>
                                     <td>{{ $item->promo_type_name }}</td>
-                                    <td>{{ date('d M Y', strtotime($item->promo_startDate)) }}</td>
-                                    <td>{{ $item->promo_endDate }}</td>
+                                    <td>
+                                        @if($item->promo_startDate == null)
+                                        -
+                                        @else
+                                        {{ date('d M Y', strtotime($item->promo_startDate)) }}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($item->promo_endDate == null)
+                                        -
+                                        @else
+                                        {{ date('d M Y', strtotime($item->promo_endDate)) }}
+                                        @endif
+                                    </td>
                                     <td>
                                         <button class="btn btn-danger">Deactive</button>
                                     </td>
@@ -293,6 +305,7 @@
 <script src="{{ asset('/modules/select2/dist/js/select2.full.min.js') }}"></script>
 <script src="{{ asset('/modules/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}"></script>
 <script src="{{ asset('/modules/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+<script src="{{asset('js/sweetalert2.all.min.js')}}"></script>
 <script src="{{ asset('/js/cleave.min.js') }}"></script>
 
 <script>
@@ -446,6 +459,9 @@
 
             }
         });
+
+        $('#startDate').val('Start Date');
+        $('#endDate').val('Expire Date');
 
     });
 

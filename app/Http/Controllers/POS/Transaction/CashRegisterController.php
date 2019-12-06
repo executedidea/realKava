@@ -5,6 +5,7 @@ namespace App\Http\Controllers\POS\Transaction;
 use App\Http\Controllers\Controller;
 use App\Models\CashRegister;
 use App\Models\Item;
+use App\Models\PromoItem;
 use App\Models\SettingPOS;
 use App\Models\Shift;
 use Illuminate\Http\Request;
@@ -64,5 +65,13 @@ class CashRegisterController extends Controller
         $setting        = SettingPOS::getSettingByOutletID($outlet_id);
         
         return response()->json($setting);
+    }
+
+    public function getTodaysPromo()
+    {
+        $outlet_id       = Auth::user()->outlet_id;
+        $promos          = PromoItem::getTodaysPromo($outlet_id);
+
+        return response()->json($promos);
     }
 }

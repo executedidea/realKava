@@ -40,6 +40,13 @@ $(document).ready(function () {
         $('#itemDiscount').val(0);
         $('#itemAddDiscount').val(0);
 
+        $.get('/data/promo/get', function (promo) {
+            $('#todaysPromo').modal('show');
+            $('#todaysPromo table tbody tr').empty();
+            $.each(promo, function (index, Obj) {
+                $('#todaysPromo table tbody').append('<tr><td>' + Obj.promo_name + '</td><td><button class="btn btn-primary">Use</button></td></tr>');
+            });
+        });
 
         $.get('/data/items/getitem/' + id, function (item) {
             $('#itemPrice').val(item[0].item_price);

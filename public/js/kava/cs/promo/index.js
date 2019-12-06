@@ -40,7 +40,6 @@ $(document).ready(function () {
         $('#itemDiscount').val(0);
         $('#itemAddDiscount').val(0);
 
-
         $.get('/data/items/getitem/' + id, function (item) {
             $('#itemPrice').val(item[0].item_price);
             $('#itemTotalPrice').val($('#itemPrice').val());
@@ -469,5 +468,6 @@ $(document).ready(function () {
         //     $('#Change').val(0);
         // }
     });
+
 
 });

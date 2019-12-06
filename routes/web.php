@@ -21,6 +21,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/data/items/getitems', 'POS\Transaction\CashRegisterController@getAllItems')->name('getItems');
     Route::get('/data/cashier/getcashierbyid', 'POS\Transaction\CashRegisterController@getCashierByID')->name('getcashierByID');
     Route::get('/data/local-setting/getsetting', 'POS\Transaction\CashRegisterController@getSetting')->name('getSetting');
+    Route::get('/data/promo/get', 'POS\Transaction\CashRegisterController@getTodaysPromo')->name('getTodaysPromo');
 
     Route::get('/data/customerdetail/get/{id}', 'CS\Master\CustomerController@getCustomerDetail')->name('getCustomerDetail');
     Route::get('/data/group', 'UserManagement\GroupController@getUserGroups')->name('userGroupData');

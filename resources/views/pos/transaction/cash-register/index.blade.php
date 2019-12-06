@@ -345,10 +345,37 @@
         </form>
     </div>
 </div>
+{{--  --}}
+<div class="modal fade" id="todaysPromo" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Today's Promo(s)</h5>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <thead>
+                        <th>Promo Name</th>
+                        <th>Action</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @section('script')
 <script src="{{ asset('/modules/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}"></script>
 <script src="{{ asset('/modules/select2/dist/js/select2.full.min.js') }}"></script>
 <script src="{{ asset('/modules/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+<script src="{{asset('js/sweetalert2.all.min.js')}}"></script>
 <script src="{{ asset('/js/kava/pos/cash-register/index.js') }}"></script>
 @endsection
