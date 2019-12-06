@@ -70,17 +70,20 @@ class CustomerController extends Controller
             $vehicle_id                 = Vehicle::getVehicleIDByModel($request->vehicle_model);
             $outlet_id                  = Auth::user()->outlet_id;
 
-            if( count(Customer::all()) == 0 ){
+            if( count(Customer::all()) <= 0 ){
                 $customer_id            = 1;
             } else{
+                $customer_lastID = Customer::getCustomerLastID();
                 $customer_id            = $customer_lastID[0]->customer_id+1;
             }
-            if( count(Customer_Detail::all()) == 0 ){
+
+            if( count(Customer_Detail::all()) <= 0 ){
                 $customer_detail_id     = 1;
             } else{
+                $customer_detail_lastID = Customer_detail::getCustomerDetailLastID();
                 $customer_detail_id     = $customer_detail_lastID[0]->customer_detail_id+1;
             }
-
+            
             $customer_name              = $request->customer_name;
             $customer_phone             = $request->customer_phone;
             $customer_licensePlate      = $request->customer_licensePlate;
@@ -133,11 +136,17 @@ class CustomerController extends Controller
         if($validator->fails()){
             return back()->withErrors($validator);
         } else{
-            $customer_detail_lastID      = Customer_Detail::getCustomerDetailLastID();
+
+            if( count(Customer_Detail::all()) <= 0 ){
+                $customer_detail_id     = 1;
+            } else{
+                $customer_detail_lastID = Customer_detail::getCustomerDetailLastID();
+                $customer_detail_id     = $customer_detail_lastID[0]->customer_detail_id+1;
+            }
+            
             $vehicle_id                  = Vehicle::getVehicleIDByModel($request->vehicle_model);
 
                 // INSERT-------------------------------------------------------------------------------
-            $customer_detail_id          = $customer_detail_lastID[0]->customer_detail_id+1;
             $customer_licensePlate       = $request->customer_licensePlate;
             $vehicle_color               = $request->vehicle_color;
 

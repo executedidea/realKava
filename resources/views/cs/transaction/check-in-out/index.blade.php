@@ -129,27 +129,27 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="row justify-content-center">
-                                        @foreach($items as $item)
-                                        <div class="custom-checkbox custom-control col-4 my-2">
+                                        {{-- @foreach($items as $item) --}}
+                                        {{-- <div class="custom-checkbox custom-control col-4 my-2">
                                             <input type="checkbox" data-checkboxes="customers"
                                                 class="custom-control-input" name="service[]"
                                                 id="check{{$item->item_id}}" value="">
-                                            <label for="check{{$item->item_id}}"
-                                                class="custom-control-label">{{$item_name}}</label>
-                                        </div>
-                                        @endforeach
-                                    </div>
+                                        <label for="check{{$item->item_id}}"
+                                            class="custom-control-label">{{$item_name}}</label>
+                                    </div> --}}
+                                    {{-- @endforeach --}}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-success btn-block">Check In</button>
-            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success btn-block">Check In</button>
         </div>
     </div>
+</div>
 </div>
 {{-- Detail Modal --}}
 <div class="modal fade" id="customerCheckedInDetailModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"

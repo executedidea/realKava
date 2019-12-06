@@ -67,7 +67,7 @@ class MembershipController extends Controller
         $membership_type                = $request->membership_type;
         $membership_startDate           = $request->membership_startDate;
         $membership_endDate             = $request->membership_endDate;
-
+        
         Membership::setUpdateMembership(
             $membership_id,
             $membership_name,

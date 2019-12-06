@@ -48,83 +48,39 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @foreach($memberships as $index => $item)
+                                @foreach($feedback as $item)
                                 <tr>
                                     <td class="text-center">
                                         <div class="custom-checkbox custom-control">
                                             <input type="checkbox" data-checkboxes="rights"
                                                 class="custom-control-input checkitem" name="id[]"
-                                                id="checkbox{{$item->membership_id}}" value="{{$item->membership_id}}">
-                                <label for="checkbox{{$item->membership_id}}"
-                                    class="custom-control-label">&nbsp;</label>
+                                                id="checkbox{{$item->feedback_category_id}}"
+                                                value="{{$item->feedback_category_id}}">
+                                            <label for="checkbox{{$item->feedback_category_id}}"
+                                                class="custom-control-label">&nbsp;</label>
+                                        </div>
+                                    </td>
+                                    <td>{{ $item->feedback_category_id }}</td>
+                                    <td>{{ $item->feedback_category_name }}</td>
+                                    <td>{{ $item->feedback_type_name }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                    </td>
-                    <td>MBR{{ $item->membership_id }}</td>
-                    <td>{{ $item->membership_startDate }}</td>
-                    <td>{{ $item->membership_endDate }}</td>
-                    <td>{{ $item->membership_category }}</td>
-                    <td>{{ $item->vehicle_category_name }}</td>
-                    </tr>
-                    @endforeach --}}
-                    </tbody>
-                    </table>
                 </div>
             </div>
         </div>
     </div>
-    </div>
 </section>
 @endsection
 @section('modal')
-{{-- Add Modal --}}
-<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <form action="" method="post" class="validate-this">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Membership</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body p-lg-5">
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            @csrf
-                            <div class="form-group col-12">
-                                <label for="membershipName">Membership Name</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="form-group col-12">
-                                <label for="membershipType">Membership Type</label>
-                                <select name="membership_type" id="membershipType" required>
-                                    <option value="" selected disabled>Select Membership type</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-lg-12 col-lg-6">
-                                <label>Start Date</label>
-                                <input type="text" name="membership_startDate" class="form-control datepicker" required>
-                            </div>
-                            <div class="form-group col-lg-12 col-lg-6">
-                                <label>Start Date</label>
-                                <input type="text" name="membership_endDate" class="form-control datepicker" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class=" modal-footer">
-                    <button type="submit" class="btn btn-primary btn-block">Save</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-{{-- Edit --}}
-{{-- <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="edtModalLabel" aria-hidden="true">
+<!-- Add -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header ">
-                <h5 class="modal-title" id="deleteModalLabel">Edit Vehicle</h5>
+                <h5 class="modal-title" id="deleteModalLabel">Add Feedback</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -132,49 +88,64 @@
             <div class="modal-body">
                 <div class="container">
                     <div class="row justify-content-center">
-                        <div class="col-12 py-5">
-                            <form method="post" id="editVehicleForm">
+                        <div class="col-12 py-4">
+                            <form action="{{ route('storeFeedback') }}" method="post" class="validate-this">
                                 {{ csrf_field() }}
-<div class="form-group">
-    <label for="editVehicleCategory">Category</label>
-    <select name="vehicle_category_id" class="form-control category" id="editVehicleCategory">
-        <option value="" selected disabled>--Select Category--</option>
-        @foreach ($vehicle_category as $item)
-        <option value="{{$item->vehicle_category_id}}">{{$item->vehicle_category_name}}
-        </option>
-        @endforeach
-    </select>
+                                <div class="form-group">
+                                    <label for="addFeedbackCategory">Feedback Category</label>
+                                    <input type="text" name="feedback_category_name" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="addFeedbackType">Feedback Type</label>
+                                    <input type="text" name="feedback_type_name" class="form-control">
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div class="form-group">
-    <label for="editVehicleBrand">Brand</label>
-    <input type="text" name="vehicle_brand_name" class="form-control" id="editVehicleBrand" value="">
-    <input type="hidden" name="vehicle_brand_id" value="" id="editVehicleBrandID">
+{{-- Edit --}}
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h5 class="modal-title" id="deleteModalLabel">Edit Feedback</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-12 py-4">
+                            <form method="post" id="editFeedbackForm">
+                                {{ csrf_field() }}
+                                <div class="form-group">
+                                    <label for="editFeedbackCategory">Feedback Category</label>
+                                    <input type="text" name="feedback_category_name" class="form-control" value=""
+                                        id="editFeedbackCategory">
+                                    <input type="hidden" name="feedback_category_id" value=""
+                                        id="editFeedbackCategoryID">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editFeedbackType">Feedback Type</label>
+                                    <input type="text" name="feedback_type_name" class="form-control"
+                                        id="editFeedbackType" value="">
+                                    <input type="hidden" name="feedback_type_id" value="" id="editFeedbackTypeID">
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div class="form-group">
-    <label for="editVehicleModel">Model</label>
-    <input type="text" name="vehicle_model_name" class="form-control" id="editVehicleModel" value="">
-    <input type="hidden" name="vehicle_model_id" value="" id="editVehicleModelID">
-
-</div>
-<div class="form-group">
-    <label for="editVehicleSize">Size</label>
-    <select name="vehicle_size_id" class="form-control size" id="editVehicleSize">
-        <option value="" selected disabled>--Select Size--</option>
-        @foreach ($vehicle_size as $item)
-        <option value="{{$item->vehicle_size_id}}">{{$item->vehicle_size_name}}
-        </option>
-        @endforeach
-    </select>
-</div>
-<button type="submit" class="btn btn-primary">Submit</button>
-</form>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div> --}}
 @endsection
 @section('script')
 <script src="{{asset('js/sweetalert2.all.min.js')}}"></script>
@@ -192,15 +163,11 @@
         }
     });
     $(document).ready(function () {
-        $('.vehicle-category').selectric({
+        $('#addFeedbackCategory').selectric({
             disableOnMobile: false,
             nativeOnMobile: false
         });
-        $('.vehicle-size').selectric({
-            disableOnMobile: false,
-            nativeOnMobile: false
-        });
-        $('#membershipType').selectric({
+        $('#addFeedbackType').selectric({
             disableOnMobile: false,
             nativeOnMobile: false
         });
@@ -231,7 +198,7 @@
                         var strIds = id.join(",");
 
                         $.ajax({
-                            url: "{{ route('destroyVehicle') }}",
+                            url: "{{ route('destroyFeedback') }}",
                             type: 'DELETE',
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
@@ -280,11 +247,11 @@
                     'warning'
                 )
             } else {
-                $('#editVehicleForm').attr('action',
-                    '/cs/master/vehicle/' + id + '/edit');
+                $('#editFeedbackForm').attr('action',
+                    '/cs/master/feedback/' + id + '/edit');
 
                 $.ajax({
-                    url: "/data/vehicle/get/" + id,
+                    url: "/data/feedback/get/" + id,
                     type: 'GET',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
@@ -294,23 +261,14 @@
                     success: function (data) {
                         if (data['status'] == true) {
                             console.log(data);
-                            $('#editVehicleCategory option[value="' + data['vehicle'][0]
-                                .vehicle_category_id + '"]').prop('selected',
-                                'selected');
-                            $('#editVehicleCategory').selectric('refresh');
-                            $('#editVehicleBrand').val(data['vehicle'][0]
-                                .vehicle_brand_name);
-                            $('#editVehicleBrandID').val(data['vehicle'][0]
-                                .vehicle_brand_id);
-                            $('#editVehicleModel').val(data['vehicle'][0]
-                                .vehicle_model_name);
-                            $('#editVehicleModelID').val(data['vehicle'][0]
-                                .vehicle_model_id);
-                            $('#editVehicleSize option[value="' + data['vehicle'][0]
-                                .vehicle_size_id + '"]').prop('selected',
-                                'selected');
-                            $('#editVehicleSize').selectric('refresh');
-
+                            $('#editFeedbackCategory').val(data['feedback'][0]
+                                .feedback_category_name);
+                            $('#editFeedbackCategoryID').val(data['feedback'][0]
+                                .feedback_category_id);
+                            $('#editFeedbackType').val(data['feedback'][0]
+                                .feedback_type_name);
+                            $('#editFeedbackTypeID').val(data['feedback'][0]
+                                .feedback_type_id);
                             $('#editModal').modal('show');
 
                         } else {

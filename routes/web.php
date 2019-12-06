@@ -11,6 +11,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/data/vehicle/vehiclebrand', 'CS\Master\CustomerController@getBrandByCategory')->name('getVehicleBrand');
     Route::get('/data/vehicle/vehiclemodel', 'CS\Master\CustomerController@getModelByBrand')->name('getVehicleModel');
     Route::get('/data/vehicle/get/{id}', 'CS\Master\VehicleController@getVehicleByID')->name('getVehicle');
+    Route::get('/data/feedback/get/{id}', 'CS\Master\FeedbackController@getFeedbackByID')->name('getFeedback');
     Route::get('/data/membership/get/{id}', 'CS\Master\MembershipController@getMembershipByID')->name('getMembership');
     Route::get('/data/service/get/{id}', 'CS\Master\ServiceController@getServiceByID')->name('getService');
     Route::get('/data/customer/search', 'CS\Transaction\CheckInOutController@searchCustomer')->name('searchCustomer');
@@ -63,6 +64,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/cs/master/membership/{id}/edit', 'CS\Master\MembershipController@update')->name('updateMembership');
         // Feedback
         Route::get('/cs/master/feedback', 'CS\Master\FeedbackController@index')->name('feedback');
+        Route::post('/cs/master/feedback/add', 'CS\Master\FeedbackController@store')->name('storeFeedback');
+        Route::delete('/cs/master/feedback/delete', 'CS\Master\FeedbackController@destroy')->name('destroyFeedback');
+        Route::post('/cs/master/feedback/{id}/edit', 'CS\Master\FeedbackController@update')->name('updateFeedback');
         // Check In
         Route::get('/cs/transaction/check-in-out', 'CS\Transaction\CheckInOutController@index')->name('checkInOut');
         Route::get('/cs/transaction/membership', 'CS\Transaction\MembershipController@index')->name('membershipTransaction');
