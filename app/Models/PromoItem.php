@@ -18,7 +18,13 @@ class PromoItem extends Model
     public static function insertPromoDetail($promo_detail_id, $promo_id, $promo_maxValue, $promo_freeValue, $item_id, $item_free_id, $outlet_id)
     {
         $insert         = DB::select('call SP_POS_PromoDetail_Insert(?,?,?,?,?,?,?)', [$promo_detail_id, $promo_id, $promo_maxValue, $promo_freeValue, $item_id, $item_free_id, $outlet_id]);
-        
+
         return $insert;
+    }
+
+    public static function getAllPromo($outlet_id)
+    {
+        $promo          = DB::select('call SP_POS_Promo_Select(?)', [$outlet_id]);
+        return $promo;
     }
 }

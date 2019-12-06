@@ -96,6 +96,11 @@ em {
     box-shadow: none;
 }
 
+.modal-xl {
+    width: 90% !important;
+    max-width: 1200px !important;
+}
+
 @media (min-width: 1024px) {
     .outlet-card {
         width: 300px !important;
