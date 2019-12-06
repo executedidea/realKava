@@ -114,7 +114,7 @@
                                         <div class="card-body">
                                             <div class="row justify-content-center">
                                                 <div class="form-group col-3">
-                                                    <input type="text" name="promo_code" class="form-control" value=""
+                                                    <input type="text" name="promo_id" class="form-control" value=""
                                                         placeholder="Promo Code">
                                                 </div>
                                                 <div class="form-group col-6">

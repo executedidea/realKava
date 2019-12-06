@@ -15,9 +15,9 @@ class PromoItem extends Model
         return $insert;
     }
 
-    public static function insertPromoDetail($promo_detail_id, $promo_id, $promo_maxValue, $promo_freeValue, $item_id, $item_free_id, $outlet_id)
+    public static function insertPromoDetail($promo_detail_id, $promo_maxValue, $promo_freeValue, $promo_id, $item_id, $item_free_id, $outlet_id)
     {
-        $insert         = DB::select('call SP_POS_PromoDetail_Insert(?,?,?,?,?,?,?)', [$promo_detail_id, $promo_id, $promo_maxValue, $promo_freeValue, $item_id, $item_free_id, $outlet_id]);
+        $insert         = DB::select('call SP_POS_PromoDetail_Insert(?,?,?,?,?,?,?)', [$promo_detail_id, $promo_maxValue, $promo_freeValue, $promo_id, $item_id, $item_free_id, $outlet_id]);
 
         return $insert;
     }
@@ -27,4 +27,12 @@ class PromoItem extends Model
         $promo          = DB::select('call SP_POS_Promo_Select(?)', [$outlet_id]);
         return $promo;
     }
+
+    public static function setUpdatePromo($membership_id, $membership_name, $membership_type, $membership_startDate, $membership_endDate)
+    {
+        $set_update_membership                = DB::select('call SP_CS_MembershipList_Update(?,?,?,?,?)', [$membership_id, $membership_name, $membership_type, $membership_startDate, $membership_endDate]);
+        return $set_update_membership;
+    }
+
+    
 }

@@ -170,6 +170,7 @@ class CustomerController extends Controller
             if($validator->fails()){
                 return back()->withErrors($validator);
             } else{
+                // Image
                 if($request->hasFile('customer_image')){
                     Storage::delete('public/images/customer_images/' . $customer[0]->customer_image);
                     Storage::delete('public/images/customer_images/thumbnails/' . $customer[0]->customer_image);
