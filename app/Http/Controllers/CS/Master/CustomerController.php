@@ -150,7 +150,7 @@ class CustomerController extends Controller
             $customer_licensePlate       = $request->customer_licensePlate;
             $vehicle_color               = $request->vehicle_color;
 
-            Customer_Detail::insertCustomerDetail($customer_detail_id, $customer_licensePlate, $vehicle_id, $customer_id, $vehicle_id);
+            Customer_Detail::insertCustomerDetail($customer_detail_id, $customer_licensePlate, $vehicle_id, $customer_id, $vehicle_color);
             return back()->with('customerDetailAdded');
             // -------------------------------------------------------------------------------------
         }
@@ -175,7 +175,7 @@ class CustomerController extends Controller
                     Storage::delete('public/images/customer_images/thumbnails/' . $customer[0]->customer_image);
 
                     $originalImage          = $request->file('customer_image');
-                    $image_name             = time().$request->file('customer_image')->getClientOriginalName();
+                    $image_name             = str_replace(' ','',time().$request->file('customer_image')->getClientOriginalName());
                     $thumbnailImage         = Image::make($originalImage);
                     $thumbnailPath          = public_path('storage\images\customer_images\thumbnails');
                     $originalPath           = public_path('storage\images\customer_images');
@@ -187,7 +187,8 @@ class CustomerController extends Controller
                     $thumbnailImage->save($thumbnailPath . '/' . $image_name);
                     $customer_image         = $image_name;
                 } else{
-                    $customer_image         = $request->customer_image;
+                    $customer               = Customer::getCustomerByID($customer_id, $outlet_id);
+                    $customer_image         = $customer[0]->customer_image;
                 }
                 
                 $customer_name              = $request->customer_name;
