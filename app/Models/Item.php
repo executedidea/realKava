@@ -21,4 +21,10 @@ class Item extends Model
         $item           = DB::select('call SP_POS_ItemList_ByID_Select(?,?)', [$outlet_id, $item_id]);
         return $item;
     }
+
+    public static function getServiceItemByOutletID($outlet_id)
+    {
+        $item           = DB::select('call SP_POS_Item_GetService_Select(?)', [$outlet_id]);
+        return $item;
+    }
 }

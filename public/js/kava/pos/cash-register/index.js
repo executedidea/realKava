@@ -41,10 +41,14 @@ $(document).ready(function () {
         $('#itemAddDiscount').val(0);
 
         $.get('/data/promo/get', function (promo) {
-            $('#todaysPromo').modal('show');
             $('#todaysPromo table tbody tr').empty();
             $.each(promo, function (index, Obj) {
-                $('#todaysPromo table tbody').append('<tr><td>' + Obj.promo_name + '</td><td><button class="btn btn-primary">Use</button></td></tr>');
+                $('#todaysPromo table tbody').append('<tr><td>' + Obj.promo_name + '</td><td><button class="btn btn-primary btn-block use-voucher" id="useVoucher' + Obj.promo_id + '">Use</button></td></tr>');
+            });
+            $('#todaysPromo').modal({
+                show: true,
+                backdrop: "static",
+                keyboard: false
             });
         });
 
@@ -475,6 +479,10 @@ $(document).ready(function () {
         // } else if ($(this).val() == balanceVal) {
         //     $('#Change').val(0);
         // }
+    });
+
+    $(document).on('click', '.use-voucher', function () {
+        $('#todaysPromo').modal('hide');
     });
 
 });
