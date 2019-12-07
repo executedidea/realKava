@@ -56,31 +56,35 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>Ticket No</th>
-                                    <th>Name</th>
-                                    <th>License Plate</th>
-                                    <th>Vehicle</th>
-                                    <th>Service</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
+                                    <th class="text-center">Ticket No</th>
+                                    <th class="text-center">Name</th>
+                                    <th class="text-center">License Plate</th>
+                                    <th class="text-center">Vehicle</th>
+                                    <th class="text-center">Status</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($customer_checked_in as $index => $item)
+                                @foreach ($checked_in_customer as $index => $item)
                                 <tr>
-                                    {{-- <td>{{ $index+1 }}</td>
-                                    <td><a href="#customerCheckedInDetailModal"
-                                            data-target="#customerCheckedInDetailModal"
-                                            data-toggle="modal">{{ $item->customer_fullName }}</a></td>
-                                    <td>{{ $item->customer_detail_licensePlate }}</td>
-                                    <td>{{ $item->vehicle_brand_name . " " . $item->vehicle_model_name }}</td>
-                                    <td>{{ $item->item_name }}</td>
-                                    <td>
-                                        <div class="badge badge-info">On Progress</div>
+                                    <td class="text-center">{{ $index+1 }}</td>
+                                    <td class="text-center">
+                                        <a href="#" data-id="{{$item->customer_id}}"
+                                            class="customer-detail">{{ $item->customer_fullName }}</a>
+                                    </td>
+                                    <td class="text-center">{{ $item->customer_detail_licensePlate }}</td>
+                                    <td class="text-center">
+                                        {{ $item->vehicle_brand_name . " " . $item->vehicle_model_name }}</td>
+                                    <td class="text-center">
+                                        @if ($item->check_out_status == 0)
+                                        <div class="badge badge-info">Checked In</div>
+                                        @else
+                                        <div class="badge badge-secondary">Checked Out</div>
+                                        @endif
                                     </td>
                                     <td>
                                         <button class="btn btn-danger">Check Out</button>
-                                    </td> --}}
+                                    </td>
                                 </tr>
                                 @endforeach
 
@@ -171,15 +175,15 @@
                     <div class="row">
                         <div class="form-group col-4">
                             <label for="customerName">Name</label>
-                            <input type="text" class="form-control" id="customerName">
+                            <input type="text" class="form-control" id="customerName" disabled>
                         </div>
                         <div class="form-group col-4">
                             <label for="customerPhone">Phone Number</label>
-                            <input type="text" class="form-control" id="customerPhone">
+                            <input type="text" class="form-control" id="customerPhone" disabled>
                         </div>
                         <div class="form-group col-4">
                             <label for="customerPlate">License Plate</label>
-                            <input type="text" class="form-control" id="customerPlate">
+                            <input type="text" class="form-control" id="customerPlate" disabled>
                         </div>
                     </div>
                 </div>
@@ -205,6 +209,18 @@
                 $('#checkInCustomerLicensePlate').val(data[0].customer_detail_licensePlate);
             });
             $('#customerCheckInModal').modal('show')
+        });
+
+        $(document).on('click', '.customer-detail', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            $.get('/data/checkin/getcustomer/' + id, function (customer) {
+                $('#customerName').val(customer[0].customer_fullName);
+                $('#customerPhone').val(customer[0].customer_phone);
+                $('#customerPlate').val(customer[0].customer_detail_licensePlate);
+            });
+            $.get('/data/checkin/getcustomerdetail/' + id, function (detail) {});
+            $('#customerCheckedInDetailModal').modal('show');
         });
 
 

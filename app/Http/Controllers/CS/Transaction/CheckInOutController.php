@@ -18,11 +18,11 @@ class CheckInOutController extends Controller
     public function index()
     {
         $outlet_id              = Auth::user()->outlet_id;
-        $customer_checked_in    = CheckInOut::getTodayCustomer($outlet_id);
+        $checked_in_customer    = CheckInOut::getTodayCustomer($outlet_id);
         $customer_detail        = Customer_Detail::getAllCustomerDetail($outlet_id);
         $items                  = Item::getServiceItemByOutletID($outlet_id);
 
-        return view('cs.transaction.check-in-out.index', compact('customer_detail', 'customer_checked_in', 'items'));
+        return view('cs.transaction.check-in-out.index', compact('customer_detail', 'checked_in_customer', 'items'));
     }
 
     public function store(Request $request)
@@ -80,5 +80,21 @@ class CheckInOutController extends Controller
         $item                   = Item::getServiceItemByOutletID($outlet_id);
 
         return response()->json($item);
+    }
+
+    public function getCheckedInCustomerDetail($customer_id)
+    {
+        $outlet_id              = Auth::user()->outlet_id;
+        $customer_detail        = CheckInOutDetail::getCheckInDetail($outlet_id, $customer_id);
+
+        return response()->json($customer_detail);
+    }
+
+    public function getCheckedInCustomer($customer_id)
+    {
+        $outlet_id              = Auth::user()->outlet_id;
+        $customer               = CheckInOut::getCheckedInCustomerByID($outlet_id, $customer_id);
+
+        return response()->json($customer);
     }
 }

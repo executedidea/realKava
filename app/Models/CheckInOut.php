@@ -28,4 +28,10 @@ class CheckInOut extends Model
         return $insert;
     }
 
+    public static function getCheckedInCustomerByID($outlet_id, $customer_id)
+    {
+        $customer           = DB::select('call SP_CS_CheckIn_ByID_Select(?,?)', [$outlet_id, $customer_id]);
+        return $customer;
+    }
+
 }

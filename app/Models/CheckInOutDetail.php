@@ -15,4 +15,10 @@ class CheckInOutDetail extends Model
         $insert         = DB::select('call SP_CS_CheckIn_Detail_Insert(?,?,?)', [$check_in_detail_id, $check_in_id, $item_id]);
         return $insert;
     }
+
+    public static function getCheckInDetail($outlet_id, $customer_id)
+    {
+        $check_in_detail    = DB::select('call SP_CS_CheckIn_Detail_Select(?,?)', [$outlet_id, $customer_id]);
+        return$check_in_detail;
+    }
 }
