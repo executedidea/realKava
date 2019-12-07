@@ -196,6 +196,21 @@
         }
     });
     $(document).ready(function () {
+
+        var vehicleTable = $('#vehicleTable').dataTable({
+            bInfo: false,
+            responsive: true,
+            columnDefs: [{
+                sortable: false,
+                targets: [0]
+            }],
+            language: {
+                sLengthMenu: "Show _MENU_",
+                search: "",
+                searchPlaceholder: "Search..."
+            }
+        });
+
         $('.vehicle-category').selectric({
             disableOnMobile: false,
             nativeOnMobile: false

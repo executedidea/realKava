@@ -48,7 +48,7 @@ class CustomerController extends Controller
             // IMAGE ---------------------------------------------------------------------------
             if($request->hasFile('customer_image')){
                 $originalImage          = $request->file('customer_image');
-                $image_name             = time().$request->file('customer_image')->getClientOriginalName();
+                $image_name             = str_replace(' ','',time().$request->file('customer_image')->getClientOriginalName());
                 $thumbnailImage         = Image::make($originalImage);
                 $thumbnailPath          = public_path('storage\images\customer_images\thumbnails');
                 $originalPath           = public_path('storage\images\customer_images');

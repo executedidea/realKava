@@ -103,6 +103,7 @@
 </section>
 @endsection
 @section('modal')
+{{-- Add Modal --}}
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document" style="width:90%">
         <div class="modal-content">

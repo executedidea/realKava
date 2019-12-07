@@ -32,7 +32,7 @@
                         </a>
                     </div>
                     <div class="card-body">
-                        <table class="table table-striped" id="vehicleTable">
+                        <table class="table table-striped" id="membershipTable">
                             <thead>
                                 <tr>
                                     <th class="th-sm text-center">
@@ -193,6 +193,21 @@
         }
     });
     $(document).ready(function () {
+
+        var membershipTable = $('#membershipTable').dataTable({
+            bInfo: false,
+            responsive: true,
+            columnDefs: [{
+                sortable: false,
+                targets: [0]
+            }],
+            language: {
+                sLengthMenu: "Show _MENU_",
+                search: "",
+                searchPlaceholder: "Search..."
+            }
+        });
+
         $('.vehicle-category').selectric({
             disableOnMobile: false,
             nativeOnMobile: false

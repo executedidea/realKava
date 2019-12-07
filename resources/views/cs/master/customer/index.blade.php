@@ -9,7 +9,8 @@
 <section id="customerList">
     <div class="container">
         <div class="row">
-            <div class="col-12">
+            <div class="col-2"></div>
+            <div class="col-8">
                 <div class="card">
                     <div class="card-header">
                         <h4>Customer List</h4>
@@ -19,13 +20,6 @@
                         <button class="btn btn-danger action-btn ml-1" id="deleteBtn">
                             <i class="fas fa-trash" aria-hidden="true"></i>
                         </button>
-                        <h4 class="ml-auto action-btn">Export to:</h4>
-                        <a href="http://" class="action-btn ml-1">
-                            <img src="{{asset('img/icons/pdf.png')}}" alt="pdf" height="50px">
-                        </a>
-                        <a href="http://" class="action-btn ml-1">
-                            <img src="{{asset('img/icons/excel.png')}}" alt="excel" height="50px">
-                        </a>
                     </div>
                     <div class="card-body">
                         <table class="table table-striped" id="customerTable">
@@ -38,7 +32,6 @@
                                             <label for="checkAll" class="custom-control-label">&nbsp;</label>
                                         </div>
                                     </th>
-                                    <th>ID</th>
                                     <th>Name</th>
                                     <th>Phone</th>
                                 </tr>
@@ -55,10 +48,9 @@
                                                 class="custom-control-label">&nbsp;</label>
                                         </div>
                                     </td>
-                                    <td>
-                                        <a href="{{route('customerDetail', $item->customer_id)}}">CUST{{$index+1}}</a>
+                                    <td><a
+                                            href="{{route('customerDetail', $item->customer_id)}}">{{$item->customer_fullName}}</a>
                                     </td>
-                                    <td>{{$item->customer_fullName}}</td>
                                     <td>{{$item->customer_phone}}</td>
                                 </tr>
                                 @endforeach
@@ -160,6 +152,7 @@
             $('#checkAll').prop('checked', true);
         }
     });
+
     $.uploadPreview({
         input_field: "#image-upload", // Default: .image-upload
         preview_box: "#image-preview", // Default: .image-preview
@@ -167,6 +160,23 @@
     });
 
     $(document).ready(function () {
+
+        var customerTable = $('#customerTable').dataTable({
+            "lengthMenu": [8, 10, 25, 50, 75, 100],
+            dom: "frtipl",
+            bInfo: false,
+            responsive: true,
+            columnDefs: [{
+                sortable: false,
+                targets: [0]
+            }],
+            language: {
+                sLengthMenu: "Show _MENU_",
+                search: "",
+                searchPlaceholder: "Search..."
+            }
+        });
+
         $('#vehicleCategory').selectric();
         $('#vehicleBrand').selectric();
         $('#vehicleModel').selectric();
