@@ -323,6 +323,7 @@
 
     $(document).ready(function () {
         var customerVehicleTable = $('#customerVehicleTable').dataTable({
+            dom: "rtiplf",
             bInfo: false,
             responsive: true,
             columnDefs: [{

@@ -64,10 +64,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('/cs/master/membership/delete', 'CS\Master\MembershipController@destroy')->name('destroyMembership');
         Route::post('/cs/master/membership/{id}/edit', 'CS\Master\MembershipController@update')->name('updateMembership');
         // Feedback
+        // master
         Route::get('/cs/master/feedback', 'CS\Master\FeedbackController@index')->name('feedback');
         Route::post('/cs/master/feedback/add', 'CS\Master\FeedbackController@store')->name('storeFeedback');
         Route::delete('/cs/master/feedback/delete', 'CS\Master\FeedbackController@destroy')->name('destroyFeedback');
         Route::post('/cs/master/feedback/{id}/edit', 'CS\Master\FeedbackController@update')->name('updateFeedback');
+
         // Check In
         Route::get('/cs/transaction/check-in-out', 'CS\Transaction\CheckInOutController@index')->name('checkInOut');
         Route::get('/cs/transaction/membership', 'CS\Transaction\MembershipController@index')->name('membershipTransaction');
@@ -75,6 +77,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/cs/master/promo-item', 'CS\Master\PromoItemController@index')->name('promoItem');
         Route::post('/cs/master/promo-item/add', 'CS\Master\PromoItemController@store')->name('storePromoItem');
         Route::post('/cs/master/membership/{id}/edit', 'CS\Master\MembershipController@update')->name('updateMembership');
+        // Complaint Handling
+        Route::get('/cs/transaction/complaint-handling', 'CS\Transaction\ComplaintHandlingController@index')->name('complaintHandlingTransaction');
+        Route::post('/cs/transaction/complaint-handling/add', 'CS\Transaction\ComplaintHandlingController@store')->name('storeComplaintHandlingTransaction');
+
 
 
         // POS
