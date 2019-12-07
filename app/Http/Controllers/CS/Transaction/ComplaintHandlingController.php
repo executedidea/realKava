@@ -4,7 +4,8 @@ namespace App\Http\Controllers\CS\Transaction;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use App\Models\ComplaintHandling;
+use Illuminate\Support\Facades\Auth;
 
 class ComplaintHandlingController extends Controller
 {
@@ -13,9 +14,19 @@ class ComplaintHandlingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('cs.transaction.complaint-handling.index');
+        $outlet_id                      = Auth::user()->outlet_id;
+        if($request->license_plate){
+            $customer_detail_licensePlate           = $request->license_plate;
+            $complaint_handling                     = ComplaintHandling::getComplaintHandlingList($outlet_id);
+            $licensePlate                           = ComplaintHandling::getLicensePlate($customer_detail_licensePlate);
+            return view('cs.transaction.complaint-handling.index', compact('complaint_handling','licensePlate'));
+        } else {
+            $complaint_handling                     = ComplaintHandling::getComplaintHandlingList($outlet_id);
+            return view('cs.transaction.complaint-handling.index', compact('complaint_handling'));
+        }
+
     }
 
     /**
