@@ -43,7 +43,13 @@ $(document).ready(function () {
         $.get('/data/checkin/getcustomerdetail/' + id, function (item) {
             $.each(item, function (index, Obj) {
                 $.get('/data/checkin/countVisitItem/' + id + '/' + Obj.item_id, function (visit) {
-                    $('#customerItems tbody').prepend('<tr><td><div class="form-group"><input type="text" class="form-control" value="' + Obj.item_name + '" disabled></div></td><td><div class="form-group"><input type="text" class="form-control" value="1" disabled></div></td><td class="text-right"><div class="form-group"><input type="text"class="form-control" value="' + Obj.item_price + '"></div></td></tr>');
+
+                    $.get('/data/promo/get', function (promo) {
+                        if (visit == promo[0].promo_maxValue) {
+                            $('#customerItems tbody').prepend('<tr><td><div class="form-group"><input type="text" class="form-control" value="' + Obj.item_name + '" disabled></div></td><td><div class="form-group"><input type="text" class="form-control" value="1" disabled></div></td><td class="text-right"><div class="form-group"><input type="text"class="form-control" value="' + (Obj.item_price) + '"></div></td><td>' + visit + 'x' + '</td></tr>');
+                        }
+                    });
+
                 });
             });
         });
