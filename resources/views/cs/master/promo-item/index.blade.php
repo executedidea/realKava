@@ -301,6 +301,205 @@
         </div>
     </div>
 </div>
+
+{{-- Edit Modal --}}
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document" style="width:90%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Promo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('storePromoItem') }}" method="post" id="promoItemForm">
+                    @csrf
+                    <section id="promoItem">
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4>Promo Listing</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row justify-content-center">
+                                                <div class="form-group col-3">
+                                                    <input type="text" name="promo_id" class="form-control" value=""
+                                                        placeholder="Promo Code">
+                                                </div>
+                                                <div class="form-group col-6">
+                                                    <input type="text" name="promo_name" class="form-control" value=""
+                                                        placeholder="Promo Name">
+                                                </div>
+                                                <div class="form-group col-3">
+                                                    <select name="promo_type" class="form-control" id="promoType"
+                                                        required>
+                                                        <option disabled selected>Select Promo Type</option>
+                                                        @foreach ($promo_type as $item)
+                                                        <option value="{{$item->promo_type_id}}">
+                                                            {{$item->promo_type_name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row justify-content-center">
+                                                <div class="form-group col-3">
+                                                    <div class="form-group">
+                                                        <label class="custom-switch mt-2">
+                                                            <input type="checkbox" value="1" name="promo_all_item"
+                                                                class="custom-switch-input" id="allItem">
+                                                            <span class="custom-switch-indicator"></span>
+                                                            <span class="custom-switch-description">All Items</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-3">
+                                                    <div class="form-group">
+                                                        <label class="custom-switch mt-2">
+                                                            <input type="checkbox" value="1" name="promo_periode"
+                                                                class="custom-switch-input" id="nonPeriode">
+                                                            <span class="custom-switch-indicator"></span>
+                                                            <span class="custom-switch-description">Non Periode</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row justify-content-center">
+                                                <div class="form-group col-3">
+                                                    <input type="text" name="promo_maxValue" class="form-control"
+                                                        value="" placeholder="Promo Max Value" id="promoMaxValue"
+                                                        disabled>
+                                                </div>
+                                                <div class="form-group col-3">
+                                                    <div class="input-group">
+                                                        <input type="text" name="promo_free" class="form-control"
+                                                            value="" placeholder="Free Value" id="promoFreeValue"
+                                                            disabled>
+                                                        <div class="input-group-append">
+                                                            <div class="input-group-text">
+                                                                <i class="fas fa-percent"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-3">
+                                                    <input type="text" name="promo_startDate"
+                                                        class="form-control datepicker" id="startDate"
+                                                        placeholder="Start Date" required>
+                                                </div>
+                                                <div class="form-group col-3">
+                                                    <input type="text" name="promo_endDate"
+                                                        class="form-control datepicker" id="endDate"
+                                                        placeholder="Expired Date" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="customerItem">
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <table class="table table-striped table-responsive" id="promoItems">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-center">Item(s)</th>
+                                                                <th class="text-center">Max Value</th>
+                                                                <th class="text-center">Free Item</th>
+                                                                <th class="text-center">Free Value</th>
+                                                                <th class="text-center">Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <form id="promoItemsForm">
+                                                                <tr id="row1">
+                                                                    <td class="" width="30%">
+                                                                        <div class="form-group mx-auto">
+                                                                            <select class="form-control px-3 item-name"
+                                                                                id="itemName">
+                                                                                <option value="" disabled selected>
+                                                                                    Select Item</option>
+                                                                            </select>
+                                                                            <input type="hidden" name="promo_item[]"
+                                                                                id="itemValue">
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="">
+                                                                        <div class="form-group">
+                                                                            <input type="text"
+                                                                                class="form-control numeric-input max-value text-right"
+                                                                                id="maxValue" placeholder="0">
+                                                                            <input type="hidden" name="promo_maxValue[]"
+                                                                                id="maxValueValue">
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="" width="30%">
+                                                                        <div class="form-group mx-auto">
+                                                                            <select class="form-control item-name"
+                                                                                id="freeItem" required>
+                                                                                <option disabled selected>Select Item
+                                                                                </option>
+                                                                            </select>
+                                                                            <input type="hidden" name="promo_freeItem[]"
+                                                                                id="freeItemValue">
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="">
+                                                                        <div class="form-group">
+                                                                            <div class="input-group">
+                                                                                <input type="text"
+                                                                                    class="form-control text-right item-discount"
+                                                                                    id="freeValue" placeholder="0">
+                                                                                <input type="hidden"
+                                                                                    name="promo_freeValue[]"
+                                                                                    id="freeValueValue">
+                                                                                <div class="input-group-append">
+                                                                                    <div class="input-group-text">
+                                                                                        <i class="fas fa-percent"></i>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+
+                                                                </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <div class="form-group text-right">
+                                                        <button class="btn btn-success" id="addForm">
+                                                            <i class="fa fa-plus" aria-hidden="true"></i>
+                                                        </button>
+                                                        <div class="card-footer">
+                                                            <button type="submit"
+                                                                class="btn btn-primary btn-block">Save</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @section('script')
 <script src="{{ asset('/modules/select2/dist/js/select2.full.min.js') }}"></script>

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class ComplaintHandling extends Model
 {
-    // protected $table        = 'tbl_feedback';
+    protected $table        = 'tbl_complaint_handling';
 
     public static function getFeedbackCategoryLastID()
     {
@@ -15,16 +15,16 @@ class ComplaintHandling extends Model
         return $category_last_id;
     }
 
-    public static function getFeedbackTypeLastID()
+    public static function getComplaintHandlingList($outlet_id)
     {
-        $type_last_id                = DB::select('call SP_GetLastID_Select(?)', ['feedback_type_id']);
-        return $type_last_id;
+        $complaint_handling           = DB::select('call SP_CS_ComplaintHandling_Select(?)', [$outlet_id]);
+        return $complaint_handling;
     }
 
-    public static function getAllFeedbackList()
+    public static function getLicensePlate($customer_detail_licensePlate)
     {
-        $feedback           = DB::select('call SP_CS_Five_FeedbackList_Select');
-        return $feedback;
+        $licensePlate    = DB::select('call SP_CustomerVehicleLicense_ByLicensePlate_Select(?)', [$customer_detail_licensePlate]);
+        return $licensePlate;
     }
 
     public static function setFeedback($feedback_category_id, $feedback_category_name, $feedback_type_id, $feedback_type_name)
