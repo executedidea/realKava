@@ -44,13 +44,6 @@
                 <div class="card">
                     <div class="card-header">
                         <h4>Today's Customer</h4>
-                        <h4 class="ml-auto action-btn">Export to:</h4>
-                        <a href="http://" class="action-btn ml-1">
-                            <img src="{{asset('img/icons/pdf.png')}}" alt="pdf" height="50px">
-                        </a>
-                        <a href="http://" class="action-btn ml-1">
-                            <img src="{{asset('img/icons/excel.png')}}" alt="excel" height="50px">
-                        </a>
                     </div>
                     <div class="card-body">
                         <table class="table table-striped">
@@ -60,7 +53,6 @@
                                     <th class="text-center">Name</th>
                                     <th class="text-center">License Plate</th>
                                     <th class="text-center">Vehicle</th>
-                                    <th class="text-center">Status</th>
                                     <th class="text-center">Action</th>
                                 </tr>
                             </thead>
@@ -69,25 +61,23 @@
                                 <tr>
                                     <td class="text-center">{{ $index+1 }}</td>
                                     <td class="text-center">
-                                        <a href="#" data-id="{{$item->customer_id}}"
+                                        <a href="#" data-id="{{$item->customer_detail_id}}"
                                             class="customer-detail">{{ $item->customer_fullName }}</a>
                                     </td>
-                                    <td class="text-center">{{ $item->customer_detail_licensePlate }}</td>
                                     <td class="text-center">
-                                        {{ $item->vehicle_brand_name . " " . $item->vehicle_model_name }}</td>
-                                    <td class="text-center">
-                                        @if ($item->check_out_status == 0)
-                                        <div class="badge badge-info">Checked In</div>
-                                        @else
-                                        <div class="badge badge-secondary">Checked Out</div>
-                                        @endif
+                                        <a href="#" data-id="{{$item->customer_detail_id}}"
+                                            class="customer-detail">{{ $item->customer_detail_licensePlate }}</a>
                                     </td>
-                                    <td>
-                                        <button class="btn btn-danger">Check Out</button>
+                                    <td class="text-center">
+                                        <a href="#" data-id="{{$item->customer_detail_id}}"
+                                            class="customer-detail">{{ $item->vehicle_brand_name . " " . $item->vehicle_model_name }}</a>
+                                    </td>
+                                    <td class="text-center">
+                                        <button class="btn btn-danger check-out-btn"
+                                            data-id="{{$item->check_in_id}}">Check Out</button>
                                     </td>
                                 </tr>
                                 @endforeach
-
                             </tbody>
                         </table>
                     </div>
@@ -186,6 +176,26 @@
                             <input type="text" class="form-control" id="customerPlate" disabled>
                         </div>
                     </div>
+                    <div class="row mt-4 justify-content-center">
+                        <div class="col-3">
+                            <h6>Check In Time</h6>
+                        </div>
+                        <div class="col-3">
+                            <span class="text-muted" id="checkInTime"></span>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-10">
+                            <table class="table table-striped" id="checkedInDetailTable">
+                                <thead>
+                                    <th>No</th>
+                                    <th>Service Name</th>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -197,6 +207,8 @@
 @endsection
 @section('script')
 <script src="{{ asset('/modules/select2/dist/js/select2.full.min.js') }}"></script>
+<script src="{{asset('js/sweetalert2.all.min.js')}}"></script>
+
 <script>
     $(document).ready(function () {
         $('#customerSearch').select2();
@@ -215,12 +227,39 @@
             e.preventDefault();
             var id = $(this).data('id');
             $.get('/data/checkin/getcustomer/' + id, function (customer) {
+                console.log(customer);
                 $('#customerName').val(customer[0].customer_fullName);
                 $('#customerPhone').val(customer[0].customer_phone);
                 $('#customerPlate').val(customer[0].customer_detail_licensePlate);
+                $('#checkInTime').html(customer[0].check_in_time);
+
             });
-            $.get('/data/checkin/getcustomerdetail/' + id, function (detail) {});
+            $.get('/data/checkin/getcustomerdetail/' + id, function (detail) {
+                $('#checkedInDetailTable tbody tr').empty();
+                $.each(detail, function (index, Obj) {
+                    $('#checkedInDetailTable tbody').append('<tr><td>' + (index + 1) +
+                        '</td><td>' + Obj.item_name +
+                        '</td></tr>');
+                });
+            });
             $('#customerCheckedInDetailModal').modal('show');
+        });
+
+        $(document).on('click', '.check-out-btn', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                // confirmButtonColor: '#3085d6',
+                // cancelButtonColor: '#d33',
+                confirmButtonText: 'Check Out',
+                reverseButtons: true
+            }).then((result) => {
+                window.location = '/cs/transaction/check-in-out/checkout/' + id;
+            })
         });
 
 

@@ -13,16 +13,26 @@
             <div class="row justify-content-center">
                 <div class="col-6">
                     <div class="card">
+                        <div class="card-header">
+                            <h4>Customer</h4>
+                        </div>
                         <div class="card-body">
-                            <form action="" method="get">
-                                <div class="row justify-content-center">
-                                    <div class="form-group col-12">
-                                        <input type="text" name="license_plate" class="form-control"
-                                            placeholder="Search Checked In Customer">
-                                    </div>
-                                    <button type="submit" class="btn btn-primary btn-block">Search</button>
+                            <div class="row justify-content-center">
+                                <div class="form-group col-12">
+                                    <select class="form-control" id="checkedInCustomer">
+                                        <option value="" disabled selected>Search Name, License Plate, or Phone Number
+                                        </option>
+                                        @foreach ($customer as $item)
+                                        <option value="{{$item->customer_detail_id}}">
+                                            <b>{{ $item->customer_fullName}}</b>
+                                            <span class="text-muted">{{ $item->customer_detail_licensePlate }}</span>
+                                        </option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                            </form>
+                            </div>
+                            <div class="row justify-content-center">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -35,7 +45,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="container">
-                            <div class="row">
+                            <div class="row justify-content-center">
                                 <div class="form-group col-3">
                                     <input type="text" class="form-control" id="customerName" value="Customer Name"
                                         disabled>
@@ -44,10 +54,6 @@
                                     <input type="text" class="form-control" id="vehicle" value="Vehicle" disabled>
                                 </div>
                                 <div class="form-group col-3">
-                                    <input type="text" class="form-control" id="licensePlate" value="License Plate"
-                                        disabled>
-                                </div>
-                                <div class="form-group col-2">
                                     <input type="text" class="form-control" id="licensePlate" value="License Plate"
                                         disabled>
                                 </div>
@@ -65,30 +71,10 @@
                                             <th class="text-center">Add Disc</th>
                                             <th class="text-center">Total Price</th>
                                             <th class="text-center">Action</th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if(request('license_plate'))
-                                        @foreach($point_of_sales_list as $index => $item)
-                                        <tr>
-                                            <td>{{ $item->item_name }}</td>
-                                            <td class="text-right">{{ $item->point_of_sales_quantity }}</td>
-                                            <td class="text-right">{{ $item->item_price }}</td>
-                                            <td class="text-right">{{ $item->point_of_sales_discPercent * 100 }}%</td>
-                                            <td class="text-right">{{ $item->point_of_sales_addDiscount * 100 }}%</td>
-                                            <td class="text-right">
-                                                @if ($item->point_of_sales_discPercent == NULL AND
-                                                $item->point_of_sales_addDiscount == NULL)
-                                                {{$item->point_of_sales_price}}
-                                                @elseif ($item->point_of_sales_addDiscount == NULL)
-                                                {{number_format($item->point_of_sales_price - ($item->point_of_sales_price * $item->point_of_sales_discPercent))}}
-                                                @else
-                                                {{number_format($item->point_of_sales_price - ($item->point_of_sales_price * ($item->point_of_sales_discPercent+$item->point_of_sales_addDiscount)))}}
-                                                @endif
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                        @endif
                                         <form action="" method="post" id="customerItemsForm">
                                             <tr id="row1">
                                                 <td class="pt-3" width="20%">

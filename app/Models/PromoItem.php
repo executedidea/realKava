@@ -8,16 +8,9 @@ use Illuminate\Support\Facades\DB;
 class PromoItem extends Model
 {
     //
-    public static function insertPromo($promo_id, $promo_name, $promo_type_id, $promo_maxValue, $promo_free, $promo_startDate, $promo_endDate, $outlet_id, $promo_status)
+    public static function insertPromo($promo_id, $promo_name, $promo_type_id, $promo_maxValue, $promo_free, $promo_startDate, $promo_endDate, $outlet_id, $promo_status, $promo_all_item)
     {
-        $insert         = DB::select('call SP_POS_Promo_Insert(?,?,?,?,?,?,?,?,?)', [$promo_id, $promo_name, $promo_type_id, $promo_maxValue, $promo_free, $promo_startDate, $promo_endDate, $outlet_id, $promo_status]);
-
-        return $insert;
-    }
-
-    public static function insertPromoDetail($promo_detail_id, $promo_maxValue, $promo_freeValue, $promo_id, $item_id, $item_free_id, $outlet_id)
-    {
-        $insert         = DB::select('call SP_POS_PromoDetail_Insert(?,?,?,?,?,?,?)', [$promo_detail_id, $promo_maxValue, $promo_freeValue, $promo_id, $item_id, $item_free_id, $outlet_id]);
+        $insert         = DB::select('call SP_POS_Promo_Insert(?,?,?,?,?,?,?,?,?,?)', [$promo_id, $promo_name, $promo_type_id, $promo_maxValue, $promo_free, $promo_startDate, $promo_endDate, $outlet_id, $promo_status, $promo_all_item]);
 
         return $insert;
     }

@@ -50,7 +50,7 @@ class PromoItemController extends Controller
             return back()->withErrors($validator);
         } else {
             if ($request->has('promo_all_item')) {
-                $promo_id         = $request->promo_id;
+                $promo_id           = $request->promo_id;
                 $promo_name         = $request->promo_name;
                 $promo_type         = $request->promo_type;
                 $promo_maxValue     = $request->promo_maxValue;
@@ -65,8 +65,9 @@ class PromoItemController extends Controller
 
                 $outlet_id          = Auth::user()->outlet_id;
                 $promo_status       = 1;
+                $promo_all_item     = 1;
 
-                PromoItem::insertPromo($promo_id, $promo_name, $promo_type, $promo_maxValue, $promo_free, $promo_startDate, $promo_endDate, $outlet_id, $promo_status);
+                PromoItem::insertPromo($promo_id, $promo_name, $promo_type, $promo_maxValue, $promo_free, $promo_startDate, $promo_endDate, $outlet_id, $promo_status, $promo_all_item);
 
                 return back()->with('promoStored');
                 die;
@@ -91,8 +92,9 @@ class PromoItemController extends Controller
                 }
                 $outlet_id          = Auth::user()->outlet_id;
                 $promo_status       = 1;
+                $promo_all_item     = 0;
 
-                PromoItem::insertPromo($promo_id, $promo_name, $promo_type, $promo_maxValue, $promo_free, $promo_startDate, $promo_endDate, $outlet_id, $promo_status);
+                PromoItem::insertPromo($promo_id, $promo_name, $promo_type, $promo_maxValue, $promo_free, $promo_startDate, $promo_endDate, $outlet_id, $promo_status, $promo_all_item);
                 foreach ($request->promo_item as $key => $item) {
                     PromoDetail::insertPromoDetail($promo_detail_id, $request->promo_maxValue[$key], $request->promo_freeValue[$key], $promo_id, $request->promo_item[$key], $request->promo_freeItem[$key], $outlet_id);
                 }
