@@ -36,14 +36,18 @@
                     <div class="card-body">
                         <div class="container">
                             <div class="row">
-                                <div class="form-group col-4">
+                                <div class="form-group col-3">
                                     <input type="text" class="form-control" id="customerName" value="Customer Name"
                                         disabled>
                                 </div>
-                                <div class="form-group col-4">
+                                <div class="form-group col-3">
                                     <input type="text" class="form-control" id="vehicle" value="Vehicle" disabled>
                                 </div>
-                                <div class="form-group col-4">
+                                <div class="form-group col-3">
+                                    <input type="text" class="form-control" id="licensePlate" value="License Plate"
+                                        disabled>
+                                </div>
+                                <div class="form-group col-2">
                                     <input type="text" class="form-control" id="licensePlate" value="License Plate"
                                         disabled>
                                 </div>
@@ -213,6 +217,8 @@
                                     <option value="1">Cash</option>
                                     <option value="2">Debit</option>
                                     <option value="3">Credit Card</option>
+                                    <option value="4">Gopay</option>
+                                    <option value="5">OVO</option>
                                 </select>
                             </div>
                             <div class="form-group col-3">
@@ -258,6 +264,8 @@
                                             <option value="1">Cash</option>
                                             <option value="2">Debit</option>
                                             <option value="3">Credit Card</option>
+                                            <option value="4">Gopay</option>
+                                            <option value="5">OVO</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-3">
@@ -364,10 +372,6 @@
                     </tbody>
                 </table>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save</button>
-            </div>
         </div>
     </div>
 </div>
@@ -378,4 +382,8 @@
 <script src="{{ asset('/modules/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
 <script src="{{asset('js/sweetalert2.all.min.js')}}"></script>
 <script src="{{ asset('/js/kava/pos/cash-register/index.js') }}"></script>
+<script>
+
+
+</script>
 @endsection

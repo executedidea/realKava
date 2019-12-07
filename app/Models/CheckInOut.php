@@ -16,4 +16,16 @@ class CheckInOut extends Model
         return $customer;
     }
 
+    public static function getCheckInLastID()
+    {
+        $lastID             = DB::select('call SP_GetLastID_Select(?)', ['check_in_id']);
+        return $lastID;
+    }
+
+    public static function setInsertCheckIn($check_in_id, $ucstomer_detail_id, $check_in_time, $outlet_id)
+    {
+        $insert             = DB::select('call SP_CS_CheckIn_Insert(?,?,?,?)', [$check_in_id, $ucstomer_detail_id, $check_in_time, $outlet_id]);
+        return $insert;
+    }
+
 }

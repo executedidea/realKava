@@ -68,19 +68,19 @@
                             <tbody>
                                 @foreach ($customer_checked_in as $index => $item)
                                 <tr>
-                                    <td>{{ $index+1 }}</td>
+                                    {{-- <td>{{ $index+1 }}</td>
                                     <td><a href="#customerCheckedInDetailModal"
                                             data-target="#customerCheckedInDetailModal"
                                             data-toggle="modal">{{ $item->customer_fullName }}</a></td>
                                     <td>{{ $item->customer_detail_licensePlate }}</td>
                                     <td>{{ $item->vehicle_brand_name . " " . $item->vehicle_model_name }}</td>
-                                    <td>{{ $item->service_name }}</td>
+                                    <td>{{ $item->item_name }}</td>
                                     <td>
-                                        <div class="badge badge-info">In Progress</div>
+                                        <div class="badge badge-info">On Progress</div>
                                     </td>
                                     <td>
                                         <button class="btn btn-danger">Check Out</button>
-                                    </td>
+                                    </td> --}}
                                 </tr>
                                 @endforeach
 
@@ -105,51 +105,55 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <div class="container">
-                    <div class="row">
-                        <div class="form-group col-4">
-                            <label for="checkInCustomerName">Customer Name</label>
-                            <input type="text" class="form-control" id="checkInCustomerName" disabled>
+            <form action="{{route('checkIn')}}" method="post">
+                @csrf
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <input type="hidden" name="customer_detail_id" id="checkInCustomerID">
+                            <div class="form-group col-4">
+                                <label for="checkInCustomerName">Customer Name</label>
+                                <input type="text" class="form-control" id="checkInCustomerName" readonly>
+                            </div>
+                            <div class="form-group col-4">
+                                <label for="checkInCustomerPhone">Phone Number</label>
+                                <input type="text" class="form-control" id="checkInCustomerPhone" readonly>
+                            </div>
+                            <div class="form-group col-4">
+                                <label for="checkInCustomerLicensePlate">License Plate</label>
+                                <input type="text" class="form-control" id="checkInCustomerLicensePlate" readonly>
+                            </div>
                         </div>
-                        <div class="form-group col-4">
-                            <label for="checkInCustomerPhone">Phone Number</label>
-                            <input type="text" class="form-control" id="checkInCustomerPhone" disabled>
-                        </div>
-                        <div class="form-group col-4">
-                            <label for="checkInCustomerLicensePlate">License Plate</label>
-                            <input type="text" class="form-control" id="checkInCustomerLicensePlate" disabled>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4>Service</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row justify-content-center">
-                                        {{-- @foreach($items as $item) --}}
-                                        {{-- <div class="custom-checkbox custom-control col-4 my-2">
-                                            <input type="checkbox" data-checkboxes="customers"
-                                                class="custom-control-input" name="service[]"
-                                                id="check{{$item->item_id}}" value="">
-                                        <label for="check{{$item->item_id}}"
-                                            class="custom-control-label">{{$item_name}}</label>
-                                    </div> --}}
-                                    {{-- @endforeach --}}
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Service</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            @foreach($items as $item)
+                                            <div class="custom-checkbox custom-control col-3 my-2">
+                                                <input type="checkbox" data-checkboxes="services"
+                                                    class="custom-control-input" name="item_id[]"
+                                                    id="check{{$item->item_id}}" value="{{$item->item_id}}">
+                                                <label for="check{{$item->item_id}}"
+                                                    class="custom-control-label text-capitalize font-weight-bold">{{$item->item_name}}</label>
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-success btn-block">Check In</button>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success btn-block">Check In</button>
+                </div>
+            </form>
         </div>
     </div>
-</div>
 </div>
 {{-- Detail Modal --}}
 <div class="modal fade" id="customerCheckedInDetailModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
@@ -195,12 +199,15 @@
         $('#customerSearch').on('change', function () {
             var id = $(this).val();
             $.get('/data/checkin/customer/' + id, function (data) {
+                $('#checkInCustomerID').val(data[0].customer_detail_id);
                 $('#checkInCustomerName').val(data[0].customer_fullName);
                 $('#checkInCustomerPhone').val(data[0].customer_phone);
                 $('#checkInCustomerLicensePlate').val(data[0].customer_detail_licensePlate);
             });
             $('#customerCheckInModal').modal('show')
         });
+
+
     });
 
 </script>
