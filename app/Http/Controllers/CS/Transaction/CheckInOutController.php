@@ -43,7 +43,7 @@ class CheckInOutController extends Controller
             if(count(CheckInOutDetail::all()) == 0){
                 $check_in_detail_id    = 1;
             } else {
-                $check_in_detail_lastID= CheckInOutDetail::getCheckInLastID();
+                $check_in_detail_lastID= CheckInOutDetail::getCheckInDetailLastID();
                 $check_in_detail_id    = $check_in_detail_lastID[0]->check_in_detail_id+1;
             }
 
@@ -59,6 +59,45 @@ class CheckInOutController extends Controller
             return back()->with('checkedIn');
         }
     }
+
+    public function checkOut($check_in_id)
+    {
+        CheckInOut::setUpdateCheckIn($check_in_id);
+        return back()->with('checkedOut');
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function searchCustomer(Request $request)
     {

@@ -22,13 +22,35 @@ $(document).ready(function () {
     });
 
     $('#bank').selectric();
-    $('#customerSearch').select2();
+    $('#checkedInCustomer').select2();
     $('#itemSelect').select2();
     $('#itemSelect').on('select2:open', function () {
         $.get('/data/items/getitems', function (items) {
             $.each(items, function (index, Obj) {
                 $('#itemSelect').append('<option value="' + Obj.item_id + '">' + Obj
                     .item_name + '</option>');
+            });
+        });
+    });
+
+    $('#checkedInCustomer').on('change', function () {
+        var id = $(this).val();
+        $.get('/data/checkin/getcustomer/' + id, function (cst) {
+            $('#customerName').val(cst[0].customer_fullName);
+            $('#vehicle').val(cst[0].vehicle_brand_name + ' ' + cst[0].vehicle_model_name);
+            $('#licensePlate').val(cst[0].customer_detail_licensePlate);
+        });
+        $.get('/data/checkin/getcustomerdetail/' + id, function (item) {
+            $.each(item, function (index, Obj) {
+                $.get('/data/checkin/countVisitItem/' + id + '/' + Obj.item_id, function (visit) {
+
+                    $.get('/data/promo/get', function (promo) {
+                        if (visit == promo[0].promo_maxValue) {
+                            $('#customerItems tbody').prepend('<tr><td><div class="form-group"><input type="text" class="form-control" value="' + Obj.item_name + '" disabled></div></td><td><div class="form-group"><input type="text" class="form-control" value="1" disabled></div></td><td class="text-right"><div class="form-group"><input type="text"class="form-control" value="' + (Obj.item_price) + '"></div></td><td>' + visit + 'x' + '</td></tr>');
+                        }
+                    });
+
+                });
             });
         });
     });

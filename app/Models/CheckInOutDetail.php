@@ -21,4 +21,10 @@ class CheckInOutDetail extends Model
         $check_in_detail    = DB::select('call SP_CS_CheckIn_Detail_Select(?,?)', [$outlet_id, $customer_id]);
         return$check_in_detail;
     }
+
+    public static function getCheckInDetailLastID()
+    {
+        $lastID          = DB::select('call SP_GetLastID_Select(?)', ['check_in_detail_id']);
+        return $lastID;
+    }
 }

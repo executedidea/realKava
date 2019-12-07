@@ -22,16 +22,35 @@ class CheckInOut extends Model
         return $lastID;
     }
 
+    public static function getCheckedOutCustomer($outlet_id)
+    {
+        $customer           = DB::select('call SP_CS_CheckedOut_Select(?)', [$outlet_id]);
+        return $customer;
+    }
+
+    
+    public static function getCheckedInCustomerByID($outlet_id, $customer_detail_id)
+    {
+        $customer           = DB::select('call SP_CS_CheckIn_ByID_Select(?,?)', [$outlet_id, $customer_detail_id]);
+        return $customer;
+    }
+
+    public static function countVisitByItemID($customer_id, $item_id, $outlet_id)
+    {
+        $visit              = DB::select('call SP_POS_CheckVisit(?,?,?)', [$customer_id, $item_id, $outlet_id]);
+        return $visit;
+    }
+
     public static function setInsertCheckIn($check_in_id, $ucstomer_detail_id, $check_in_time, $outlet_id)
     {
         $insert             = DB::select('call SP_CS_CheckIn_Insert(?,?,?,?)', [$check_in_id, $ucstomer_detail_id, $check_in_time, $outlet_id]);
         return $insert;
     }
 
-    public static function getCheckedInCustomerByID($outlet_id, $customer_id)
+    public static function setUpdateCheckIn($check_in_id)
     {
-        $customer           = DB::select('call SP_CS_CheckIn_ByID_Select(?,?)', [$outlet_id, $customer_id]);
-        return $customer;
+        $update             = DB::select('call SP_CS_CheckIn_Update(?)', [$check_in_id]);
+        return $update;
     }
 
 }

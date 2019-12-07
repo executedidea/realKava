@@ -4,6 +4,7 @@ namespace App\Http\Controllers\POS\Transaction;
 
 use App\Http\Controllers\Controller;
 use App\Models\CashRegister;
+use App\Models\CheckInOut;
 use App\Models\Item;
 use App\Models\PromoItem;
 use App\Models\SettingPOS;
@@ -30,7 +31,8 @@ class CashRegisterController extends Controller
             $bank_name_list                       = CashRegister::getBankNameList();
             $items                                = Item::getAllItem($outlet_id);
             $cashier                              = Shift::getCashierByID($outlet_id, $user_id);
-            return view('pos.transaction.cash-register.index', compact('bank_name_list', 'items', 'cashier'));
+            $customer                             = CheckInOut::getTodayCustomer($outlet_id);
+            return view('pos.transaction.cash-register.index', compact('bank_name_list', 'items', 'cashier', 'customer'));
         }
     }
 
@@ -73,5 +75,13 @@ class CashRegisterController extends Controller
         $promos          = PromoItem::getTodaysPromo($outlet_id);
 
         return response()->json($promos);
+    }
+
+    public function getCustomerVisitByItemID($customer_detail_id, $item_id)
+    {
+        $outlet_id      = Auth::user()->outlet_id;
+        $visit          = count(CheckInOut::countVisitByItemID($customer_detail_id, $item_id, $outlet_id));
+
+        return response()->json($visit);
     }
 }
