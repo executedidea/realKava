@@ -90,14 +90,15 @@
                             <div class="row justify-content-center">
                                 <div class="form-group col-4">
                                     <input type="text" class="form-control" id="customerName" value="Customer Name"
-                                        disabled>
+                                        name="customer_name" disabled>
                                 </div>
                                 <div class="form-group col-4">
-                                    <input type="text" class="form-control" id="vehicle" value="Vehicle" disabled>
+                                    <input type="text" class="form-control" id="vehicle" value="Vehicle" name="vehicle"
+                                        disabled>
                                 </div>
                                 <div class="form-group col-4">
                                     <input type="text" class="form-control" id="licensePlate" value="License Plate"
-                                        disabled>
+                                        name="license_plate" disabled>
                                 </div>
                             </div>
 
@@ -200,46 +201,26 @@
                     'warning'
                 )
             } else {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    type: 'warning',
-                    showCancelButton: true,
-                    // confirmButtonColor: '#3085d6',
-                    // cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete them!',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.value) {
-                        var strIds = id.join(",");
+                // var strIds = id.join(",");
 
-                        $.ajax({
-                            url: "{{ route('destroyVehicle') }}",
-                            type: 'DELETE',
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                                    'content')
-                            },
-                            data: 'id=' + strIds,
-                            success: function (data) {
-                                if (data['status'] == true) {
-                                    $(".checkitem:checked").each(function () {
-                                        $(this).parents("tr").remove();
-                                    });
-                                    Swal.fire(
-                                        'Deleted!',
-                                        'Your file has been deleted.',
-                                        'success'
-                                    );
-                                } else {
-                                    alert('Whoops Something went wrong!!');
-                                }
-                            },
-                            error: function (data) {
-                                alert(data.responseText);
-                            }
-                        });
-
+                $.ajax({
+                    url: "{{ route('complaintHandlingTransaction') }}",
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                            'content')
+                    },
+                    data: 'id=',
+                    success: function (data) {
+                        if (data['status'] == true) {
+                            console.log(data);
+                            $('#customerName').val(data['licensePlate'][0]
+                                .customer_name);
+                            $('#vehicle').val(data['licensePlate'][0]
+                                .vehicle);
+                            $('#licensePlate').val(data['licensePlate'][0]
+                                .license_plate);
+                        }
                     }
                 });
             };

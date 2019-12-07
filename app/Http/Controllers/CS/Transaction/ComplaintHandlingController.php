@@ -16,17 +16,23 @@ class ComplaintHandlingController extends Controller
      */
     public function index(Request $request)
     {
-        $outlet_id                      = Auth::user()->outlet_id;
-        if($request->license_plate){
-            $customer_detail_licensePlate           = $request->license_plate;
-            $complaint_handling                     = ComplaintHandling::getComplaintHandlingList($outlet_id);
-            $licensePlate                           = ComplaintHandling::getLicensePlate($customer_detail_licensePlate);
-            return view('cs.transaction.complaint-handling.index', compact('complaint_handling','licensePlate'));
-        } else {
+        $outlet_id                                  = Auth::user()->outlet_id;
             $complaint_handling                     = ComplaintHandling::getComplaintHandlingList($outlet_id);
             return view('cs.transaction.complaint-handling.index', compact('complaint_handling'));
-        }
 
+    }
+
+    public function getLicensePlate(Request $request)
+    {
+        if($request->license_plate){
+            $customer_detail_licensePlate           = $request->license_plate;
+            $licensePlate                           = ComplaintHandling::getLicensePlate($customer_detail_licensePlate);
+
+            return response()->json([
+                'status'    => true,
+                'licensePlate'  => $licensePlate
+            ]);
+        }
     }
 
     /**
