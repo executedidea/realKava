@@ -35,21 +35,39 @@ $(document).ready(function () {
 
     $('#checkedInCustomer').on('change', function () {
         var id = $(this).val();
+        $('#cashDrawerForm').attr('action', '/pos/transaction/cash-drawer/pay/' + id);
         $.get('/data/checkin/getcustomer/' + id, function (cst) {
             $('#customerName').val(cst[0].customer_fullName);
             $('#vehicle').val(cst[0].vehicle_brand_name + ' ' + cst[0].vehicle_model_name);
             $('#licensePlate').val(cst[0].customer_detail_licensePlate);
         });
         $.get('/data/checkin/getcustomerdetail/' + id, function (item) {
-            $.each(item, function (index, Obj) {
-                $.get('/data/checkin/countVisitItem/' + id + '/' + Obj.item_id, function (visit) {
+            $.get('/data/promo/get', function (promo) {
+                $.each(item, function (index, Obj) {
+                    $.get('/data/checkin/countVisitItem/' + id + '/' + Obj.item_id, function (visit) {
+                        $.get('/data/promo/get', function (promo) {
+                            $.each(promo, function (indexP, prm) {
+                                $.get('/data/promo/getpromofree/' + prm.promo_id + '/' + id, function (prmfree) {
+                                    if (prmfree.length <= 0) {
+                                        var promoFree = 0;
+                                    } else {
+                                        var promoFree = 1;
+                                    }
+                                    if (visit == (prm.promo_maxValue + 1)) {
+                                        var discPrice = parseInt(Obj.item_price) - (parseInt(prm.promo_freeValue) * 100);
+                                        var disc = prm.promo_freeValue * 100;
+                                        var totalPrice = Obj.item_price - (prm.promo_freeValue * Obj.item_price);
+                                    } else {
+                                        var discPrice = 0;
+                                        var disc = 0;
+                                        var totalPrice = Obj.item_price;
+                                    }
+                                    $('#customerItems tbody').prepend('<tr><td><div class="form-group"><input type="text" class="form-control item" value="' + Obj.item_name + '" readonly><input type="hidden" name="item[]" value="' + Obj.item_id + '"></div></td><td><div class="form-group"><input type="text" name="item_quantity[]" class="form-control item-quantity" value="1" readonly></div></td><td class="text-right"><div class="form-group"><input type="text" name="item_price[]" class="form-control item-price text-right" value="' + Obj.item_price + '" readonly></div></td><td class="text-right"><div class="form-group"><input type="text" name="item_discount[]" class="form-control item-discount text-right" value="' + disc + '"></div></td><td><div class="form-group"><input type="text" name="item_add_discount[]" class="form-control item-add-discount" value="0"></div></td><td class="text-right"><div class="form-group"><input type="text" " class="form-control text-right total-price" value="' + totalPrice + '" readonly></div></td></tr>');
+                                });
+                            });
+                        });
 
-                    $.get('/data/promo/get', function (promo) {
-                        if (visit == promo[0].promo_maxValue) {
-                            $('#customerItems tbody').prepend('<tr><td><div class="form-group"><input type="text" class="form-control" value="' + Obj.item_name + '" disabled></div></td><td><div class="form-group"><input type="text" class="form-control" value="1" disabled></div></td><td class="text-right"><div class="form-group"><input type="text"class="form-control" value="' + (Obj.item_price) + '"></div></td><td>' + visit + 'x' + '</td></tr>');
-                        }
                     });
-
                 });
             });
         });
@@ -57,7 +75,7 @@ $(document).ready(function () {
 
     $('#itemSelect').on('change', function () {
         var id = $(this).val();
-        $('#quantity').prop('disabled', false);
+        $('#quantity').prop('readonly', false);
         $('#quantity').val(1);
         $('#itemDiscount').val(0);
         $('#itemAddDiscount').val(0);
@@ -80,14 +98,14 @@ $(document).ready(function () {
         });
         $.get('/data/cashier/getcashierbyid', function (cashier) {
             if (cashier[0].disc_percent <= 0) {
-                $('#itemDiscount').prop('disabled', true);
+                $('#itemDiscount').prop('readonly', true);
             } else {
-                $('#itemDiscount').prop('disabled', false);
+                $('#itemDiscount').prop('readonly', false);
             }
             if (cashier[0].disc_add_1 <= 0) {
-                $('#itemAddDiscount').prop('disabled', true);
+                $('#itemAddDiscount').prop('readonly', true);
             } else {
-                $('#itemAddDiscount').prop('disabled', false);
+                $('#itemAddDiscount').prop('readonly', false);
             }
         });
     });
@@ -168,7 +186,7 @@ $(document).ready(function () {
     $(document).on('click', '.remove-row', function () {
         var id = $(this).data('id');
         $('#row' + id).remove();
-        $('#Total').html(0);
+        $('#Total').val(0);
         $('#totalPrice').val(0);
         $('#ppn').val(0);
         $('#totalAllDiscount').val(0);
@@ -176,15 +194,15 @@ $(document).ready(function () {
 
         if ($('#customerItems tbody tr').length <= 1) {
             $('#customerItems tbody tr select').attr('id', 'itemSelect');
-            $('#itemSelect').prop('disabled', false);
-            $('.item-quantity').prop('disabled', false).attr('id', 'quantity');
-            $('.item-discount').prop('disabled', false);
+            $('#itemSelect').prop('readonly', false);
+            $('.item-quantity').prop('readonly', false).attr('id', 'quantity');
+            $('.item-discount').prop('readonly', false);
             $('.item-discount').attr('id', 'itemDiscount');
-            $('.item-add-discount').prop('disabled', false);
+            $('.item-add-discount').prop('readonly', false);
             $('.item-discount').attr('id', 'itemAddDiscount');
             $('#itemSelect').on('change', function () {
                 var id = $(this).val();
-                $('#quantity').prop('disabled', false);
+                $('#quantity').prop('readonly', false);
                 $('#quantity').val(1);
                 $('#itemDiscount').val(0);
                 $('#itemAddDiscount').val(0);
@@ -196,28 +214,28 @@ $(document).ready(function () {
                 });
                 $.get('/data/cashier/getcashierbyid', function (cashier) {
                     if (cashier[0].disc_percent <= 0) {
-                        $('#itemDiscount').prop('disabled', true);
+                        $('#itemDiscount').prop('readonly', true);
                     } else {
-                        $('#itemDiscount').prop('disabled', false);
+                        $('#itemDiscount').prop('readonly', false);
                     }
                     if (cashier[0].disc_add_1 <= 0) {
-                        $('#itemAddDiscount').prop('disabled', true);
+                        $('#itemAddDiscount').prop('readonly', true);
                     } else {
-                        $('#itemAddDiscount').prop('disabled', false);
+                        $('#itemAddDiscount').prop('readonly', false);
                     }
                 });
             });
         }
     });
     var i = 1;
-    $('#customerItemsForm').on('submit', function (e) {
+    $('#addRows').on('click', function (e) {
         e.preventDefault();
         i++;
-        $('#itemSelect').prop('disabled', true);
-        $('#quantity').prop('disabled', true);
-        $('#itemDiscount').prop('disabled', true);
-        $('#itemAddDiscount').prop('disabled', true);
-        $('#itemAddDiscount').prop('disabled', true);
+        $('#itemSelect').prop('readonly', true);
+        $('#quantity').prop('readonly', true);
+        $('#itemDiscount').prop('readonly', true);
+        $('#itemAddDiscount').prop('readonly', true);
+        $('#itemAddDiscount').prop('readonly', true);
 
         var id = $('#itemSelect').val();
         $('#itemSelect').removeAttr('id');
@@ -229,9 +247,9 @@ $(document).ready(function () {
         $('#itemTotalDiscount').removeAttr('id');
         $('#customerItems tbody').append(
             '<tr id="row' + i +
-            '"><td class="" width="20%"><div class="form-group"><select name="item" class="items px-3" id="itemSelect"><option value="" disabled selected>Item Name</option></select></div></td><td class="" width="10%"><div class="form-group"><input type="text" class="form-control numeric-input text-right item-quantity" value="0" id="quantity" disabled></div></td><td class=""><div class="form-group"><input type="text" class="form-control text-right item-price" placeholder="Rp 0,-" id="itemPrice" disabled></div></td><td class="" width="10%"><div class="form-group"><div class="input-group"><input type="text" class="form-control item-discount" name="discount" id="itemDiscount" disabled><div class="input-group-append"><div class="input-group-text"><i class="fas fa-percent"></i></div></div></div></div></td><td class="" width="10%"><div class="form-group"><div class="input-group"><input type="text" class="form-control item-add-discount" name="add_discount" id="itemAddDiscount" disabled><div class="input-group-append"><div class="input-group-text"><i class="fas fa-percent"></i></div></div></div></div></td><td class=""><div class="form-group"><input placeholder="Rp 0,-" id="itemTotalPrice" class="form-control total-price text-right" disabled></div></td><td><button type="button" class="btn btn-danger remove-row" data-id="' +
+            '"><td class="" width="20%"><div class="form-group"><select name="item[]" class="items px-3" id="itemSelect"><option value="" readonly selected>Item Name</option></select></div></td><td class="" width="10%"><div class="form-group"><input type="text" name="item_quantity[]" class="form-control numeric-input text-right item-quantity" value="0" id="quantity" readonly></div></td><td class=""><div class="form-group"><input type="text" name="item_price[]" class="form-control text-right item-price" placeholder="Rp 0,-" id="itemPrice" readonly></div></td><td class="" width="10%"><div class="form-group"><div class="input-group"><input type="text" name="item_discount[]" class="form-control item-discount" id="itemDiscount" readonly value="0"><div class="input-group-append"><div class="input-group-text"><i class="fas fa-percent"></i></div></div></div></div></td><td class="" width="10%"><div class="form-group"><div class="input-group"><input type="text" class="form-control item-add-discount" name="item_add_discount[]" id="itemAddDiscount" value="0" readonly><div class="input-group-append"><div class="input-group-text"><i class="fas fa-percent"></i></div></div></div></div></td><td class=""><div class="form-group"><input placeholder="Rp 0,-" id="itemTotalPrice" class="form-control total-price text-right" readonly></div></td><td><button type="button" class="btn btn-danger remove-row" data-id="' +
             i +
-            '"><i class="fas fa-trash" aria-hidden="true"></i></button></td><td class="py-2"><div class="form-group"><input type="text" class="form-control text-right total-discount d-none" placeholder="0" id="itemTotalDiscount" disabled></div></td></tr>'
+            '"><i class="fas fa-trash" aria-hidden="true"></i></button></td><td class="py-2"><div class="form-group"><input type="text" class="form-control text-right total-discount d-none" placeholder="0" id="itemTotalDiscount" readonly></div></td></tr>'
         );
         $('#itemSelect').select2();
         $('#itemSelect').on('select2:open', function () {
@@ -296,23 +314,23 @@ $(document).ready(function () {
         });
         $('#itemSelect').on('change', function () {
             var id = $(this).val();
-            $('#quantity').prop('disabled', false);
+            $('#quantity').prop('readonly', false);
             $('#quantity').val(1);
-            $('#itemTotalDiscount').prop('disabled', false);
+            $('#itemTotalDiscount').prop('readonly', false);
             $.get('/data/items/getitem/' + id, function (item) {
                 $('#itemPrice').val(item[0].item_price);
                 $('#itemTotalPrice').val($('#itemPrice').val());
             });
             $.get('/data/cashier/getcashierbyid', function (cashier) {
                 if (cashier[0].disc_percent <= 0) {
-                    $('#itemDiscount').prop('disabled', true);
+                    $('#itemDiscount').prop('readonly', true);
                 } else {
-                    $('#itemDiscount').prop('disabled', false);
+                    $('#itemDiscount').prop('readonly', false);
                 }
                 if (cashier[0].disc_add_1 <= 0) {
-                    $('#itemAddDiscount').prop('disabled', true);
+                    $('#itemAddDiscount').prop('readonly', true);
                 } else {
-                    $('#itemAddDiscount').prop('disabled', false);
+                    $('#itemAddDiscount').prop('readonly', false);
                 }
             });
         });
@@ -337,7 +355,7 @@ $(document).ready(function () {
                     100));
             }
             $('#totalAllDiscount').val(totalAllDiscount);
-            $('#Total').html(parseFloat($('#totalPrice').val()) + parseFloat($('#ppn')
+            $('#Total').val(parseFloat($('#totalPrice').val()) + parseFloat($('#ppn')
                 .val()));
             $('#Balance').val(
                 parseFloat($('#totalPrice').val()) + parseFloat($('#ppn').val()));
@@ -374,51 +392,53 @@ $(document).ready(function () {
     });
     $('#paymentMethod').on('change', function () {
         if ($(this).val() == 3) {
-            $('#paymentBank').prop('disabled', false);
+            $('#paymentBank').prop('readonly', false);
             $('#paymentBank').selectric('refresh');
-            $('#paymentCC').prop('disabled', false);
+            $('#paymentCC').prop('readonly', false);
             $('#paymentCC').selectric('refresh');
-            $('#cardNo').prop('disabled', false);
+            $('#cardNo').prop('readonly', false);
         } else if ($(this).val() == 2) {
-            $('#paymentBank').prop('disabled', false);
+            $('#paymentBank').prop('readonly', false);
             $('#paymentBank').selectric('refresh');
-            $('#paymentCC').prop('disabled', true);
+            $('#paymentCC').prop('readonly', true);
             $('#paymentCC').selectric('refresh');
-            $('#cardNo').prop('disabled', false);
+            $('#cardNo').prop('readonly', false);
         } else {
-            $('#paymentBank').prop('disabled', true);
+            $('#paymentBank').prop('readonly', true);
             $('#paymentBank').selectric('refresh');
-            $('#paymentCC').prop('disabled', true);
+            $('#paymentCC').prop('readonly', true);
             $('#paymentCC').selectric('refresh');
-            $('#cardNo').prop('disabled', true);
+            $('#cardNo').prop('readonly', true);
         }
     });
     $('#paymentCC').on('change', function () {
         $.get('/data/local-setting/getsetting', function (setting) {
             if ($('#paymentCC').val() == 1) {
-                $('#Total').html(parseFloat($('#totalPrice').val()) + parseFloat($(
+                $('#Total').val(parseFloat($('#totalPrice').val()) + parseFloat($(
                         '#ppn')
                     .val()));
-                var CcCharge = parseFloat($('#Total').html()) * parseFloat(setting[0]
+                var CcCharge = parseFloat($('#Total').val()) * parseFloat(setting[0]
                     .setting_pos_ccCharge_mc) / 100;
-                var totalAfterCcCharge = parseFloat($('#Total').html()) + CcCharge;
+                var totalAfterCcCharge = parseFloat($('#Total').val()) + CcCharge;
 
                 $('#ccCharge').val(CcCharge);
-                $('#Total').html(totalAfterCcCharge);
+                $('#Total').val(totalAfterCcCharge);
+                $('#Balance').val($('#Total').val());
             } else {
-                $('#Total').html(parseFloat($('#totalPrice').val()) + parseFloat($(
+                $('#Total').val(parseFloat($('#totalPrice').val()) + parseFloat($(
                         '#ppn')
                     .val()));
-                var CcCharge = parseFloat($('#Total').html()) * parseFloat(setting[0]
+                var CcCharge = parseFloat($('#Total').val()) * parseFloat(setting[0]
                     .setting_pos_ccCharge_visa) / 100;
-                var totalAfterCcCharge = parseFloat($('#Total').html()) + CcCharge;
+                var totalAfterCcCharge = parseFloat($('#Total').val()) + CcCharge;
 
                 $('#ccCharge').val(CcCharge);
-                $('#Total').html(totalAfterCcCharge);
+                $('#Total').val(totalAfterCcCharge);
+                $('#Balance').val($('#Total').val());
             }
         });
-        $('#Total').on('DOMSubtreeModified', function () {
-            $('#Balance').val($(this).html());
+        $('#Total').on('change', function () {
+            $('#Balance').val($(this).val());
         });
     });
 
@@ -426,62 +446,62 @@ $(document).ready(function () {
 
     $('#addPaymentMethodBtn').on('click', function () {
         $('#addPaymentMethodSection').removeClass('d-none');
-        $('#Payment').prop('disabled', true);
+        $('#Payment').prop('readonly', true);
         $('#AddPayment').val($('#Balance').val())
     });
     $('#AddpaymentMethod').on('change', function () {
         if ($(this).val() == 3) {
-            $('#AddpaymentBank').prop('disabled', false);
+            $('#AddpaymentBank').prop('readonly', false);
             $('#AddpaymentBank').selectric('refresh');
-            $('#AddpaymentCC').prop('disabled', false);
+            $('#AddpaymentCC').prop('readonly', false);
             $('#AddpaymentCC').selectric('refresh');
-            $('#AddcardNo').prop('disabled', false);
+            $('#AddcardNo').prop('readonly', false);
         } else if ($(this).val() == 2) {
-            $('#AddpaymentBank').prop('disabled', false);
+            $('#AddpaymentBank').prop('readonly', false);
             $('#AddpaymentBank').selectric('refresh');
-            $('#AddpaymentCC').prop('disabled', true);
+            $('#AddpaymentCC').prop('readonly', true);
             $('#AddpaymentCC').selectric('refresh');
-            $('#AddcardNo').prop('disabled', false);
+            $('#AddcardNo').prop('readonly', false);
         } else {
-            $('#AddpaymentBank').prop('disabled', true);
+            $('#AddpaymentBank').prop('readonly', true);
             $('#AddpaymentBank').selectric('refresh');
-            $('#AddpaymentCC').prop('disabled', true);
+            $('#AddpaymentCC').prop('readonly', true);
             $('#AddpaymentCC').selectric('refresh');
-            $('#AddcardNo').prop('disabled', true);
+            $('#AddcardNo').prop('readonly', true);
         }
     });
     $('#AddpaymentCC').on('change', function () {
         $.get('/data/local-setting/getsetting', function (setting) {
             if ($('#AddpaymentCC').val() == 1) {
-                $('#Total').html(parseFloat($('#totalPrice').val()) + parseFloat($(
+                $('#Total').val(parseFloat($('#totalPrice').val()) + parseFloat($(
                         '#ppn')
                     .val()));
-                var CcCharge = parseFloat($('#Total').html()) * parseFloat(setting[0]
+                var CcCharge = parseFloat($('#Total').val()) * parseFloat(setting[0]
                     .setting_pos_ccCharge_mc) / 100;
-                var totalAfterCcCharge = parseFloat($('#Total').html()) + CcCharge;
+                var totalAfterCcCharge = parseFloat($('#Total').val()) + CcCharge;
 
                 $('#ccCharge').val(CcCharge);
-                $('#Total').html(totalAfterCcCharge);
+                $('#Total').val(totalAfterCcCharge);
 
 
-                $('#AddPayment').val(parseInt($('#Total').html()) - parseInt($('#Payment')
+                $('#AddPayment').val(parseInt($('#Total').val()) - parseInt($('#Payment')
                     .val()));
-                $('#Balance').val(parseInt($('#Total').html()) - parseInt($('#Payment')
+                $('#Balance').val(parseInt($('#Total').val()) - parseInt($('#Payment')
                     .val()));
             } else {
-                $('#Total').html(parseFloat($('#totalPrice').val()) + parseFloat($(
+                $('#Total').val(parseFloat($('#totalPrice').val()) + parseFloat($(
                         '#ppn')
                     .val()));
-                var CcCharge = parseFloat($('#Total').html()) * parseFloat(setting[0]
+                var CcCharge = parseFloat($('#Total').val()) * parseFloat(setting[0]
                     .setting_pos_ccCharge_visa) / 100;
-                var totalAfterCcCharge = parseFloat($('#Total').html()) + CcCharge;
+                var totalAfterCcCharge = parseFloat($('#Total').val()) + CcCharge;
 
                 $('#ccCharge').val(CcCharge);
-                $('#Total').html(totalAfterCcCharge);
+                $('#Total').val(totalAfterCcCharge);
 
-                $('#AddPayment').val(parseInt($('#Total').html()) - parseInt($('#Payment')
+                $('#AddPayment').val(parseInt($('#Total').val()) - parseInt($('#Payment')
                     .val()));
-                $('#Balance').val(parseInt($('#Total').html()) - parseInt($('#Payment')
+                $('#Balance').val(parseInt($('#Total').val()) - parseInt($('#Payment')
                     .val()));
             }
         });

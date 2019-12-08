@@ -47,9 +47,9 @@ class CheckInOut extends Model
         return $insert;
     }
 
-    public static function setUpdateCheckIn($check_in_id)
+    public static function setUpdateCheckIn($check_in_id, $check_out_time)
     {
-        $update             = DB::select('call SP_CS_CheckIn_Update(?)', [$check_in_id]);
+        $update             = DB::select('call SP_CS_CheckIn_Update(?)', [$check_in_id, $check_out_time]);
         return $update;
     }
 
