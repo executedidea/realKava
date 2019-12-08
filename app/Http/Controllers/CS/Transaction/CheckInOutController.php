@@ -62,7 +62,9 @@ class CheckInOutController extends Controller
 
     public function checkOut($check_in_id)
     {
-        CheckInOut::setUpdateCheckIn($check_in_id);
+        $check_out_time         = date('Y-m-d H:i:s');
+        CheckInOut::setUpdateCheckIn($check_in_id, $check_out_time);
+        
         return back()->with('checkedOut');
     }
 

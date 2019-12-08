@@ -26,6 +26,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/data/checkin/getcustomerdetail/{id}', 'CS\Transaction\CheckInOutController@getCheckedInCustomerDetail');
     Route::get('/data/checkin/getcustomer/{id}', 'CS\Transaction\CheckInOutController@getCheckedInCustomer');
     Route::get('/data/complaint-handling/get/{id}', 'CS\Transaction\ComplaintHandlingeController@getLicensePlate')->name('getLicensePlate');
+    Route::get('/data/promo/getpromofree/{customer_detail_id}/{promo_id}', 'POS\Transaction\CashRegisterController@getPromoFree')->name('getPromoFree');
 
     Route::get('/data/checkin/countVisitItem/{customer_detail_id}/{item_id}', 'POS\Transaction\CashRegisterController@getCustomerVisitByItemID');
     Route::get('/data/checkin/getcheckedincustomer/{customer_detail_id}', 'POS\Transaction\CashRegisterController@getCheckedInCustomer');
@@ -108,6 +109,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/pos/transaction/open-store/add', 'POS\Transaction\OpenStoreController@store')->name('storeOpenStore');
         // Cash Register
         Route::get('/pos/transaction/cash-drawer', 'POS\Transaction\CashRegisterController@index')->name('cashRegister');
+        Route::post('/pos/transaction/cash-drawer/pay/{customer_detail_id}', 'POS\Transaction\CashRegisterController@store')->name('cashRegisterStore');
         Route::get('/pos/local-setting', 'POS\LocalSettingController@index')->name('POSLocalSetting');
         Route::post('/pos/local-setting/number', 'POS\LocalSettingController@store')->name('storePOSLocalSetting');
         // Debit Credit Note

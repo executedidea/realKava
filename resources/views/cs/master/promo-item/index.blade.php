@@ -101,6 +101,7 @@
         </div>
     </div>
 </section>
+
 @endsection
 @section('modal')
 {{-- Add Modal --}}
