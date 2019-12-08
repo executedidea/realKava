@@ -2,6 +2,8 @@
 @section('css')
 <link rel="stylesheet" href="{{ asset('/modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}">
 <link rel="stylesheet" href="{{ asset('/modules/bootstrap-daterangepicker/daterangepicker.css') }}">
+<link rel="stylesheet" href="{{ asset('/modules/select2/dist/css/select2.min.css') }}">
+
 @endsection
 @section('title', 'Customer Service - KAVA')
 @section('content')
@@ -74,12 +76,18 @@
                                                 <form action="" method="get">
                                                     <div class="row justify-content-center">
                                                         <div class="form-group col-12">
-                                                            <input type="text" name="license_plate" class="form-control"
-                                                                placeholder="Search License Plate"
-                                                                id="licensePlateSearch">
+                                                            <select class="form-control" id="complaintCustomer">
+                                                                <option value="" disabled selected>Search Name or
+                                                                    License Plate</option>
+                                                                @foreach ($complaint_customer_list as $item)
+                                                                <option value="{{$item->customer_detail_id}}">
+                                                                    <b>{{ $item->customer_fullName}}</b>
+                                                                    <span
+                                                                        class="text-muted">{{ $item->customer_detail_licensePlate }}</span>
+                                                                </option>
+                                                                @endforeach
+                                                            </select>
                                                         </div>
-                                                        <button type="submit"
-                                                            class="btn btn-primary btn-block col-10">Search</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -183,48 +191,76 @@
 <script src="{{ asset('/js/cleave.min.js') }}"></script>
 <script src="{{ asset('/modules/select2/dist/js/select2.full.min.js') }}"></script>
 <script src="{{asset('js/sweetalert2.all.min.js')}}"></script>
+
 <script>
     $(document).ready(function () {
         $('#complaintHandlingDate').val('Handling Date');
         $('#complaintHandlingTargetDate').val('Target Handling');
+        $('#complaintCustomer').select2();
 
-        $('#licensePlateSearch').on('change', function () {
+        $('#complaintCustomer').on('change', function () {
+            var id = $(this).val();
+            $.get('/data/complaint-handling/getcustomer/' + id, function (cst) {
+                $('#customerName').val(cst[0].customer_fullName);
+                $('#vehicle').val(cst[0].vehicle_brand_name + ' ' + cst[0].vehicle_model_name);
+                $('#licensePlate').val(cst[0].customer_detail_licensePlate);
+            });
 
-            var licensePlateSearch = $('#licensePlateSearch').val();;
-            // $('.checkitem:checked').each(function () {
-            //     licensePlateSearch.push($(this).val());
-            // });
-            if (licensePlateSearch.length == 0) {
-                Swal.fire(
-                    '',
-                    'Please input License Plate!',
-                    'warning'
-                )
-            } else {
-                // var strIds = id.join(",");
-
-                $.ajax({
-                    url: "{{ route('complaintHandlingTransaction') }}",
-                    type: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                            'content')
-                    },
-                    data: 'id=',
-                    success: function (data) {
-                        if (data['status'] == true) {
-                            console.log(data);
-                            $('#customerName').val(data['licensePlate'][0]
-                                .customer_name);
-                            $('#vehicle').val(data['licensePlate'][0]
-                                .vehicle);
-                            $('#licensePlate').val(data['licensePlate'][0]
-                                .license_plate);
-                        }
-                    }
-                });
-            };
         });
+
+        // $('#licensePlateSearch').on('change', function () {
+
+        //     var licensePlateSearch = $('#licensePlateSearch').val();;
+        //     // $('.checkitem:checked').each(function () {
+        //     //     licensePlateSearch.push($(this).val());
+        //     // });
+        //     if (licensePlateSearch.length == 0) {
+        //         Swal.fire(
+        //             '',
+        //             'Please input License Plate!',
+        //             'warning'
+        //         )
+        //     } else {
+        //         $.ajax({
+        //             url: "/data/vehicle/get/" + id,
+        //             type: 'GET',
+        //             headers: {
+        //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+        //                     'content')
+        //             },
+        //             data: id,
+        //             success: function (data) {
+        //                 if (data['status'] == true) {
+        //                     console.log(data);
+        //                     $('#editVehicleCategory option[value="' + data['vehicle'][0]
+        //                         .vehicle_category_id + '"]').prop('selected',
+        //                         'selected');
+        //                     $('#editVehicleCategory').selectric('refresh');
+        //                     $('#editVehicleBrand').val(data['vehicle'][0]
+        //                         .vehicle_brand_name);
+        //                     $('#editVehicleBrandID').val(data['vehicle'][0]
+        //                         .vehicle_brand_id);
+        //                     $('#editVehicleModel').val(data['vehicle'][0]
+        //                         .vehicle_model_name);
+        //                     $('#editVehicleModelID').val(data['vehicle'][0]
+        //                         .vehicle_model_id);
+        //                     $('#editVehicleSize option[value="' + data['vehicle'][0]
+        //                         .vehicle_size_id + '"]').prop('selected',
+        //                         'selected');
+        //                     $('#editVehicleSize').selectric('refresh');
+
+        //                     $('#editModal').modal('show');
+
+        //                 } else {
+        //                     alert('Whoops Something went wrong!!');
+        //                 }
+        //             },
+        //             error: function (data) {
+        //                 alert(data.responseText);
+        //             }
+        //         });
+        //     };
+        // });
 
     });
 

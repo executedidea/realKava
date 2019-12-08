@@ -25,7 +25,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/data/promo/get', 'POS\Transaction\CashRegisterController@getTodaysPromo')->name('getTodaysPromo');
     Route::get('/data/checkin/getcustomerdetail/{id}', 'CS\Transaction\CheckInOutController@getCheckedInCustomerDetail');
     Route::get('/data/checkin/getcustomer/{id}', 'CS\Transaction\CheckInOutController@getCheckedInCustomer');
-    Route::get('/data/complaint-handling/get/{id}', 'CS\Transaction\ComplaintHandlingeController@getLicensePlate')->name('getLicensePlate');
+    Route::get('/data/complaint-handling/getcustomer/{id}', 'CS\Transaction\ComplaintHandlingController@getComplaintCustomer')->name('getComplaintCustomer');
 
     Route::get('/data/checkin/countVisitItem/{customer_detail_id}/{item_id}', 'POS\Transaction\CashRegisterController@getCustomerVisitByItemID');
     Route::get('/data/checkin/getcheckedincustomer/{customer_detail_id}', 'POS\Transaction\CashRegisterController@getCheckedInCustomer');

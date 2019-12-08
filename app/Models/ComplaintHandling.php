@@ -21,33 +21,16 @@ class ComplaintHandling extends Model
         return $complaint_handling;
     }
 
-    public static function getLicensePlate($customer_detail_licensePlate)
+    public static function getCustomerLicenseList($outlet_id)
     {
-        $licensePlate    = DB::select('call SP_CustomerVehicleLicense_ByLicensePlate_Select(?)', [$customer_detail_licensePlate]);
-        return $licensePlate;
+        $license_plate    = DB::select('call SP_CustomerLicenseList_ByOutletID_Select(?)', [$outlet_id]);
+        return $license_plate;
     }
 
-    public static function setFeedback($feedback_category_id, $feedback_category_name, $feedback_type_id, $feedback_type_name)
+    public static function getCustomerVehicleLicenseByLicense($customer_detail_licensePlate, $outlet_id)
     {
-        $set_feedback                = DB::select('call SP_CS_Five_FeedbackList_Insert(?,?,?,?)', [$feedback_category_id, $feedback_category_name, $feedback_type_id, $feedback_type_name]);
-        return $set_feedback;
+        $license_plate    = DB::select('call SP_CustomerVehicleLicense_ByLicensePlate_Select(?,?)', [$customer_detail_licensePlate, $outlet_id]);
+        return $license_plate;
     }
 
-    public static function setUpdateFeedback($feedback_category_id, $feedback_category_name, $feedback_type_name)
-    {
-        $set_update_feedback                = DB::select('call SP_CS_Five_FeedbackList_Update(?,?,?)', [$feedback_category_id, $feedback_category_name, $feedback_type_name]);
-        return $set_update_feedback;
-    }
-    
-    public static function getFeedbackByID($feedback_category_id)
-    {
-        $feedback       = DB::select('call SP_CS_FeedbackList_ByID_Select(?)', [$feedback_category_id]);
-        return $feedback;
-    }
-
-    public static function setDeleteFeedback($feedback_category_id)
-    {
-        $delete                = DB::select('call SP_CS_Five_FeedbackList_Delete(?)', [$feedback_category_id]);
-        return $delete;
-    }
 }
