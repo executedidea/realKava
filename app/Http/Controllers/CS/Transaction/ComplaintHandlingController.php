@@ -5,6 +5,8 @@ namespace App\Http\Controllers\CS\Transaction;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\ComplaintHandling;
+use App\Models\ComplaintType;
+use App\Models\Item;
 use Illuminate\Support\Facades\Auth;
 
 class ComplaintHandlingController extends Controller
@@ -20,21 +22,18 @@ class ComplaintHandlingController extends Controller
         if($request->license_plate){
             $customer_detail_licensePlate           = $request->license_plate;
             $complaint_handling                     = ComplaintHandling::getComplaintHandlingList($outlet_id);
-            return view('cs.transaction.complaint-handling.index', compact('complaint_handling'));
+            $item_list                              = Item::getAllItem($outlet_id);
+            $complaint_type_list                    = ComplaintType::getComplaintTypeList($outlet_id);
+            return view('cs.transaction.complaint-handling.index', compact('complaint_handling', 'item_list', 'complaint_type_list'));
         } else {
-            $complaint_customer_list                     = ComplaintHandling::getCustomerLicenseList($outlet_id);
+            $complaint_customer_list                = ComplaintHandling::getCustomerLicenseList($outlet_id);
             $complaint_handling                     = ComplaintHandling::getComplaintHandlingList($outlet_id);
-            return view('cs.transaction.complaint-handling.index', compact('complaint_handling','complaint_customer_list'));
+            $item_list                              = Item::getAllItem($outlet_id);
+            $complaint_type_list                    = ComplaintType::getComplaintTypeList($outlet_id);
+            return view('cs.transaction.complaint-handling.index', compact('complaint_handling','complaint_customer_list', 'item_list', 'complaint_type_list'));
         }
 
 
-    }
-
-    public function getComplaintCustomer($customer_detail_licensePlate)
-    {
-        $outlet_id                          = Auth::user()->outlet_id;
-        $complaint_customer                 = ComplaintHandling::getCustomerVehicleLicenseByLicense($customer_detail_licensePlate, $outlet_id);
-        return response()->json($complaint_customer);
     }
 
     /**
@@ -55,7 +54,47 @@ class ComplaintHandlingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+            $outlet_id              = Auth::user()->outlet_id;
+
+            if (count(ComplaintHandling::all()) <= 0) {
+                $complaint_handling_id             = 1;
+            } else {
+                $complaint_handling_lastID         = ComplaintHandling::getComplaintHandlingLastID();
+                $complaint_handling_id             = $complaint_handling_lastID[0]->complaint_handling_id + 1;
+            }
+
+            if (count(ComplaintType::all()) <= 0) {
+                $complaint_type_id             = 1;
+            } else {
+                $complaint_type_lastID         = ComplaintType::getComplaintTypeLastID();
+                $complaint_type_id             = $complaint_type_lastID[0]->complaint_type_id + 1;
+            }
+
+            $complaint_handling_date            = $request->complaint_handling_date;
+            $complaint_handling_targetDate      = $request->complaint_handling_targetDate;
+            $complaint_handling_handler         = $request->complaint_handling_handler;
+            $complaint_handling_status          = $request->complaint_handling_status;
+            $complaint_handling_desc            = $request->complaint_handling_desc;
+            $complaint_handling_fee             = $request->complaint_handling_fee;
+            $customer_id                        = $request->customer_id;
+            $complaint_type_id                  = $request->complaint_type_id;
+            $item_id                            = $request->item_id;
+
+            ComplaintHandling::setComplaintHandling(
+                $complaint_handling_id, 
+                $complaint_handling_date,
+                $complaint_handling_targetDate,
+                $complaint_handling_handler,
+                $complaint_handling_status,
+                $complaint_handling_desc,
+                $complaint_handling_fee,
+                $customer_id,
+                $complaint_type_id,
+                $item_id,
+                $outlet_id
+            );
+
+            return back()->with('complaintHandlingAdded');
     }
 
     /**
@@ -101,5 +140,23 @@ class ComplaintHandlingController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getComplaintCustomer($customer_detail_licensePlate)
+    {
+        $outlet_id                          = Auth::user()->outlet_id;
+        $license_plate                      = ComplaintHandling::getCustomerVehicleLicenseByLicense($customer_detail_licensePlate, $outlet_id);
+        
+        return response()->json($license_plate);
+    }
+    
+    public function getComplaintCustomerID($customer_detail_licensePlate)
+    {
+        $outlet_id                          = Auth::user()->outlet_id;
+        $license_plate                      = ComplaintHandling::getCustomerVehicleLicenseByLicense($customer_detail_licensePlate, $outlet_id);
+        return response()->json([
+            'status'    => true,
+            'license_plate'  => $license_plate
+        ]);
     }
 }
