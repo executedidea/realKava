@@ -32,7 +32,7 @@ $(document).ready(function () {
             });
         });
     });
-
+    // PROMO CONDITION
     $('#checkedInCustomer').on('change', function () {
         var id = $(this).val();
         $('#cashDrawerForm').attr('action', '/pos/transaction/cash-drawer/pay/' + id);
@@ -48,15 +48,21 @@ $(document).ready(function () {
                         $.get('/data/promo/get', function (promo) {
                             $.each(promo, function (indexP, prm) {
                                 $.get('/data/promo/getpromofree/' + prm.promo_id + '/' + id, function (prmfree) {
-                                    if (prmfree.length <= 0) {
-                                        var promoFree = 0;
-                                    } else {
-                                        var promoFree = 1;
-                                    }
-                                    if (visit == (prm.promo_maxValue + 1)) {
+                                    console.log(Obj.item_name + ' ' + visit + 'x' + ' promo: ' + prm.promo_maxValue + ' x gratis cuci 1x' + ' code promo: ' + prm.promo_id);
+                                    if ((visit - prmfree) == prm.promo_maxValue) {
+                                        alert('gratis coy');
                                         var discPrice = parseInt(Obj.item_price) - (parseInt(prm.promo_freeValue) * 100);
                                         var disc = prm.promo_freeValue * 100;
                                         var totalPrice = Obj.item_price - (prm.promo_freeValue * Obj.item_price);
+                                        $('#customerInfo').append('<div class="form-group col-3"><input type="text" class="form-control" value="' + prm.promo_id + '"></div>');
+                                        // insert to promo_free table
+                                        // $.ajax({
+                                        //     method: 'POST',
+                                        //     url: '/pos/transaction/promo-free',
+                                        //     data: {
+                                        //         'customer_id': id
+                                        //     }
+                                        // }); 
                                     } else {
                                         var discPrice = 0;
                                         var disc = 0;
@@ -72,7 +78,7 @@ $(document).ready(function () {
             });
         });
     });
-
+    // ------------------------------
     $('#itemSelect').on('change', function () {
         var id = $(this).val();
         $('#quantity').prop('readonly', false);
@@ -80,21 +86,29 @@ $(document).ready(function () {
         $('#itemDiscount').val(0);
         $('#itemAddDiscount').val(0);
 
-        $.get('/data/promo/get', function (promo) {
-            $('#todaysPromo table tbody tr').empty();
-            $.each(promo, function (index, Obj) {
-                $('#todaysPromo table tbody').append('<tr><td>' + Obj.promo_name + '</td><td><button class="btn btn-primary btn-block use-voucher" id="useVoucher' + Obj.promo_id + '">Use</button></td></tr>');
-            });
-            $('#todaysPromo').modal({
-                show: true,
-                backdrop: "static",
-                keyboard: false
-            });
-        });
 
         $.get('/data/items/getitem/' + id, function (item) {
-            $('#itemPrice').val(item[0].item_price);
-            $('#itemTotalPrice').val($('#itemPrice').val());
+            $.get('/data/promo/getpromoitem', function (promo) {
+                $('#itemPrice').val(item[0].item_price);
+                $('#itemTotalPrice').val($('#itemPrice').val());
+                $.each(promo, function (indexP, prm) {
+                    if (prm.item_id == id) {
+                        $('#itemDiscount').val(prm.promo_freeValue * 100);
+
+                        var disc = ($('#itemPrice').val() * $('#itemDiscount').val()) / 100;
+                        var totalAfterDisc = $('#itemPrice').val() - disc;
+                        $('#itemTotalPrice').val(totalAfterDisc);
+                        $('#itemTotalDiscount').val(disc);
+                        if ($('#promoCode').length == 0) {
+                            $('#customerInfo').append('<div class="form-group col-3"><input type="text" class="form-control" id="promoCode" value="' + prm.promo_id + '"></div>');
+                        } else {
+                            $('#promoCode').val(prm.promo_id);
+                        }
+                    };
+                });
+            });
+
+
         });
         $.get('/data/cashier/getcashierbyid', function (cashier) {
             if (cashier[0].disc_percent <= 0) {
