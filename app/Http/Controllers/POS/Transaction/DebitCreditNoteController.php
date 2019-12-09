@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\POS\Transaction;
 
-use App\DebitCreditNote;
+use App\Models\DebitCreditNote;
 use App\Http\Controllers\Controller;
+use App\Models\DebitCreditNote as ModelsDebitCreditNote;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -17,8 +19,9 @@ class DebitcreditnoteController extends Controller
      */
     public function index()
     {
-        
-        return view('pos.transaction.debit-credit-note.index');
+        $outlet_id  = Auth::user()->outlet_id;
+        $dbn    = DebitCreditNote::getDebitCreditNote($outlet_id);
+        return view('pos.transaction.debit-credit-note.index', compact('dbn'));
     }
 
     /**

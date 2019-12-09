@@ -15,4 +15,11 @@ class PointOfSales_Detail extends Model
         $lastID             = DB::select('call SP_GetLastID_Select(?)', ['point_of_sales_detail_id']);
         return $lastID;
     }
+
+    public static function setInsertPOSDetail($pos_detail_id, $pos_id, $item_id, $pos_quantity, $pos_discount_percent, $pos_addDiscount_percent)
+    {
+        $insert             = DB::select('call SP_POS_CashRegister_Detail_Insert(?,?,?,?,?,?)', [$pos_detail_id, $pos_id, $item_id, $pos_quantity, $pos_discount_percent, $pos_addDiscount_percent]);
+
+        return $insert;
+    }
 }

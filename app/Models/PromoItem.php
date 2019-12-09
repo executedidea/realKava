@@ -26,4 +26,10 @@ class PromoItem extends Model
         $promo          = DB::select('call SP_POS_Promo_GetTodaysPromo_Select(?)', [$outlet_id]);
         return $promo;
     }
+
+    public static function getPromoItem($outlet_id)
+    {
+        $promo          = DB::select('call SP_POS_Promo_GetTodaysPromo_Select_Items(?)', [$outlet_id]);
+        return $promo;
+    }
 }

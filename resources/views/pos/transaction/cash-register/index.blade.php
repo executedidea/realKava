@@ -49,7 +49,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="container">
-                                <div class="row justify-content-center">
+                                <div class="row justify-content-center" id="customerInfo">
                                     <div class="form-group col-3">
                                         <input type="text" class="form-control" id="customerName" value="Customer Name"
                                             readonly>

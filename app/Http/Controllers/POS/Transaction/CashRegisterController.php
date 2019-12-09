@@ -7,6 +7,7 @@ use App\Models\CashRegister;
 use App\Models\CheckInOut;
 use App\Models\Item;
 use App\Models\PointOfSales;
+use App\Models\PointOfSales_Detail;
 use App\Models\PromoFree;
 use App\Models\PromoItem;
 use App\Models\SettingPOS;
@@ -47,6 +48,12 @@ class CashRegisterController extends Controller
             $pos_lastID         = PointOfSales::getPOSLastID();
             $pos_id             = $pos_lastID[0]->point_of_sales_id+1;
         }
+        if(count(PointOfSales_Detail::all()) == 0){
+            $pos_detail_id             = 1;
+        } else {
+            $pos_detail_lastID         = PointOfSales_Detail::getPOSDetailLastID();
+            $pos_detail_id             = $pos_detail_lastID[0]->point_of_sales_detail_id+1;
+        }
         $pos_date               = date('Y-m-d H:i:s');
         $pos_total_dpp          = $request->total_dpp;
         $pos_totalDiscount      = $request->total_discount;
@@ -74,15 +81,39 @@ class CashRegisterController extends Controller
             $bank_id           = 0;
         }
 
-        // PointOfSales::setInsertPOS($pos_id, $pos_date, $pos_total_dpp, $pos_totalDiscount, $pos_ccCharge, $pos_ppn, $pos_paymentMethod1, $pos_paymentMethod2, $pos_cardNo, $pos_paid1, $pos_paid2, $pos_change, $pos_totalPayment, $bank_id, $customer_detail_id, $outlet_id);
+        PointOfSales::setInsertPOS($pos_id, $pos_date, $pos_total_dpp, $pos_totalDiscount, $pos_ccCharge, $pos_ppn, $pos_paymentMethod1, $pos_paymentMethod2, $pos_cardNo, $pos_paid1, $pos_paid2, $pos_change, $pos_totalPayment, $bank_id, $customer_detail_id, $outlet_id);
 
         foreach($request->item as $index => $item) {
-            dump($item. ' ' . $request->item_quantity[$index] . ' ' . $request->item_discount[$index]. ' ' . $request->item_add_discount[$index]);
-        } die;
+            PointOfSales_Detail::setInsertPOSDetail($pos_detail_id, $pos_id, $item, $request->item_quantity[$index], $request->item_discount[$index], $request->item_add_discount[$index]);
+        }
 
         return back()->with('paid');
 
     }
+
+    public function storePromoFree(Request $request)
+    {
+        dd($request->all());
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function getAllItems()
     {
@@ -133,8 +164,19 @@ class CashRegisterController extends Controller
 
     public function getPromoFree($promo_id, $customer_detail_id)
     {
+        $sum = 0;
         $promo_free     = PromoFree::getPromoFreeByCustomerAndPromoID($promo_id, $customer_detail_id);
+        foreach($promo_free as $item) {
+            $sum += $item->mFree_value;
+        }
+        return response()->json($sum);
+    }
 
-        return response()->json($promo_free);
+    public function getPromoItem()
+    {
+        $outlet_id      = Auth::user()->outlet_id;
+        $promo          = PromoItem::getPromoItem($outlet_id);
+
+        return response()->json($promo);
     }
 }

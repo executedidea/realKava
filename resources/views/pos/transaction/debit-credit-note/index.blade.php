@@ -30,22 +30,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- @foreach ($cashier_list as $item) --}}
+                            @foreach ($dbn as $item)
                             <tr>
                                 <td>
-                                    {{-- <a href="#">CSR{{$item->cashier_id}}</a> --}}
+                                    <a href="#">DBN{{$item->point_of_sales_id}}</a>
                                 </td>
                                 <td>
-                                    {{-- {{$item->group_name}} --}}
+                                    {{$item->point_of_sales_date}}
                                 </td>
                                 <td>
-                                    {{-- {{$item->name}} --}}
+                                    {{$item->point_of_sales_totalPayment}}
                                 </td>
                                 <td>
-                                    {{-- {{$item->shift_code}} --}}
+                                    {{$item->point_of_sales_paymentMethod1 . ', '.$item->point_of_sales_paymentMethod2}}
                                 </td>
                             </tr>
-                            {{-- @endforeach --}}
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
