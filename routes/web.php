@@ -117,6 +117,8 @@ Route::group(['middleware' => 'auth'], function () {
         // Debit Credit Note
         Route::get('/pos/transaction/debit-credit-note', 'POS\Transaction\DebitCreditNoteController@index')->name('debitCreditNote');
         Route::post('/pos/transaction/debit-credit-note/add', 'POS\Transaction\DebitCreditNoteController@store')->name('storeDebitCreditNote');
+        // Petty Cash
+        Route::get('/pos/transaction/petty-cash', 'POS\Transaction\PettyCashController@index')->name('pettyCash');
 
 
 
