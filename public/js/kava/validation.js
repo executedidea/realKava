@@ -42,6 +42,34 @@ $('.validate-this').validate({
         agree: {
             required: true,
         },
+        complaint_handling_date: {
+            required: true,
+        },
+        complaint_handling_targetDate: {
+            required: true,
+        },
+        complaint_handling_handler: {
+            required: true,
+            minlength: 3,
+        },
+        complaint_handling_status: {
+            required: true,
+        },
+        complaint_handling_desc: {
+            required: true,
+        },
+        complaint_handling_fee: {
+            required: true,
+        },
+        complaint_type_id: {
+            required: true,
+        },
+        vehicle: {
+            required: true,
+        },
+        license_plate: {
+            required: true,
+        },
     },
     errorClass: "invalid",
     errorElement: "em"
