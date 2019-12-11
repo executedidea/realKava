@@ -86,7 +86,7 @@ $(document).ready(function () {
         $('#itemDiscount').val(0);
         $('#itemAddDiscount').val(0);
 
-
+        // PROMO ITEM CONDITION
         $.get('/data/items/getitem/' + id, function (item) {
             $.get('/data/promo/getpromoitem', function (promo) {
                 $('#itemPrice').val(item[0].item_price);
@@ -107,7 +107,6 @@ $(document).ready(function () {
                     };
                 });
             });
-
 
         });
         $.get('/data/cashier/getcashierbyid', function (cashier) {

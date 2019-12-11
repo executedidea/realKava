@@ -5,6 +5,7 @@
 @section('css')
 <link rel="stylesheet" href="{{ asset('/modules/select2/dist/css/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/kava/cs/check-in-out.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/jquery.rateyo.min.css') }}">
 @endsection
 @section('content')
 <section id="customerCheck">
@@ -204,11 +205,54 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Feedback</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="form-group col-5">
+                            <label for="keamanan">Keamanan</label>
+                            <div id="keamanan"></div>
+                        </div>
+                        <div class="form-group col-5">
+                            <label for="kebersihan">Kebersihan</label>
+                            <div id="kebersihan"></div>
+                        </div>
+                        <div class="form-group col-5">
+                            <label for="pelayanan">Pelayanan</label>
+                            <div id="pelayanan"></div>
+                        </div>
+                        <div class="form-group col-5">
+                            <label for="kualitas">Kualitas</label>
+                            <div id="kualitas"></div>
+                        </div>
+                        <div class="form-group col-10">
+                            <label for="keterangan">Keterangan</label>
+                            <textarea name="" id="keterangan" rows="50" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-block">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @section('script')
 <script src="{{ asset('/modules/select2/dist/js/select2.full.min.js') }}"></script>
 <script src="{{asset('js/sweetalert2.all.min.js')}}"></script>
-
+<script src="{{asset('js/jquery.rateyo.min.js')}}"></script>
 <script>
     $(document).ready(function () {
         $('#customerSearch').select2();
@@ -226,8 +270,8 @@
         $(document).on('click', '.customer-detail', function (e) {
             e.preventDefault();
             var id = $(this).data('id');
+
             $.get('/data/checkin/getcustomer/' + id, function (customer) {
-                console.log(customer);
                 $('#customerName').val(customer[0].customer_fullName);
                 $('#customerPhone').val(customer[0].customer_phone);
                 $('#customerPlate').val(customer[0].customer_detail_licensePlate);
@@ -258,7 +302,22 @@
                 confirmButtonText: 'Check Out',
                 reverseButtons: true
             }).then((result) => {
-                window.location = '/cs/transaction/check-in-out/checkout/' + id;
+                if (result.value) {
+                    $('#keamanan').rateYo({
+                        fullStar: true
+                    });
+                    $('#kebersihan').rateYo({
+                        fullStar: true
+                    });
+                    $('#pelayanan').rateYo({
+                        fullStar: true
+                    });
+                    $('#kualitas').rateYo({
+                        fullStar: true
+                    });
+                    $('#feedbackModal').modal('show');
+                }
+                // window.location = '/cs/transaction/check-in-out/checkout/' + id;
             })
         });
 
