@@ -1,4 +1,8 @@
 @extends('layouts.main')
+@section('meta')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
+@endsection
 @section('css')
 <link rel="stylesheet" href="{{ asset('/modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}">
 <link rel="stylesheet" href="{{ asset('/modules/bootstrap-daterangepicker/daterangepicker.css') }}">
@@ -29,6 +33,13 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
+                                <th class="th-sm text-center">
+                                    <div class="custom-checkbox custom-control">
+                                        <input type="checkbox" data-checkboxes="customers" class="custom-control-input"
+                                            name="id[]" id="checkAll" value="">
+                                        <label for="checkAll" class="custom-control-label">&nbsp;</label>
+                                    </div>
+                                </th>
                                 <th>Date</th>
                                 <th>Customer</th>
                                 <th>Type</th>
@@ -38,6 +49,16 @@
                         <tbody>
                             @foreach($complaint_handling as $item)
                             <tr>
+                                <td class="text-center">
+                                    <div class="custom-checkbox custom-control">
+                                        <input type="checkbox" data-checkboxes="rights"
+                                            class="custom-control-input checkitem" name="id[]"
+                                            id="checkbox{{$item->complaint_handling_id}}"
+                                            value="{{$item->complaint_handling_id}}">
+                                        <label for="checkbox{{$item->complaint_handling_id}}"
+                                            class="custom-control-label">&nbsp;</label>
+                                    </div>
+                                </td>
                                 <td>{{ $item->complaint_handling_date }}</td>
                                 <td>{{ $item->customer_fullName }}</td>
                                 <td>{{ $item->complaint_type_name }}</td>
@@ -72,57 +93,55 @@
                                     <div class="col-8">
                                         <div class="card">
                                             <div class="card-body">
-                                                <form action="{{route('storeComplaintHandlingTransaction')}}"
-                                                    method="post" class="validate-this">
-                                                    <div class="row justify-content-center">
-                                                        <div class="form-group col-12">
-                                                            <select class="form-control" id="complaintCustomer">
-                                                                <option value="" readonly selected>Search Name or
-                                                                    License Plate</option>
-                                                                @foreach ($complaint_customer_list as $item)
-                                                                <option value="{{$item->customer_detail_id}}">
-                                                                    <b>{{ $item->customer_fullName}}</b>
-                                                                    <span
-                                                                        class="text-muted">{{ $item->customer_detail_licensePlate }}
-                                                                    </span>
-                                                                </option>
-                                                                @endforeach
-                                                            </select>
-
-                                                        </div>
+                                                <div class="row justify-content-center">
+                                                    <div class="form-group col-12">
+                                                        <select class="form-control" id="complaintCustomer">
+                                                            <option value="" readonly selected>Search Name or
+                                                                License Plate</option>
+                                                            @foreach ($complaint_customer_list as $item)
+                                                            <option value="{{$item->customer_detail_id}}">
+                                                                <b>{{ $item->customer_fullName}}</b>
+                                                                <span
+                                                                    class="text-muted">{{ $item->customer_detail_licensePlate }}
+                                                                </span>
+                                                            </option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
-                                                </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row justify-content-center">
-                                <div class="form-group col-4">
-                                    <input type="text" class="form-control" id="customerName" value=""
-                                        placeholder="Customer Name" name="customer_name" disabled>
-                                    <input type="type" name="customer_id" value="" id="customerID" disabled>
-
-                                </div>
-                                <div class="form-group col-4">
-                                    <input type="text" class="form-control" id="vehicle" placeholder="Vehicle"
-                                        name="vehicle" disabled>
-                                    <input type="type" name="vehicle_brand_id" value="" id="vehicleBrandID" disabled>
-                                    <input type="type" name="vehicle_model_id" value="" id="vehicleModelID" disabled>
-
-                                </div>
-                                <div class="form-group col-4">
-                                    <input type="text" class="form-control" id="licensePlate"
-                                        placeholder="License Plate" name="license_plate" disabled>
-                                    <input type="type" name="customer_detail_id" value="" id="customerDetailID"
-                                        disabled>
-
-                                </div>
-                            </div>
-
                             <form action="{{ route('storeComplaintHandlingTransaction') }}" method="post"
-                                id="complaintHandlingForm">
+                                id="complaintHandlingForm" class="validate-this">
                                 @csrf
+                                <div class="row justify-content-center">
+                                    <div class="form-group col-4">
+                                        <input type="text" class="form-control" id="customerName" value=""
+                                            placeholder="Customer Name" name="customer_name" readonly>
+                                        <input type="hidden" name="customer_id" value="" id="customerID" readonly>
+
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <input type="text" class="form-control" id="vehicle" placeholder="Vehicle"
+                                            name="vehicle" readonly>
+                                        <input type="hidden" name="vehicle_brand_id" value="" id="vehicleBrandID"
+                                            readonly>
+                                        <input type="hidden" name="vehicle_model_id" value="" id="vehicleModelID"
+                                            readonly>
+
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <input type="text" class="form-control" id="licensePlate"
+                                            placeholder="License Plate" name="license_plate" readonly>
+                                        <input type="hidden" name="customer_detail_id" value="" id="customerDetailID"
+                                            readonly>
+
+                                    </div>
+                                </div>
+
                                 <div class="row justify-content-center range-form">
                                     <div class="form-group col-3">
                                         <input type="text" name="complaint_handling_date"
@@ -142,7 +161,7 @@
 
                                 <div class="row justify-content-center range-form">
                                     <div class="form-group col-6">
-                                        <select name="complaint_type" class="form-control" id="complaintType">
+                                        <select name="complaint_type_id" class="form-control" id="complaintType">
                                             <option disabled selected>Complaint Type</option>
                                             @foreach ($complaint_type_list as $item)
                                             <option value="{{$item->complaint_type_id}}">{{$item->complaint_type_name}}
@@ -165,7 +184,7 @@
 
                                 <div class="row justify-content-center range-form">
                                     <div class="form-group col-6">
-                                        <select name="item_name" class="form-control" id="itemName">
+                                        <select name="item_id" class="form-control" id="itemName">
                                             <option disabled selected>Service/Product Item</option>
                                             @foreach ($item_list as $item)
                                             <option value="{{$item->item_id}}">{{$item->item_name}}</option>
@@ -200,6 +219,123 @@
         </div>
     </div>
 </div>
+{{-- Edit Complaint Handling --}}
+<div class="modal fade" id="editComplaintHandlingModal" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Complaint Handling</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form method="post" id="editComplaintHandlingForm" class="validate-this">
+                                @csrf
+                                <div class="row justify-content-center">
+                                    <div class="form-group col-4">
+                                        <input type="text" class="form-control" id="editCustomerName" value=""
+                                            placeholder="Customer Name" name="customer_fullName" readonly>
+                                        <input type="hidden" name="customer_id" value="" id="editCustomerID" readonly>
+
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <input type="text" class="form-control" id="vehicle" placeholder="Vehicle"
+                                            name="vehicle" readonly>
+                                        <input type="hidden" name="vehicle_brand_id" value="" id="editVehicleBrandID"
+                                            readonly>
+                                        <input type="hidden" name="vehicle_model_id" value="" id="editVehicleModelID"
+                                            readonly>
+
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <input type="text" class="form-control" id="editLicensePlate"
+                                            placeholder="License Plate" name="license_plate" readonly>
+                                        <input type="hidden" name="customer_detail_id" value=""
+                                            id="editCustomerDetailID" readonly>
+
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-center range-form">
+                                    <div class="form-group col-3">
+                                        <input type="text" name="complaint_handling_date"
+                                            class="form-control datepicker" id="editComplaintHandlingDate" value=""
+                                            placeholder="Date">
+                                    </div>
+                                    <div class="form-group col-3">
+                                        <input type="text" name="complaint_handling_targetDate"
+                                            class="form-control datepicker" id="editComplaintHandlingTargetDate"
+                                            placeholder="Target Handling">
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <input type="text" name="complaint_handling_handler" class="form-control"
+                                            id="editComplaintHandlingHandler" placeholder="Handler">
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-center range-form">
+                                    <div class="form-group col-6">
+                                        <select name="complaint_type_id" class="form-control" id="editComplaintType">
+                                            <option disabled selected>Complaint Type</option>
+                                            @foreach ($complaint_type_list as $item)editItemId
+                                            <option value="{{$item->complaint_type_id}}">{{$item->complaint_type_name}}
+                                            </option>
+                                            @endforeach
+
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <select name="complaint_handling_status" class="form-control"
+                                            id="editComplaintHandlingStatus">
+                                            <option disabled selected>Status Handling</option>
+                                            <option value="progress">Progress</option>
+                                            <option value="pending">Pending</option>
+                                            <option value="done">Done</option>
+                                            <option value="decline">Decline</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-center range-form">
+                                    <div class="form-group col-6">
+                                        <select name="item_id" class="form-control" id="editItemName">
+                                            <option disabled selected>Service/Product Item</option>
+                                            @foreach ($item_list as $item)
+                                            <option value="{{$item->item_id}}">{{$item->item_name}}</option>
+                                            @endforeach
+
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <input type="text" name="complaint_handling_fee" class="form-control"
+                                            id="editComplaintHandlingFee" placeholder="Handling Fee">
+                                    </div>
+                                </div>
+
+
+                                <div class="row justify-content-center">
+                                    <div class="form-group col-12">
+                                        <textarea class="form-control" name="complaint_handling_desc"
+                                            id="editComplaintHandlingDesc" placeholder="Description"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-center">
+                                    <div class="form-group col-12">
+                                        <button type="submit" class="btn btn-primary btn-block">Save</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 @section('script')
@@ -209,105 +345,5 @@
 <script src="{{ asset('/js/cleave.min.js') }}"></script>
 <script src="{{ asset('/modules/select2/dist/js/select2.full.min.js') }}"></script>
 <script src="{{asset('js/sweetalert2.all.min.js')}}"></script>
-
-<script>
-    $(document).ready(function () {
-        $('#complaintHandlingDate').val('Handling Date');
-        $('#complaintHandlingTargetDate').val('Target Handling');
-        $('#complaintCustomer').select2();
-        $('#itemName').select2();
-
-        $('#complaintCustomer').on('change', function () {
-            var id = $(this).val();
-            $.get('/data/complaint-handling/getcustomer/' + id, function (data) {
-                $('#customerName').val(data[0].customer_fullName);
-                $('#vehicle').val(data[0].vehicle_brand_name + ' ' + data[0]
-                    .vehicle_model_name);
-                $('#licensePlate').val(data[0].customer_detail_licensePlate);
-            });
-
-        });
-
-        $.ajax({
-            url: '/data/complaint-handling/getcustomerid/' + id,
-            type: 'GET',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                    'content')
-            },
-            data: id,
-            success: function (data) {
-                if (data['status'] == true) {
-                    console.log(data);
-                    $('#customerID').val(data['license_plate'][0].customer_id);
-                    $('#vehicleModelID').val(data['license_plate'][0].vehicle_model_id);
-                    $('#vehicleBrandID').val(data['license_plate'][0].vehicle_brand_id);
-                    $('#customerDetailID').val(cst[0].customer_detail_id);
-
-                } else {
-                    alert('Whoops Something went wrong!!');
-                }
-            },
-            error: function (data) {
-                alert(data.responseText);
-            }
-        });
-
-        // $('#licensePlateSearch').on('change', function () {
-
-        //     var licensePlateSearch = $('#licensePlateSearch').val();;
-        //     // $('.checkitem:checked').each(function () {
-        //     //     licensePlateSearch.push($(this).val());
-        //     // });
-        //     if (licensePlateSearch.length == 0) {
-        //         Swal.fire(
-        //             '',
-        //             'Please input License Plate!',
-        //             'warning'
-        //         )
-        //     } else {
-        //         $.ajax({
-        //             url: "/data/vehicle/get/" + id,
-        //             type: 'GET',
-        //             headers: {
-        //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-        //                     'content')
-        //             },
-        //             data: id,
-        //             success: function (data) {
-        //                 if (data['status'] == true) {
-        //                     console.log(data);
-        //                     $('#editVehicleCategory option[value="' + data['vehicle'][0]
-        //                         .vehicle_category_id + '"]').prop('selected',
-        //                         'selected');
-        //                     $('#editVehicleCategory').selectric('refresh');
-        //                     $('#editVehicleBrand').val(data['vehicle'][0]
-        //                         .vehicle_brand_name);
-        //                     $('#editVehicleBrandID').val(data['vehicle'][0]
-        //                         .vehicle_brand_id);
-        //                     $('#editVehicleModel').val(data['vehicle'][0]
-        //                         .vehicle_model_name);
-        //                     $('#editVehicleModelID').val(data['vehicle'][0]
-        //                         .vehicle_model_id);
-        //                     $('#editVehicleSize option[value="' + data['vehicle'][0]
-        //                         .vehicle_size_id + '"]').prop('selected',
-        //                         'selected');
-        //                     $('#editVehicleSize').selectric('refresh');
-
-        //                     $('#editModal').modal('show');
-
-        //                 } else {
-        //                     alert('Whoops Something went wrong!!');
-        //                 }
-        //             },
-        //             error: function (data) {
-        //                 alert(data.responseText);
-        //             }
-        //         });
-        //     };
-        // });
-
-    });
-
-</script>
+<script src="{{ asset('/js/kava/cs/complaint-handling/index.js') }}"></script>
 @endsection
