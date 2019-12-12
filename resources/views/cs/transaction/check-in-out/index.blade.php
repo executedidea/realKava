@@ -209,43 +209,57 @@
 <div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModal"
     aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Feedback</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="form-group col-5">
-                            <label for="keamanan">Keamanan</label>
-                            <div id="keamanan"></div>
-                        </div>
-                        <div class="form-group col-5">
-                            <label for="kebersihan">Kebersihan</label>
-                            <div id="kebersihan"></div>
-                        </div>
-                        <div class="form-group col-5">
-                            <label for="pelayanan">Pelayanan</label>
-                            <div id="pelayanan"></div>
-                        </div>
-                        <div class="form-group col-5">
-                            <label for="kualitas">Kualitas</label>
-                            <div id="kualitas"></div>
-                        </div>
-                        <div class="form-group col-10">
-                            <label for="keterangan">Keterangan</label>
-                            <textarea name="" id="keterangan" rows="50" class="form-control"></textarea>
+        <form method="post" id="feedbackForm">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Feedback</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="form-group col-5">
+                                <label for="keamanan">Keamanan</label>
+                                <div id="keamanan"></div>
+                                <input type="hidden" name="keamanan" id="keamananRating" value="">
+                            </div>
+                            <div class="form-group col-5">
+                                <label for="kebersihan">Kebersihan</label>
+                                <div id="kebersihan"></div>
+                                <input type="hidden" name="kebersihan" id="kebersihanRating" value="">
+
+                            </div>
+                            <div class="form-group col-5">
+                                <label for="pelayanan">Pelayanan</label>
+                                <div id="pelayanan"></div>
+                                <input type="hidden" name="pelayanan" id="pelayananRating" value="">
+                            </div>
+                            <div class="form-group col-5">
+                                <label for="kualitas">Kualitas</label>
+                                <div id="kualitas"></div>
+                                <input type="hidden" name="kualitas" id="kualitasRating" value="">
+                            </div>
+                            <div class="form-group col-5">
+                                <label for="kenyamanan">Kenyamanan</label>
+                                <div id="kenyamanan"></div>
+                                <input type="hidden" name="kenyamanan" id="kenyamananRating" value="">
+
+                            </div>
+                            <div class="form-group col-10">
+                                <label for="keterangan">Keterangan</label>
+                                <textarea name="keterangan" id="keterangan" rows="50" class="form-control"></textarea>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-block">Save</button>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-block">Save</button>
-            </div>
-        </div>
+        </form>
     </div>
 </div>
 @endsection
@@ -304,20 +318,39 @@
             }).then((result) => {
                 if (result.value) {
                     $('#keamanan').rateYo({
-                        fullStar: true
+                        fullStar: true,
+                        onSet: function (rating) {
+                            $('#keamananRating').val(rating);
+                        }
                     });
                     $('#kebersihan').rateYo({
-                        fullStar: true
+                        fullStar: true,
+                        onSet: function (rating) {
+                            $('#kebersihanRating').val(rating);
+                        }
                     });
                     $('#pelayanan').rateYo({
-                        fullStar: true
+                        fullStar: true,
+                        onSet: function (rating) {
+                            $('#pelayananRating').val(rating);
+                        }
                     });
                     $('#kualitas').rateYo({
-                        fullStar: true
+                        fullStar: true,
+                        onSet: function (rating) {
+                            $('#kualitasRating').val(rating);
+                        }
                     });
+                    $('#kenyamanan').rateYo({
+                        fullStar: true,
+                        onSet: function (rating) {
+                            $('#kenyamananRating').val(rating);
+                        }
+                    });
+                    $('#feedbackForm').attr('action', '/cs/transaction/check-in-out/checkout/' +
+                        id);
                     $('#feedbackModal').modal('show');
                 }
-                // window.location = '/cs/transaction/check-in-out/checkout/' + id;
             })
         });
 
