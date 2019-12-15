@@ -5,6 +5,7 @@
 @section('css')
 <link rel="stylesheet" href="{{ asset('/modules/select2/dist/css/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/kava/cs/check-in-out.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/jquery.rateyo.min.css') }}">
 @endsection
 @section('content')
 <section id="customerCheck">
@@ -204,11 +205,68 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <form method="post" id="feedbackForm">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Feedback</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="form-group col-5">
+                                <label for="keamanan">Keamanan</label>
+                                <div id="keamanan"></div>
+                                <input type="hidden" name="keamanan" id="keamananRating" value="">
+                            </div>
+                            <div class="form-group col-5">
+                                <label for="kebersihan">Kebersihan</label>
+                                <div id="kebersihan"></div>
+                                <input type="hidden" name="kebersihan" id="kebersihanRating" value="">
+
+                            </div>
+                            <div class="form-group col-5">
+                                <label for="pelayanan">Pelayanan</label>
+                                <div id="pelayanan"></div>
+                                <input type="hidden" name="pelayanan" id="pelayananRating" value="">
+                            </div>
+                            <div class="form-group col-5">
+                                <label for="kualitas">Kualitas</label>
+                                <div id="kualitas"></div>
+                                <input type="hidden" name="kualitas" id="kualitasRating" value="">
+                            </div>
+                            <div class="form-group col-5">
+                                <label for="kenyamanan">Kenyamanan</label>
+                                <div id="kenyamanan"></div>
+                                <input type="hidden" name="kenyamanan" id="kenyamananRating" value="">
+
+                            </div>
+                            <div class="form-group col-10">
+                                <label for="keterangan">Keterangan</label>
+                                <textarea name="keterangan" id="keterangan" rows="50" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-block">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 @endsection
 @section('script')
 <script src="{{ asset('/modules/select2/dist/js/select2.full.min.js') }}"></script>
 <script src="{{asset('js/sweetalert2.all.min.js')}}"></script>
-
+<script src="{{asset('js/jquery.rateyo.min.js')}}"></script>
 <script>
     $(document).ready(function () {
         $('#customerSearch').select2();
@@ -226,8 +284,8 @@
         $(document).on('click', '.customer-detail', function (e) {
             e.preventDefault();
             var id = $(this).data('id');
+
             $.get('/data/checkin/getcustomer/' + id, function (customer) {
-                console.log(customer);
                 $('#customerName').val(customer[0].customer_fullName);
                 $('#customerPhone').val(customer[0].customer_phone);
                 $('#customerPlate').val(customer[0].customer_detail_licensePlate);
@@ -258,7 +316,41 @@
                 confirmButtonText: 'Check Out',
                 reverseButtons: true
             }).then((result) => {
-                window.location = '/cs/transaction/check-in-out/checkout/' + id;
+                if (result.value) {
+                    $('#keamanan').rateYo({
+                        fullStar: true,
+                        onSet: function (rating) {
+                            $('#keamananRating').val(rating);
+                        }
+                    });
+                    $('#kebersihan').rateYo({
+                        fullStar: true,
+                        onSet: function (rating) {
+                            $('#kebersihanRating').val(rating);
+                        }
+                    });
+                    $('#pelayanan').rateYo({
+                        fullStar: true,
+                        onSet: function (rating) {
+                            $('#pelayananRating').val(rating);
+                        }
+                    });
+                    $('#kualitas').rateYo({
+                        fullStar: true,
+                        onSet: function (rating) {
+                            $('#kualitasRating').val(rating);
+                        }
+                    });
+                    $('#kenyamanan').rateYo({
+                        fullStar: true,
+                        onSet: function (rating) {
+                            $('#kenyamananRating').val(rating);
+                        }
+                    });
+                    $('#feedbackForm').attr('action', '/cs/transaction/check-in-out/checkout/' +
+                        id);
+                    $('#feedbackModal').modal('show');
+                }
             })
         });
 

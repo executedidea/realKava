@@ -87,7 +87,7 @@ Route::group(['middleware' => 'auth'], function () {
         // Check In
         Route::get('/cs/transaction/check-in-out', 'CS\Transaction\CheckInOutController@index')->name('checkInOut');
         Route::post('/cs/transaction/check-in-out/checkin', 'CS\Transaction\CheckInOutController@store')->name('checkIn');
-        Route::get('/cs/transaction/check-in-out/checkout/{id}', 'CS\Transaction\CheckInOutController@checkOut')->name('checkOut');
+        Route::post('/cs/transaction/check-in-out/checkout/{id}', 'CS\Transaction\CheckInOutController@checkOut')->name('checkOut');
         // Membership
         Route::get('/cs/transaction/membership', 'CS\Transaction\MembershipController@index')->name('membershipTransaction');
         // Promo Item
