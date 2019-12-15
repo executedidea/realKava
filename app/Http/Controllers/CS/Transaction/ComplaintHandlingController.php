@@ -146,9 +146,6 @@ class ComplaintHandlingController extends Controller
     public function update(Request $request, $complaint_handling_id)
     {
         $validator                     = Validator::make($request->all(), [
-            'customer_name'                     => 'required',
-            'vehicle'                           => 'required',
-            'license_plate'                     => 'required',
             'complaint_handling_date'           => 'required',
             'complaint_handling_targetDate'     => 'required',
             'complaint_handling_handler'        => 'required',
@@ -168,7 +165,6 @@ class ComplaintHandlingController extends Controller
             $complaint_handling_fee             = $request->complaint_handling_fee;
             $complaint_type_id                  = $request->complaint_type_id;
             $item_id                            = $request->item_id;
-
             ComplaintHandling::setUpdateComplaintHandling(
                 $complaint_handling_id, 
                 $complaint_handling_date,

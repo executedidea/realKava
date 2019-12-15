@@ -1,7 +1,6 @@
 @extends('layouts.main')
 @section('meta')
 <meta name="csrf-token" content="{{ csrf_token() }}">
-
 @endsection
 @section('css')
 <link rel="stylesheet" href="{{ asset('/modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}">

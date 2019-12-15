@@ -39,6 +39,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/data/menu-detail-by-modul-id/{id}', 'UserManagement\GroupController@getMenuDetail')->name('menuDetailData');
     Route::get('/data/cashier/get/{id}', 'CS\Master\CashierController@getCashier')->name('getCashier');
 
+    Route::get('/data/cash-bank-out/getbankaccountnumber', 'POS\Transaction\BankOutController@getBankAccountNumberByBankID')->name('getBankAccountNumberByBankID');
+
+
 
     Route::group(['middleware' => 'UserHasNoOutlet'], function () {
         Route::get('/newuser', 'DashboardController@newUser_1');
@@ -123,9 +126,15 @@ Route::group(['middleware' => 'auth'], function () {
         // Debit Credit Note
         Route::get('/pos/transaction/debit-credit-note', 'POS\Transaction\DebitCreditNoteController@index')->name('debitCreditNote');
         Route::post('/pos/transaction/debit-credit-note/add', 'POS\Transaction\DebitCreditNoteController@store')->name('storeDebitCreditNote');
+        // Cash & Bank Out
+        Route::get('/pos/transaction/cash-bank-out', 'POS\Transaction\CashBankOutController@index')->name('cashBankOutTransaction');
         // Petty Cash
-        Route::get('/pos/transaction/petty-cash', 'POS\Transaction\PettyCashController@index')->name('pettyCash');
-
+        Route::get('/pos/transaction/cash-bank-out/petty-cash-out', 'POS\Transaction\PettyCashOutController@index')->name('pettyCashOutTransaction');
+        Route::post('/pos/transaction/cash-bank-out/petty-cash-out/add', 'POS\Transaction\PettyCashOutController@store')->name('storePettyCashOutTransaction');
+        Route::post('/pos/transaction/petty-cash/{id}/edit', 'POS\Transaction\PettyCashController@update')->name('updatePettyCashTransaction');
+        Route::delete('/pos/transaction/petty-cash/delete', 'POS\Transaction\PettyCashController@destroy')->name('destroyPettyCashTransaction');
+        // Bank Out
+        Route::get('/pos/transaction/cash-bank-out/bank-out', 'POS\Transaction\BankOutController@index')->name('bankOutTransaction');
 
 
 
