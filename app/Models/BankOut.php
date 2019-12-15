@@ -21,4 +21,10 @@ class BankOut extends Model
         $bank_account_number          = DB::select('call SP_POS_BankAccountNumber_ByBankID_Select(?,?)', [$bank_id, $outlet_id]);
         return $bank_account_number;
     }
+
+    public static function getBankAccountBeginingBalanceByBankAccountID($bank_account_id, $outlet_id)
+    {
+        $bank_account_beginingBalance          = DB::select('call SP_POS_BankAccountBeginingBalance_ByBankAccountID_Select(?,?)', [$bank_account_id, $outlet_id]);
+        return $bank_account_beginingBalance;
+    }
 }
