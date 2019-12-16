@@ -11,7 +11,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-12 col-md-8">
+        <div class="col-12 col-md-10">
             <div class="card">
                 <div class="card-header">
                     <h4>Pembelian</h4>
@@ -42,29 +42,27 @@
                         </div>
                     </div>
             </div>
-        </div>
-        <div class="col-12 col-md-12">
-
             <div class="card">
                 <div class="card-header">
-                    <div class="col-9">
-                        <h4>Pembayaran</h4>
-                    </div>
-                    <div class="col-3 text-right">
-                        <label class="custom-switch mt-2">
-                            <input type="checkbox" value="1" name="use_bank" class="custom-switch-input" id="useBank">
-                            <span class="custom-switch-indicator"></span>
-                            <span class="custom-switch-description">Use Bank</span>
-                        </label>
+                    <h4>Pembayaran</h4>
+                    <div class="form-group col-3">
+                        <div class="form-group">
+                            <label class="custom-switch mt-2">
+                                <input type="checkbox" value="1" name="promo_all_item" class="custom-switch-input"
+                                    id="allItem">
+                                <span class="custom-switch-indicator"></span>
+                                <span class="custom-switch-description">All Items</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="form-group col-3">
+                        <div class="form-group col-4">
                             <input type="text" name="petty_cash_detail_date" class="form-control datepicker"
                                 id="pettyCashDetailDate" placeholder="Date">
                         </div>
-                        <div class="form-group text-center col-3">
+                        <div class="form-group text-center col-4">
                             <select id="bankName" name="bank_name" class="form-control bank-name">
                                 <option disabled selected>Select Bank</option>
                                 @foreach ($bank_list as $item)
@@ -73,16 +71,11 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group text-center col-3">
+                        <div class="form-group text-center col-4">
                             <select name="bank_account_number" class="form-control bank-account-number"
                                 id="bankAccountNumber" disabled required>
                                 <option disabled selected>Select Account Number</option>
                             </select>
-                        </div>
-                        <div class="form-group text-center col-3">
-                            <input type="text" name="bank_account_openingBalanced" id="bankAccountOpeningBalanced"
-                                class="form-control text-center bank-account-opening-balanced" value=""
-                                placeholder="Saldo" readonly>
                         </div>
                     </div>
                     <div class="row">
@@ -108,6 +101,8 @@
                             <input type="text" name="petty_cash_detail_amount" id="pettyCashDetailAmount"
                                 class="form-control" placeholder="Jumlah Bayar">
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="form-group col-12">
                             <label>Deskripsi</label>
                             <textarea class="form-control" name="petty_cash_detail_desc"></textarea>
