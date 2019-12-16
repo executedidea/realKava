@@ -39,8 +39,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/data/menu-detail-by-modul-id/{id}', 'UserManagement\GroupController@getMenuDetail')->name('menuDetailData');
     Route::get('/data/cashier/get/{id}', 'CS\Master\CashierController@getCashier')->name('getCashier');
 
-    Route::get('/data/cash-bank-out/getbankaccountnumber', 'POS\Transaction\CashBankOutController@getBankAccountNumberByBankID')->name('getBankAccountNumberByBankID');
-    Route::get('/data/cash-bank-out/getbankaccountbeginingbalance', 'POS\Transaction\CashBankOutController@getBankAccountBeginingBalanceByBankAccountID')->name('getBankAccountBeginingBalanceByBankAccountID');
+    Route::get('/data/cash-bank-out/getbankaccountnumber', 'POS\Transaction\BankOutController@getBankAccountNumberByBankID')->name('getBankAccountNumberByBankID');
+
 
 
     Route::group(['middleware' => 'UserHasNoOutlet'], function () {

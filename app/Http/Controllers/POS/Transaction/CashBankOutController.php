@@ -55,12 +55,4 @@ class CashBankOutController extends Controller
         $bank_account_number                  = BankOut::getBankAccountNumberByBankID($bank_id, $outlet_id);
         return response()->json($bank_account_number);
     }
-
-    public function getBankAccountBeginingBalanceByBankAccountID(Request $request)
-    {
-        $outlet_id                            = Auth::user()->outlet_id;
-        $bank_account_id                      = $request->bank_account_id;
-        $bank_account_beginingBalance         = BankOut::getBankAccountBeginingBalanceByBankAccountID($bank_account_id, $outlet_id);
-        return response()->json($bank_account_beginingBalance);
-    }
 }
