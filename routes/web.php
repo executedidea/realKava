@@ -39,8 +39,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/data/menu-detail-by-modul-id/{id}', 'UserManagement\GroupController@getMenuDetail')->name('menuDetailData');
     Route::get('/data/cashier/get/{id}', 'CS\Master\CashierController@getCashier')->name('getCashier');
 
-    Route::get('/data/cash-bank-out/getbankaccountnumber', 'POS\Transaction\BankOutController@getBankAccountNumberByBankID')->name('getBankAccountNumberByBankID');
-
+    Route::get('/data/cash-bank-out/getbankaccountnumber', 'POS\Transaction\CashBankOutController@getBankAccountNumberByBankID')->name('getBankAccountNumberByBankID');
+    Route::get('/data/cash-bank-out/getbankaccountbeginingbalance', 'POS\Transaction\CashBankOutController@getBankAccountBeginingBalanceByBankAccountID')->name('getBankAccountBeginingBalanceByBankAccountID');
 
 
     Route::group(['middleware' => 'UserHasNoOutlet'], function () {
@@ -87,7 +87,7 @@ Route::group(['middleware' => 'auth'], function () {
         // Check In
         Route::get('/cs/transaction/check-in-out', 'CS\Transaction\CheckInOutController@index')->name('checkInOut');
         Route::post('/cs/transaction/check-in-out/checkin', 'CS\Transaction\CheckInOutController@store')->name('checkIn');
-        Route::get('/cs/transaction/check-in-out/checkout/{id}', 'CS\Transaction\CheckInOutController@checkOut')->name('checkOut');
+        Route::post('/cs/transaction/check-in-out/checkout/{id}', 'CS\Transaction\CheckInOutController@checkOut')->name('checkOut');
         // Membership
         Route::get('/cs/transaction/membership', 'CS\Transaction\MembershipController@index')->name('membershipTransaction');
         // Promo Item
