@@ -16,9 +16,9 @@ class ComplaintType extends Model
         return $last_id;
     }
 
-    public static function getComplaintTypeList($outlet_id)
+    public static function getComplaintTypeList()
     {
-        $complaint_type_list                = DB::select('call SP_CS_ComplaintType_Select(?)', [$outlet_id]);
+        $complaint_type_list                = DB::select('call SP_CS_ComplaintType_Select()');
         return $complaint_type_list;
     }
 

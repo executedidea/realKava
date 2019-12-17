@@ -27,6 +27,12 @@ class Feedback extends Model
         return $feedback;
     }
 
+    public static function getFeedbackLastID()
+    {
+        $lastID             = DB::select('call SP_GetLastID_Select(?)', ['feedback_id']);
+        return $lastID;
+    }
+
     public static function setFeedback($feedback_category_id, $feedback_category_name, $feedback_type_id, $feedback_type_name)
     {
         $set_feedback                = DB::select('call SP_CS_Five_FeedbackList_Insert(?,?,?,?)', [$feedback_category_id, $feedback_category_name, $feedback_type_id, $feedback_type_name]);
@@ -50,4 +56,51 @@ class Feedback extends Model
         $delete                = DB::select('call SP_CS_Five_FeedbackList_Delete(?)', [$feedback_category_id]);
         return $delete;
     }
+
+    public static function setInsertFeedback($feedback_id, $feedback_category, $check_in_id, $feedback_notes, $feedback_rate, $feedback_value, $outlet_id)
+    {
+        $insert                = DB::select('call SP_CheckOut_Feedback_Insert(?,?,?,?,?,?,?)', [$feedback_id, $feedback_category, $check_in_id, $feedback_notes, $feedback_rate, $feedback_value, $outlet_id]);
+        return $insert;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

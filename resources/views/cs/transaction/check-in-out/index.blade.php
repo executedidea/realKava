@@ -221,35 +221,19 @@
                 <div class="modal-body">
                     <div class="container">
                         <div class="row justify-content-center">
+                            @foreach ($complaint_type as $item)
                             <div class="form-group col-5">
-                                <label for="keamanan">Keamanan</label>
-                                <div id="keamanan"></div>
-                                <input type="hidden" name="keamanan" id="keamananRating" value="">
+                                <h5 for="{{$item->complaint_type_name}}"
+                                    class="font-weight-bold text-danger text-center">{{$item->complaint_type_name}}</h5>
+                                <div id="{{$item->complaint_type_name}}" class="mx-auto"></div>
+                                <input type="hidden" name="feedback_category[]"
+                                    id="{{$item->complaint_type_name}}Rating" value="">
+                                <input type="hidden" name="feedback_key[]" id="{{$item->complaint_type_name}}Key"
+                                    value="{{$item->complaint_type_name}}">
                             </div>
-                            <div class="form-group col-5">
-                                <label for="kebersihan">Kebersihan</label>
-                                <div id="kebersihan"></div>
-                                <input type="hidden" name="kebersihan" id="kebersihanRating" value="">
-
-                            </div>
-                            <div class="form-group col-5">
-                                <label for="pelayanan">Pelayanan</label>
-                                <div id="pelayanan"></div>
-                                <input type="hidden" name="pelayanan" id="pelayananRating" value="">
-                            </div>
-                            <div class="form-group col-5">
-                                <label for="kualitas">Kualitas</label>
-                                <div id="kualitas"></div>
-                                <input type="hidden" name="kualitas" id="kualitasRating" value="">
-                            </div>
-                            <div class="form-group col-5">
-                                <label for="kenyamanan">Kenyamanan</label>
-                                <div id="kenyamanan"></div>
-                                <input type="hidden" name="kenyamanan" id="kenyamananRating" value="">
-
-                            </div>
+                            @endforeach
                             <div class="form-group col-10">
-                                <label for="keterangan">Keterangan</label>
+                                <h5 for="keterangan">Keterangan</h5>
                                 <textarea name="keterangan" id="keterangan" rows="50" class="form-control"></textarea>
                             </div>
                         </div>

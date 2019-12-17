@@ -5,7 +5,9 @@ namespace App\Http\Controllers\CS\Transaction;
 use App\Http\Controllers\Controller;
 use App\Models\CheckInOut;
 use App\Models\CheckInOutDetail;
+use App\Models\ComplaintType;
 use App\Models\Customer_Detail;
+use App\Models\Feedback;
 use App\Models\Item;
 use DateTime;
 use Illuminate\Http\Request;
@@ -21,8 +23,9 @@ class CheckInOutController extends Controller
         $checked_in_customer    = CheckInOut::getTodayCustomer($outlet_id);
         $customer_detail        = Customer_Detail::getAllCustomerDetail($outlet_id);
         $items                  = Item::getServiceItemByOutletID($outlet_id);
+        $complaint_type         = ComplaintType::getComplaintTypeList();
 
-        return view('cs.transaction.check-in-out.index', compact('customer_detail', 'checked_in_customer', 'items'));
+        return view('cs.transaction.check-in-out.index', compact('customer_detail', 'checked_in_customer', 'items', 'complaint_type'));
     }
 
     public function store(Request $request)
@@ -62,10 +65,29 @@ class CheckInOutController extends Controller
 
     public function checkOut(Request $request, $check_in_id)
     {
-        dd($request->all());
-        $check_out_time = date('Y-m-d H:i:s');
-        CheckInOut::setUpdateCheckIn($check_in_id, $check_out_time);
-        return back()->with('checkedOut');
+        $validator              = Validator::make($request->all(), [
+            'feedback_category'          => 'required',
+        ]);
+
+        if($validator->fails()){
+            return back()->withErrors($validator);
+        } else {
+            $outlet_id = Auth::user()->outlet_id;
+            if(count(Feedback::getFeedbackLastID()) == 0){
+                $feedback_id     = 1;
+            } else {
+                $feedback_lastID = Feedback::getFeedbackLastID();
+                $feedback_id     = $feedback_lastID[0]->feedback_id+1;
+            }
+            $i =0;
+            foreach($request->feedback_category as $index => $item){
+                Feedback::setInsertFeedback($feedback_id+$i++, $request->feedback_key[$index], $check_in_id, $request->keterangan, $item, 'good', $outlet_id);
+
+            }
+            $check_out_time = date('Y-m-d H:i:s');
+            CheckInOut::setUpdateCheckIn($check_in_id, $check_out_time);
+            return back()->with('checkedOut');
+        }
     }
 
 
