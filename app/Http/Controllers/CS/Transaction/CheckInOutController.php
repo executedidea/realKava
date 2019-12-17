@@ -82,8 +82,10 @@ class CheckInOutController extends Controller
             $i =0;
             foreach($request->feedback_category as $index => $item){
                 Feedback::setInsertFeedback($feedback_id+$i++, $request->feedback_key[$index], $check_in_id, $request->keterangan, $item, 'good', $outlet_id);
-
-            }
+                if($item <= 3) {
+                    dump($item);
+                }
+            }die;
             $check_out_time = date('Y-m-d H:i:s');
             CheckInOut::setUpdateCheckIn($check_in_id, $check_out_time);
             return back()->with('checkedOut');

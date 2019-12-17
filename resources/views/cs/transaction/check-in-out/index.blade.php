@@ -224,7 +224,8 @@
                             @foreach ($complaint_type as $item)
                             <div class="form-group col-5">
                                 <h5 for="{{$item->complaint_type_name}}"
-                                    class="font-weight-bold text-danger text-center">{{$item->complaint_type_name}}</h5>
+                                    class="font-weight-bold text-capitalize text-center">
+                                    {{$item->complaint_type_name}}</h5>
                                 <div id="{{$item->complaint_type_name}}" class="mx-auto"></div>
                                 <input type="hidden" name="feedback_category[]"
                                     id="{{$item->complaint_type_name}}Rating" value="">
