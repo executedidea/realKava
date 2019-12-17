@@ -42,8 +42,8 @@
                             <tr>
                                 <th class="th-sm text-center">
                                     <div class="custom-checkbox custom-control">
-                                        <input type="checkbox" data-checkboxes="rights"
-                                            class="custom-control-input" name="id[]" id="checkAllBankAccount" value="">
+                                        <input type="checkbox" data-checkboxes="rights" class="custom-control-input"
+                                            name="id[]" id="checkAllBankAccount" value="">
                                         <label for="checkAllBankAccount" class="custom-control-label">&nbsp;</label>
                                     </div>
                                 </th>
@@ -62,8 +62,7 @@
                                     <div class="custom-checkbox custom-control">
                                         <input type="checkbox" data-checkboxes="rights"
                                             class="custom-control-input checkitem-bankaccount" name="id[]"
-                                            id="checkbox{{$item->bank_account_id}}"
-                                            value="{{$item->bank_account_id}}">
+                                            id="checkbox{{$item->bank_account_id}}" value="{{$item->bank_account_id}}">
                                         <label for="checkbox{{$item->bank_account_id}}"
                                             class="custom-control-label">&nbsp;</label>
                                     </div>
@@ -110,14 +109,15 @@
                             <tr>
                                 <th class="th-sm text-center">
                                     <div class="custom-checkbox custom-control">
-                                        <input type="checkbox" data-checkboxes="rights"
-                                            class="custom-control-input" name="id[]" id="checkAllPettyCash" value="">
+                                        <input type="checkbox" data-checkboxes="rights" class="custom-control-input"
+                                            name="id[]" id="checkAllPettyCash" value="">
                                         <label for="checkAllPettyCash" class="custom-control-label">&nbsp;</label>
                                     </div>
                                 </th>
                                 <th>ID</th>
-                                <th>Cash</th>
                                 <th>Date</th>
+                                <th>Saldo</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -127,15 +127,15 @@
                                     <div class="custom-checkbox custom-control">
                                         <input type="checkbox" data-checkboxes="rights"
                                             class="custom-control-input checkitem-pettycash" name="id[]"
-                                            id="checkbox{{$item->petty_cash_id}}"
-                                            value="{{$item->petty_cash_id}}">
+                                            id="checkbox{{$item->petty_cash_id}}" value="{{$item->petty_cash_id}}">
                                         <label for="checkbox{{$item->petty_cash_id}}"
                                             class="custom-control-label">&nbsp;</label>
                                     </div>
                                 </td>
                                 <td>{{ $index+1 }}</td>
-                                <td>{{ $item->petty_cash_amount }}</td>
                                 <td>{{ $item->petty_cash_date }}</td>
+                                <td>{{ number_format($item->petty_cash_amount) }}</td>
+                                <td class="text-success">open</td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -148,7 +148,8 @@
 @endsection
 @section('modal')
 {{-- BankAccount AddModal --}}
-<div class="modal fade" id="addBankAccountModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+<div class="modal fade" id="addBankAccountModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+    aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <form action="{{ route('storeBankAccount') }}" method="post" class="validate-this">
             @csrf
@@ -177,15 +178,18 @@
                             </div>
                             <div class="form-group col-12 col-lg-4">
                                 <label for="accountNumber">Account Number</label>
-                                <input type="text" name="account_number" class="form-control" id="accountNumber" required>
+                                <input type="text" name="account_number" class="form-control" id="accountNumber"
+                                    required>
                             </div>
                             <div class="form-group col-12 col-lg-4">
                                 <label for="openingBalance">Opening Balance</label>
-                                <input type="text" name="opening_balance" class="form-control" id="openingBalance" required>
+                                <input type="text" name="opening_balance" class="form-control" id="openingBalance"
+                                    required>
                             </div>
                             <div class="form-group col-12 col-lg-4">
                                 <label for="openingDate">Opening Date</label>
-                                <input type="text" name="opening_date" class="form-control datepicker" id="openingDate" required>
+                                <input type="text" name="opening_date" class="form-control datepicker" id="openingDate"
+                                    required>
                             </div>
                         </div>
                     </div>
@@ -202,39 +206,40 @@
 <script src="{{ asset('/modules/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}"></script>
 <script src="{{ asset('/modules/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
 <script>
-$(document).ready(function(){
-    $("#checkAllBankAccount").on('change', function () {
-        $(".checkitem-bankaccount").prop('checked', $(this).is(":checked"));
-    });
-    $('.checkitem-bankaccount').on('change', function () {
-        if ($('.checkitem-bankaccount:checked').length !== $('.checkitem-bankaccount').length) {
-            $('#checkAllBankAccount').prop('checked', false);
-        } else {
-            $('#checkAllBankAccount').prop('checked', true);
-        }
+    $(document).ready(function () {
+        $("#checkAllBankAccount").on('change', function () {
+            $(".checkitem-bankaccount").prop('checked', $(this).is(":checked"));
+        });
+        $('.checkitem-bankaccount').on('change', function () {
+            if ($('.checkitem-bankaccount:checked').length !== $('.checkitem-bankaccount').length) {
+                $('#checkAllBankAccount').prop('checked', false);
+            } else {
+                $('#checkAllBankAccount').prop('checked', true);
+            }
+        });
+
+        $("#checkAllPettyCash").on('change', function () {
+            $(".checkitem-pettycash").prop('checked', $(this).is(":checked"));
+        });
+        $('.checkitem-pettycash').on('change', function () {
+            if ($('.checkitem-pettycash:checked').length !== $('.checkitem-pettycash').length) {
+                $('#checkAllPettyCash').prop('checked', false);
+            } else {
+                $('#checkAllPettyCash').prop('checked', true);
+            }
+        });
+
+        $('#bank').selectric();
+
+        $('#bankAccountBtn').on('click', function () {
+            $('#pettyCash').hide();
+            $('#bankAccount').show(200, 'swing');
+        });
+        $('#pettyCashBtn').on('click', function () {
+            $('#bankAccount').hide();
+            $('#pettyCash').show(200, 'swing');
+        });
     });
 
-    $("#checkAllPettyCash").on('change', function () {
-        $(".checkitem-pettycash").prop('checked', $(this).is(":checked"));
-    });
-    $('.checkitem-pettycash').on('change', function () {
-        if ($('.checkitem-pettycash:checked').length !== $('.checkitem-pettycash').length) {
-            $('#checkAllPettyCash').prop('checked', false);
-        } else {
-            $('#checkAllPettyCash').prop('checked', true);
-        }
-    });
-
-    $('#bank').selectric();
-
-    $('#bankAccountBtn').on('click', function(){
-        $('#pettyCash').hide();
-        $('#bankAccount').show(200, 'swing');
-    });
-    $('#pettyCashBtn').on('click', function(){
-        $('#bankAccount').hide();
-        $('#pettyCash').show(200, 'swing');
-    });
-});
 </script>
 @endsection

@@ -40,6 +40,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/data/cashier/get/{id}', 'CS\Master\CashierController@getCashier')->name('getCashier');
 
 
+    Route::get('/data/cash-bank-out/getbankaccountnumber', 'POS\Transaction\CashBankOutController@getBankAccountNumberByBankID')->name('getBankAccountNumberByBankID');
+    Route::get('/data/cash-bank-out/getbankaccountbeginingbalance', 'POS\Transaction\CashBankOutController@getBankAccountBeginingBalanceByBankAccountID')->name('getBankAccountBeginingBalanceByBankAccountID');
+    Route::get('/data/cash-bank-out/getpettycashremainingbalance', 'POS\Transaction\CashBankOutController@getPettyCashRemainingBalanceByOutlet')->name('getPettyCashRemainingBalanceByOutlet');
+
+
+
     Route::group(['middleware' => 'UserHasNoOutlet'], function () {
         Route::get('/newuser', 'DashboardController@newUser_1');
         Route::get('/newuser/single-outlet', 'DashboardController@newUser_2');
@@ -123,9 +129,15 @@ Route::group(['middleware' => 'auth'], function () {
         // Debit Credit Note
         Route::get('/pos/transaction/debit-credit-note', 'POS\Transaction\DebitCreditNoteController@index')->name('debitCreditNote');
         Route::post('/pos/transaction/debit-credit-note/add', 'POS\Transaction\DebitCreditNoteController@store')->name('storeDebitCreditNote');
+        // Cash & Bank Out
+        Route::get('/pos/transaction/cash-bank-out', 'POS\Transaction\CashBankOutController@index')->name('cashBankOutTransaction');
+        Route::post('/pos/transaction/cash-bank-out/add', 'POS\Transaction\CashBankOutController@store')->name('storeCashBankOutTransaction');
         // Petty Cash
-        Route::get('/pos/transaction/petty-cash', 'POS\Transaction\PettyCashController@index')->name('pettyCash');
-
+        Route::get('/pos/transaction/cash-bank-out/petty-cash-out', 'POS\Transaction\PettyCashOutController@index')->name('pettyCashOutTransaction');
+        Route::post('/pos/transaction/petty-cash/{id}/edit', 'POS\Transaction\PettyCashController@update')->name('updatePettyCashTransaction');
+        Route::delete('/pos/transaction/petty-cash/delete', 'POS\Transaction\PettyCashController@destroy')->name('destroyPettyCashTransaction');
+        // Bank Out
+        Route::get('/pos/transaction/cash-bank-out/bank-out', 'POS\Transaction\BankOutController@index')->name('bankOutTransaction');
 
 
 
