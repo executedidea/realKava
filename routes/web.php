@@ -43,7 +43,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/data/cash-bank-out/getbankaccountnumber', 'POS\Transaction\CashBankOutController@getBankAccountNumberByBankID')->name('getBankAccountNumberByBankID');
     Route::get('/data/cash-bank-out/getbankaccountbeginingbalance', 'POS\Transaction\CashBankOutController@getBankAccountBeginingBalanceByBankAccountID')->name('getBankAccountBeginingBalanceByBankAccountID');
     Route::get('/data/cash-bank-out/getpettycashremainingbalance', 'POS\Transaction\CashBankOutController@getPettyCashRemainingBalanceByOutlet')->name('getPettyCashRemainingBalanceByOutlet');
-
+    Route::get('/data/cash-bank-out/getPettyCashID', 'POS\Transaction\CashBankOutController@getPettyCashIDByLastDate')->name('getPettyCashIDByLastDate');
+    
 
 
     Route::group(['middleware' => 'UserHasNoOutlet'], function () {

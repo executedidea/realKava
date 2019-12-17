@@ -16,14 +16,14 @@ class CashBankOutController extends Controller
         $outlet_id                                 = Auth::user()->outlet_id;
         $bank_list                                 = BankOut::getBankListByOutlet($outlet_id);    
         $petty_cash_remaining_balance              = PettyCashOut::getPettyCashRemainingBalanceByOutlet($outlet_id);    
-        $petty_cash_balance                        = PettyCashOut::getPettyCashBalanceByOutlet($outlet_id);    
+        $petty_cash_balance                        = PettyCashOut::getPettyCashBalanceByOutlet($outlet_id);
         
         return view('pos.transaction.cash-bank-out.index', compact('bank_list', 'petty_cash_remaining_balance', 'petty_cash_balance'));
     }
 
     public function store(Request $request)
     {
-        if ($request->has('use_bank')) {
+        if ($request->payment_source == 'b') {
             if (count(PettyCashOut::all()) <= 0) {
                 $petty_cash_detail_id               = 1;
             } else {
@@ -76,7 +76,7 @@ class CashBankOutController extends Controller
                 $outlet_id
             );
             
-        } else {
+        } elseif ($request->payment_source == 'pc') {
 
             if (count(PettyCashOut::all()) <= 0) {
                 $petty_cash_detail_id               = 1;
@@ -135,6 +135,17 @@ class CashBankOutController extends Controller
         return response()->json([
             'status'    => true,
             'petty_cash_remaining_balance'  => $petty_cash_remaining_balance
+        ]);
+    }
+
+    public function getPettyCashIDByLastDate(Request $request)
+    {
+        $outlet_id                            = Auth::user()->outlet_id;
+        $petty_cash_last_date                 = PettyCashOut::getPettyCashIDByLastDate($outlet_id);
+        // return response()->json($petty_cash_remaining_balance);
+        return response()->json([
+            'status'    => true,
+            'petty_cash_last_date'  => $petty_cash_last_date
         ]);
     }
 }

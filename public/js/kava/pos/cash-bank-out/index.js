@@ -4,10 +4,11 @@ $(document).ready(function () {
     $('#bankName').prop('disabled', true);
     $('.bank-out-type').prop('disabled', true);
 
-    $('#useBank').on('change', function () {
-        if ($('#useBank:checked').length) {
+    $('#paymentSource').on('change', function () {
+        if ($('#paymentSource').val() == 'b') {
+            $('.cash-bank-saldo').val('Saldo');
             $('#bankName').prop('disabled', false);
-            $('.bank-out-type').prop('disabled', false);
+            // $('.bank-out-type').prop('disabled', false);
             // $('#rupiah').autoNumeric('init');
             $('.bank-account-number').prop('disabled', false);
 
@@ -32,23 +33,29 @@ $(document).ready(function () {
             });
 
             $('.bank-account-number').on('change', function () {
-
-
                 var bank_account_id = $(this).val();
                 $.get('/data/cash-bank-out/getbankaccountbeginingbalance?bank_account_id=' + bank_account_id, function (data) {
-                    $('.bank-account-opening-balanced').val(data[0].bank_account_openingBalanced);
+                    $('.cash-bank-saldo').val(formatNumber(parseInt(data[0].bank_account_openingBalanced)));
                 });
             });
 
 
-        } else {
+        } else if ($('#paymentSource').val() == 'pc') {
+            var petty_cash_id = $(this).val();
+            $.get('/data/cash-bank-out/getPettyCashID?petty_cash_id=' + petty_cash_id, function (data) {
+                console.log(data.petty_cash_last_date[0].petty_cash_amount);
+                $('.cash-bank-saldo').val(formatNumber(parseInt(data.petty_cash_last_date[0].petty_cash_amount)));
+            });
+
             $('#bankName').prop('disabled', true);
-            $('.bank-out-type').prop('disabled', true);
             $('#bankAccountNumber').prop('disabled', true);
+            // $('.bank-out-type').prop('disabled', true);
         }
     });
 
-
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
     // var amount = $('#pettyCashDetailAmount').val();
     // var remaining = $('#pettyCashRemainingBalance').val();
     // $('#pettyCashDetailAmount').on('keyup', function () {

@@ -92,16 +92,6 @@
                     <button class="btn btn-info ml-1" id="editPettyCashBtn">
                         <i class="fas fa-edit" aria-hidden="true"></i>
                     </button>
-                    <button class="btn btn-danger ml-1" id="deletePettyCashBtn">
-                        <i class="fas fa-trash" aria-hidden="true"></i>
-                    </button>
-                    <h4 class="ml-auto">Export to:</h4>
-                    <a href="http://" class="ml-1">
-                        <img src="{{asset('img/icons/pdf.png')}}" alt="pdf" height="50px">
-                    </a>
-                    <a href="http://" class="ml-1">
-                        <img src="{{asset('img/icons/excel.png')}}" alt="excel" height="50px">
-                    </a>
                 </div>
                 <div class="card-body">
                     <table class="table table-striped">
@@ -135,7 +125,20 @@
                                 <td>{{ $index+1 }}</td>
                                 <td>{{ $item->petty_cash_date }}</td>
                                 <td>{{ number_format($item->petty_cash_amount) }}</td>
-                                <td class="text-success">open</td>
+
+                                @if (($item->petty_cash_status) == 1)
+                                @php
+                                $pettyCashStatus = 'open'
+                                @endphp
+                                <td><span class="badge badge-success">{{ $pettyCashStatus }}</span></td>
+                                @elseif (($item->petty_cash_status) == 0)
+                                @php
+                                $pettyCashStatus = 'close'
+                                @endphp
+                                <td><span class="badge badge-danger">{{ $pettyCashStatus }}</span></td>
+
+                                @endif
+
                             </tr>
                             @endforeach
                         </tbody>

@@ -21,23 +21,14 @@
                     {{ csrf_field() }}
                     <div class="card-body">
                         <div class="row">
-                            <div class="form-group text-center col-6">
+                            <div class="form-group text-center col-4">
 
-                                <select name="payment_resource" class="form-control payment-resource"
-                                    id="paymentResource">
-                                    <option disabled selected>Payment Resource</option>
-                                    <option value="work equipment">Cash</option>
-                                    <option value="operational">Bank</option>
+                                <select name="payment_source" class="form-control payment-resource" id="paymentSource">
+                                    <option disabled selected>Source Payment</option>
+                                    <option value="pc">Petty Cash</option>
+                                    <option value="b">Bank</option>
                                 </select>
                             </div>
-                            <div class="form-group text-center col-6">
-                                {{-- <label for="">Saldo Petty Cash</label> --}}
-                                <input type="text" name="petty_cash_balance" class="form-control text-right"
-                                    id="pettyCashBalance" placeholder="Saldo"
-                                    value="{{ $petty_cash_balance[0]->pettyCashBalance }}" readonly>
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="form-group text-center col-4">
                                 <select id="bankName" name="bank_name" class="form-control bank-name">
                                     <option disabled selected>Bank</option>
@@ -53,10 +44,13 @@
                                     <option disabled selected>Account Number</option>
                                 </select>
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4"></div>
                             <div class="form-group text-center col-4">
-                                <input type="text" name="bank_account_openingBalanced" id="bankAccountOpeningBalanced"
-                                    class="form-control text-center bank-account-opening-balanced" value=""
-                                    placeholder="Saldo" readonly>
+                                <input type="text" name="cash_bank_saldo" id="cashBankSaldo"
+                                    class="form-control text-center cash-bank-saldo" value="" placeholder="Saldo"
+                                    readonly>
                             </div>
                         </div>
                     </div>
@@ -67,15 +61,9 @@
             <div class="card">
                 <div class="card-header">
                     <div class="col-9">
-                        <h4>Pembayaran</h4>
+                        <h4>Transaction</h4>
                     </div>
-                    <div class="col-3 text-right">
-                        <label class="custom-switch mt-2">
-                            <input type="checkbox" value="1" name="use_bank" class="custom-switch-input" id="useBank">
-                            <span class="custom-switch-indicator"></span>
-                            <span class="custom-switch-description">Use Bank</span>
-                        </label>
-                    </div>
+
                 </div>
                 <div class="card-body">
                     <div class="row">
