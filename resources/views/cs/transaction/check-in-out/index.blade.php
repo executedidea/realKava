@@ -74,8 +74,8 @@
                                             class="customer-detail">{{ $item->vehicle_brand_name . " " . $item->vehicle_model_name }}</a>
                                     </td>
                                     <td class="text-center">
-                                        <button class="btn btn-danger check-out-btn"
-                                            data-id="{{$item->check_in_id}}">Check Out</button>
+                                        <button class="btn btn-danger check-out-btn" data-id="{{$item->check_in_id}}"
+                                            data-customer="{{$item->customer_detail_id}}">Check Out</button>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -211,6 +211,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <form method="post" id="feedbackForm">
             @csrf
+            <input type="hidden" name="customer_detail_id" id="customerDetailID">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Feedback</h5>
@@ -230,7 +231,7 @@
                                 <input type="hidden" name="feedback_category[]"
                                     id="{{$item->complaint_type_name}}Rating" value="">
                                 <input type="hidden" name="feedback_key[]" id="{{$item->complaint_type_name}}Key"
-                                    value="{{$item->complaint_type_name}}">
+                                    value="{{$item->complaint_type_id}}">
                             </div>
                             @endforeach
                             <div class="form-group col-10">
@@ -291,6 +292,7 @@
         $(document).on('click', '.check-out-btn', function (e) {
             e.preventDefault();
             var id = $(this).data('id');
+            var cst = $(this).data('customer');
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -332,6 +334,7 @@
                             $('#kenyamananRating').val(rating);
                         }
                     });
+                    $('#customerDetailID').val(cst);
                     $('#feedbackForm').attr('action', '/cs/transaction/check-in-out/checkout/' +
                         id);
                     $('#feedbackModal').modal('show');

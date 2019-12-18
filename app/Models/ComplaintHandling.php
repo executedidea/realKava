@@ -11,7 +11,7 @@ class ComplaintHandling extends Model
 
     public static function getComplaintHandlingList($outlet_id)
     {
-        $complaint_handling           = DB::select('call SP_CS_ComplaintHandling_Select(?)', [$outlet_id]);
+        $complaint_handling           = DB::select('call SP_CS_ComplaintHandling_Select_Test(?)', [$outlet_id]);
         return $complaint_handling;
     }
 
