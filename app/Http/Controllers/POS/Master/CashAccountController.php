@@ -19,7 +19,8 @@ class CashAccountController extends Controller
         $bank_account       = BankAccount::getBankAccount($outlet_id);
         $petty_cash         = PettyCash::getPettyCash($outlet_id);
         $bank               = Bank::getAllBank();
-        return view('pos.master.cash-account.index', compact('bank_account', 'petty_cash', 'bank'));
+        $petty_cash_saldo   = PettyCash::getPettyCashDetailBalance($outlet_id);
+        return view('pos.master.cash-account.index', compact('bank_account', 'petty_cash', 'petty_cash_saldo', 'bank'));
     }
 
     public function storeBankAccount(Request $request)

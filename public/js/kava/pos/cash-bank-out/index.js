@@ -6,11 +6,20 @@ $(document).ready(function () {
 
     $('#paymentSource').on('change', function () {
         if ($('#paymentSource').val() == 'b') {
+            $('.cash-bank-balanced').val('Balanced');
+            $('.cash-bank-actual').val('Actual');
             $('.cash-bank-saldo').val('Saldo');
-            $('#bankName').prop('disabled', false);
-            // $('.bank-out-type').prop('disabled', false);
+            $('.cash-bank-actual').hide();
+            $('.cash-bank-saldo').hide();
+
+            $('#bankAccountNumber').val('Account Number');
+            $('#bankName').show();
+            $('.bank-account-number').show();
             // $('#rupiah').autoNumeric('init');
+            // $('.bank-out-type').prop('disabled', false);
+            $('#bankName').prop('disabled', false);
             $('.bank-account-number').prop('disabled', false);
+
 
             $('.bank-name').on('change', function (e) {
                 var bank_id = e.target.value;
@@ -20,7 +29,7 @@ $(document).ready(function () {
                     $('.bank-account-number').empty();
                     $('.bank-account-number').prop("disabled", false);
                     $('.bank-account-number').append(
-                        '<option value="" disabled selected>Select Account Number</option>'
+                        '<option value="" disabled selected>Account Number</option>'
                     );
 
                     $.each(data, function (index, accountNumberObj) {
@@ -37,28 +46,45 @@ $(document).ready(function () {
                 // console.log(bank_account_id);
 
                 $.get('/data/cash-bank-out/getbankaccountbeginingbalance?bank_account_id=' + bank_account_id, function (data) {
-                    $('.cash-bank-saldo').val(formatNumber(parseInt(data[0].bank_account_openingBalanced)));
+                    $('.cash-bank-balanced').val(formatNumber(parseInt(data[0].bank_account_openingBalanced)));
                 });
             });
 
 
         } else if ($('#paymentSource').val() == 'pc') {
+            $('#bankName').val('Bank Name');
+            $('#bankAccountNumber').val('Account Number');
+            $('.cash-bank-actual').show();
+            $('.cash-bank-saldo').show();
+
             var petty_cash_id = $(this).val();
             $.get('/data/cash-bank-out/getPettyCashID?petty_cash_id=' + petty_cash_id, function (data) {
                 console.log(petty_cash_id);
-                $('.cash-bank-saldo').val(formatNumber(parseInt(data.petty_cash_last_date[0].saldo)));
+                $('.cash-bank-balanced').val(formatNumber(parseInt(data.petty_cash_last_date[0].balanced)));
+            });
+            $.get('/data/cash-bank-out/getpettycashdetailbalanced?petty_cash_id=' + petty_cash_id, function (data) {
+                console.log(petty_cash_id);
+                $('.cash-bank-actual').val(formatNumber(parseInt(data.petty_cash_detail_balance_list[0].petty_cash_detail_amount)));
+            });
+            $.get('/data/cash-bank-out/getpettycashamount?petty_cash_id=' + petty_cash_id, function (data) {
+                console.log(petty_cash_id);
+                $('.cash-bank-saldo').val(formatNumber(parseInt(data.petty_cash_amount_byflag[0].petty_cash_amount)));
             });
 
-            $('#bankName').prop('disabled', true);
-            $('#bankAccountNumber').prop('disabled', true);
+
+            // $('#bankName').prop('disabled', true);
+            // $('#bankAccountNumber').prop('disabled', true);
+
+            $('#bankName').hide();
+            $('#bankAccountNumber').hide();
             // $('.bank-out-type').prop('disabled', true);
         }
 
         $('#cashBankAmount').on('input', function () {
             var cashBankAmount = $('#cashBankAmount').val();
-            var cashBankSaldo = $('.cash-bank-saldo').val();
+            var cashBankBalanced = $('.cash-bank-balanced').val();
             console.log(cashBankAmount);
-            if (cashBankAmount == cashBankSaldo) {
+            if (cashBankAmount == cashBankBalanced) {
 
                 alert('asd');
             }

@@ -52,6 +52,18 @@ class PettyCashOut extends Model
         return $petty_cash_id;
     }
 
+    public static function getPettyCashDetailBalancedList($outlet_id)
+    {
+        $petty_cash_detail_balance_list                 = DB::select('call SP_PettyCashDetail_BalancedList_Select(?)', [$outlet_id]);
+        return $petty_cash_detail_balance_list;
+    }
+
+    public static function getPettyCashAmountByFlag($outlet_id)
+    {
+        $petty_cash_amount_byflag                 = DB::select('call SP_PettyCashAmount_ByFlag_Select(?)', [$outlet_id]);
+        return $petty_cash_amount_byflag;
+    }
+
 
     
 

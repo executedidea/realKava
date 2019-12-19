@@ -1,4 +1,5 @@
 @extends('layouts.main')
+@section('title', 'Cash & Bank Listing | Finance - KAVA')
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/kava/pos/cash-account.css') }}">
 <link rel="stylesheet" href="{{ asset('/modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}">
@@ -204,12 +205,91 @@
         </form>
     </div>
 </div>
+
+<!-- Petty Cash Modal -->
+<section id="pettyCashModal">
+    <div class="modal fade" id="addPettyCashModal" tabindex="-1" role="dialog" aria-labelledby="addCashModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header ">
+                    <h5 class="modal-title" id="deleteModalLabel">Add Petty Cash</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-12">
+                                <form action="/admin/library/cashbank/addpettycash" method="POST" id="addCustomerForm"
+                                    enctype="multipart/form-data">
+                                    {{-- Form --}}
+                                    <div class="row pt-5">
+                                        <div class="col">
+                                            {{csrf_field()}}
+                                            <div class="row">
+                                                <div class="form-group col-12">
+                                                    <input type="text" name="petty_bank_date"
+                                                        class="form-control datepicker" id="pettyCashDate"
+                                                        placeholder="Date">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-12">
+                                                    <label for="date">Saldo Petty Cash</label>
+                                                    <input type="text" name="" id="pettyCashDetailBalanced"
+                                                        class="form-control text-right"
+                                                        value="{{ number_format($petty_cash_saldo[0]->petty_cash_detail_balanced) }}"
+                                                        placeholder="0" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-12">
+                                                    <label for="">Open Petty Cash</label>
+                                                    <input type="text" name="" id="pettyCashOpen"
+                                                        class="form-control text-right petty-cash-open" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-12">
+                                                    <label for="">Total Petty Cash</label>
+                                                    <input type="text" name="petty_cash_amount" id="pettyCashAmount"
+                                                        class="form-control text-right petty-cash-amount" value=""
+                                                        placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-12">
+                                                    <label>Deskripsi</label>
+                                                    <textarea class="form-control" name="petty_cash_desc"></textarea>
+                                                </div>
+                                            </div>
+
+                                            <hr>
+
+                                            <button type="submit" class="btn btn-primary btn-lg btn-block">Save</button>
+
+                                        </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 @endsection
 @section('script')
 <script src="{{ asset('/modules/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}"></script>
 <script src="{{ asset('/modules/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
 <script>
     $(document).ready(function () {
+        $('#pettyCashDate').val('Date');
+
         $("#checkAllBankAccount").on('change', function () {
             $(".checkitem-bankaccount").prop('checked', $(this).is(":checked"));
         });

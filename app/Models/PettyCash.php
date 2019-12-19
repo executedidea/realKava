@@ -15,4 +15,10 @@ class PettyCash extends Model
         $petty_cash         = DB::select('call SP_POS_PettyCash_Select(?)', [$outlet_id]);
         return $petty_cash;
     }
+
+    public static function getPettyCashDetailBalance($outlet_id)
+    {
+        $petty_cash_saldo         = DB::select('call SP_PettyCashDetail_Balanced_Select(?)', [$outlet_id]);
+        return $petty_cash_saldo;
+    }
 }

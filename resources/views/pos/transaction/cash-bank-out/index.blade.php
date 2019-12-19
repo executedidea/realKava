@@ -2,7 +2,7 @@
 @section('meta')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
-@section('title', 'Cash & Bank Out | Point Of Sales - KAVA')
+@section('title', 'Cash & Bank Out | Finance - KAVA')
 @section('css')
 <link rel="stylesheet" href="{{ asset('/modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}">
 <link rel="stylesheet" href="{{ asset('/modules/bootstrap-daterangepicker/daterangepicker.css') }}">
@@ -28,10 +28,11 @@
                                     <option value="pc">Petty Cash</option>
                                     <option value="b">Bank</option>
                                 </select>
+
                             </div>
                             <div class="form-group text-center col-4">
                                 <select id="bankName" name="bank_name" class="form-control bank-name">
-                                    <option disabled selected>Bank</option>
+                                    <option disabled selected>Bank Name</option>
                                     @foreach ($bank_list as $item)
                                     <option value="{{$item->bank_id}}">{{$item->bank_name}}
                                     </option>
@@ -46,11 +47,18 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4"></div>
-                            <div class="form-group text-center col-4">
+                            <div class="form-group col-4">
                                 <input type="text" name="cash_bank_saldo" id="cashBankSaldo"
-                                    class="form-control text-center cash-bank-saldo" value="" placeholder="Saldo"
+                                    class="form-control text-center cash-bank-saldo" placeholder="Saldo" readonly>
+                            </div>
+                            <div class="form-group text-center col-4">
+                                <input type="text" name="cash_bank_balanced" id="cashBankBalanced"
+                                    class="form-control text-center cash-bank-balanced" value="" placeholder="Balanced"
                                     readonly>
+                            </div>
+                            <div class="form-group col-4">
+                                <input type="text" name="cash_bank_actual" id="cashBankActual"
+                                    class="form-control text-center cash-bank-actual" placeholder="Actual" readonly>
                             </div>
                         </div>
                     </div>

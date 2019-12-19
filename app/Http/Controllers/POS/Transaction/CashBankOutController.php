@@ -17,8 +17,9 @@ class CashBankOutController extends Controller
         $bank_list                                 = BankOut::getBankListByOutlet($outlet_id);    
         $petty_cash_remaining_balance              = PettyCashOut::getPettyCashRemainingBalanceByOutlet($outlet_id);    
         $petty_cash_balance                        = PettyCashOut::getPettyCashBalanceByOutlet($outlet_id);
+        $petty_cash_detail_balance_list            = PettyCashOut::getPettyCashDetailBalancedList($outlet_id);    
         
-        return view('pos.transaction.cash-bank-out.index', compact('bank_list', 'petty_cash_remaining_balance', 'petty_cash_balance'));
+        return view('pos.transaction.cash-bank-out.index', compact('bank_list', 'petty_cash_remaining_balance', 'petty_cash_balance', 'petty_cash_detail_balance_list'));
     }
 
     public function store(Request $request)
@@ -146,6 +147,28 @@ class CashBankOutController extends Controller
         return response()->json([
             'status'    => true,
             'petty_cash_last_date'  => $petty_cash_last_date
+        ]);
+    }
+
+    public function getPettyCashDetailBalancedList(Request $request)
+    {
+        $outlet_id                            = Auth::user()->outlet_id;
+        $petty_cash_detail_balance_list                 = PettyCashOut::getPettyCashDetailBalancedList($outlet_id);
+        // return response()->json($petty_cash_remaining_balance);
+        return response()->json([
+            'status'    => true,
+            'petty_cash_detail_balance_list'  => $petty_cash_detail_balance_list
+        ]);
+    }
+
+    public function getPettyCashAmountByFlag(Request $request)
+    {
+        $outlet_id                            = Auth::user()->outlet_id;
+        $petty_cash_amount_byflag             = PettyCashOut::getPettyCashAmountByFlag($outlet_id);
+        // return response()->json($petty_cash_remaining_balance);
+        return response()->json([
+            'status'    => true,
+            'petty_cash_amount_byflag'  => $petty_cash_amount_byflag
         ]);
     }
 }
