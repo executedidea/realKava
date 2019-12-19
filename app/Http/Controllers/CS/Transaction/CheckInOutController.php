@@ -5,6 +5,8 @@ namespace App\Http\Controllers\CS\Transaction;
 use App\Http\Controllers\Controller;
 use App\Models\CheckInOut;
 use App\Models\CheckInOutDetail;
+use App\Models\ComplaintHandling;
+use App\Models\ComplaintHandlingDetail;
 use App\Models\ComplaintType;
 use App\Models\Customer_Detail;
 use App\Models\Feedback;
@@ -79,13 +81,27 @@ class CheckInOutController extends Controller
                 $feedback_lastID = Feedback::getFeedbackLastID();
                 $feedback_id     = $feedback_lastID[0]->feedback_id+1;
             }
+            if(count(ComplaintHandling::getComplaintHandlingLastID()) == 0) {
+                $complaint_handling_id      = 1;
+            } else {
+                $complaint_handling_lastID  = ComplaintHandling::getComplaintHandlingLastID();
+                $complaint_handling_id      = $complaint_handling_lastID[0]->complaint_handling_id+1;
+            }
+            if(count(ComplaintHandlingDetail::getComplaintHandlingDetailLastID()) == 0){
+                $complaint_handling_detail_id = 1;
+            } else {
+                $complaint_handling_detail_lastID = ComplaintHandlingDetail::getComplaintHandlingDetailLastID();
+                $complaint_handling_detail_id     = $complaint_handling_detail_lastID[0]->complaint_handling_detail_id+1;
+            }
             $i =0;
             foreach($request->feedback_category as $index => $item){
-                Feedback::setInsertFeedback($feedback_id+$i++, $request->feedback_key[$index], $check_in_id, $request->keterangan, $item, 'good', $outlet_id);
+                Feedback::setInsertFeedback($feedback_id+$i, $request->feedback_key[$index], $check_in_id, $request->keterangan, $item, 'good', $outlet_id);
                 if($item <= 3) {
-                    dump($item);
+                    ComplaintHandling::setComplaintHandling($complaint_handling_id+$i, date('Y-m-d H:i:s'), null, null, 'Pending', null, null, $request->customer_detail_id, $request->feedback_key[$index], null, $outlet_id);
+                    ComplaintHandlingDetail::setInsertComplaintHandlingDetail($complaint_handling_detail_id, date('Y-m-d H:i:s'), 'Pending', null, $request->keterangan, $complaint_handling_id);
                 }
-            }die;
+                $i++;
+            }
             $check_out_time = date('Y-m-d H:i:s');
             CheckInOut::setUpdateCheckIn($check_in_id, $check_out_time);
             return back()->with('checkedOut');
