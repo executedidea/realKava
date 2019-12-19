@@ -23,7 +23,7 @@
                                 </th>
                                 <th class="th-sm font-weight-bold">Date
                                 </th>
-                                <th class="th-sm font-weight-bold">Nilai
+                                <th class="th-sm font-weight-bold">Amount
                                 </th>
                                 <th class="th-sm font-weight-bold">Payment Method
                                 </th>
@@ -39,7 +39,7 @@
                                     {{$item->point_of_sales_date}}
                                 </td>
                                 <td>
-                                    {{$item->point_of_sales_totalPayment}}
+                                    {{number_format($item->point_of_sales_totalPayment)}}
                                 </td>
                                 <td>
                                     {{$item->point_of_sales_paymentMethod1 . ', '.$item->point_of_sales_paymentMethod2}}
