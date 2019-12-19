@@ -141,6 +141,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('/pos/transaction/petty-cash/delete', 'POS\Transaction\PettyCashController@destroy')->name('destroyPettyCashTransaction');
         // Bank Out
         Route::get('/pos/transaction/cash-bank-out/bank-out', 'POS\Transaction\BankOutController@index')->name('bankOutTransaction');
+        // Change Shift
+        Route::get('/pos/transaction/change-shift', 'POS\Transaction\ChangeShiftController@index')->name('changeShiftTransaction');
 
 
 

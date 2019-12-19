@@ -62,7 +62,28 @@
                                 <td>{{ $item->complaint_handling_date }}</td>
                                 <td>{{ $item->customer_fullName }}</td>
                                 <td>{{ $item->complaint_type_name }}</td>
-                                <td>{{ $item->complaint_handling_status }}</td>
+                                @if (($item->complaint_handling_status) == 'Progress')
+                                @php
+                                $complaint_handling_status = 'Progress'
+                                @endphp
+                                <td><span class="badge badge-primary">{{ $complaint_handling_status }}</span></td>
+                                @elseif (($item->complaint_handling_status) == 'Pending')
+                                @php
+                                $complaint_handling_status = 'Pending'
+                                @endphp
+                                <td><span class="badge badge-secondary">{{ $complaint_handling_status }}</span></td>
+                                @elseif (($item->complaint_handling_status) == 'Done')
+                                @php
+                                $complaint_handling_status = 'Done'
+                                @endphp
+                                <td><span class="badge badge-success">{{ $complaint_handling_status }}</span></td>
+                                @elseif (($item->complaint_handling_status) == 'Decline')
+                                @php
+                                $complaint_handling_status = 'Decline'
+                                @endphp
+                                <td><span class="badge badge-danger">{{ $complaint_handling_status }}</span></td>
+                                @endif
+
                             </tr>
                             @endforeach
                         </tbody>
