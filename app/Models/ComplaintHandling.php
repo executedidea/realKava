@@ -39,6 +39,12 @@ class ComplaintHandling extends Model
         return $last_id;
     }
 
+    public static function getComplaintHandlingDetailLastID()
+    {
+        $last_id                = DB::select('call SP_GetLastID_Select(?)', ['complaint_handling_detail_id']);
+        return $last_id;
+    }
+
     public static function setComplaintHandling($complaint_handling_id, $complaint_handling_date, $complaint_handling_targetDate, $complaint_handling_handler, $complaint_handling_status, $complaint_handling_desc, $complaint_handling_fee, $customer_detail_id, $complaint_type_id, $item_id, $outlet_id)
     {
         $set_complaint_handling                = DB::select('call SP_CS_ComplaintHandling_Insert(?,?,?,?,?,?,?,?,?,?,?)', [
@@ -56,18 +62,19 @@ class ComplaintHandling extends Model
         ]);
         return $set_complaint_handling;
     }
-
-    public static function setUpdateComplaintHandling($complaint_handling_id, $complaint_handling_date, $complaint_handling_targetDate, $complaint_handling_handler, $complaint_handling_status, $complaint_handling_desc, $complaint_handling_fee, $complaint_type_id, $item_id)
-    {
-        $set_update_complaint_handling                = DB::select('call SP_CS_ComplaintHandling_Update(?,?,?,?,?,?,?,?,?)', [$complaint_handling_id, $complaint_handling_date, $complaint_handling_targetDate, $complaint_handling_handler, $complaint_handling_status, $complaint_handling_desc, $complaint_handling_fee, $complaint_type_id, $item_id]);
-        return $set_update_complaint_handling;
-    }
-
+    
     public static function setDeleteComplaintHandling($complaint_handling_id)
     {
         $delete                = DB::select('call SP_CS_ComplaintHandling_Delete(?)', [$complaint_handling_id]);
         return $delete;
     }
+
+    public static function setUpdateComplaintHandlingDetailStatus($complaint_handling_detail_id, $complaint_handling_detail_status, $complaint_handling_detail_desc, $complaint_handling_status, $complaint_handling_id)
+    {
+        $set_update_complaint_handling_detail_status                = DB::select('call SP_ComplaintHandling_FollowUp(?,?,?,?,?)', [$complaint_handling_detail_id, $complaint_handling_detail_status, $complaint_handling_detail_desc, $complaint_handling_status, $complaint_handling_id]);
+        return $set_update_complaint_handling_detail_status;
+    }
+
     
 
 }

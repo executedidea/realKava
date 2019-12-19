@@ -145,43 +145,43 @@ class ComplaintHandlingController extends Controller
      */
     public function update(Request $request, $complaint_handling_id)
     {
-        $validator                     = Validator::make($request->all(), [
-            'customer_name'                     => 'required',
-            'vehicle'                           => 'required',
-            'license_plate'                     => 'required',
-            'complaint_handling_date'           => 'required',
-            'complaint_handling_targetDate'     => 'required',
-            'complaint_handling_handler'        => 'required',
-            'complaint_handling_status'         => 'required',
-            'complaint_handling_desc'           => 'required',
-            'complaint_handling_fee'            => 'required',
-            'complaint_type_id'                 => 'required'
-        ]);
-        if ($validator->fails()) {
-            return back()->withErrors($validator);
-        } else {
-            $complaint_handling_date            = $request->complaint_handling_date;
-            $complaint_handling_targetDate      = $request->complaint_handling_targetDate;
-            $complaint_handling_handler         = $request->complaint_handling_handler;
-            $complaint_handling_status          = $request->complaint_handling_status;
-            $complaint_handling_desc            = $request->complaint_handling_desc;
-            $complaint_handling_fee             = $request->complaint_handling_fee;
-            $complaint_type_id                  = $request->complaint_type_id;
-            $item_id                            = $request->item_id;
+        // $validator                     = Validator::make($request->all(), [
+        //     'customer_name'                     => 'required',
+        //     'vehicle'                           => 'required',
+        //     'license_plate'                     => 'required',
+        //     'complaint_handling_date'           => 'required',
+        //     'complaint_handling_targetDate'     => 'required',
+        //     'complaint_handling_handler'        => 'required',
+        //     'complaint_handling_status'         => 'required',
+        //     'complaint_handling_desc'           => 'required',
+        //     'complaint_handling_fee'            => 'required',
+        //     'complaint_type_id'                 => 'required'
+        // ]);
+        // if ($validator->fails()) {
+            // return back()->withErrors($validator);
+        // } else {
+            if (count(ComplaintHandling::all()) <= 0) {
+                $complaint_handling_detail_id             = 1;
+            } else {
+                $complaint_handling_detail_lastID         = ComplaintHandling::getComplaintHandlingDetailLastID();
+                $complaint_handling_detail_id             = $complaint_handling_detail_lastID[0]->complaint_handling_detail_id + 1;
+            }
 
-            ComplaintHandling::setUpdateComplaintHandling(
-                $complaint_handling_id, 
-                $complaint_handling_date,
-                $complaint_handling_targetDate,
-                $complaint_handling_handler,
-                $complaint_handling_status,
-                $complaint_handling_desc,
-                $complaint_handling_fee,
-                $complaint_type_id,
-                $item_id
-            );   
+            $complaint_handling_status          = $request->complaint_handling_status;
+            $complaint_handling_detail_status   = $request->complaint_handling_status;
+            $complaint_handling_detail_desc     = $request->complaint_handling_desc;
+            $complaint_handling_id              = $request->complaint_handling_id;
+
+            ComplaintHandling::setUpdateComplaintHandlingDetailStatus(
+                $complaint_handling_detail_id, 
+                $complaint_handling_detail_status, 
+                $complaint_handling_detail_desc, 
+                $complaint_handling_status, 
+                $complaint_handling_id
+            ); 
+
             return back()->with('complaintHandlingEdited');
-        }
+        // }
     }
 
     /**

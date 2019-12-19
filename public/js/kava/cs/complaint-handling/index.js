@@ -80,7 +80,8 @@ $(document).ready(function () {
                 success: function (complaint) {
                     if (complaint['status'] == true) {
                         console.log(id);
-
+                        $('#editComplaintHandlingID').val(complaint['complaint_customer'][0]
+                            .complaint_handling_id);
                         $('#editCustomerName').val(complaint['complaint_customer'][0]
                             .customer_fullName);
                         $('#editVehicle').val(complaint['complaint_customer'][0]
@@ -114,10 +115,7 @@ $(document).ready(function () {
                         $('#editComplaintHandlingHandler').val(complaint[
                                 'complaint_customer'][0]
                             .complaint_handling_handler);
-                        $('#editComplaintHandlingStatus').val(complaint[
-                                'complaint_customer']
-                            [0]
-                            .complaint_handling_status);
+                        $('#editComplaintHandlingStatus').val(complaint['complaint_customer'][0].complaint_handling_status);
                         $('#editComplaintHandlingDesc').val(complaint[
                             'complaint_customer'][
                             0

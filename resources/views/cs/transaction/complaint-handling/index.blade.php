@@ -62,22 +62,26 @@
                                 <td>{{ $item->complaint_handling_date }}</td>
                                 <td>{{ $item->customer_fullName }}</td>
                                 <td>{{ $item->complaint_type_name }}</td>
-                                @if (($item->complaint_handling_status) == 'Progress')
+                                @if (($item->complaint_handling_status) == 'Progress' ||
+                                ($item->complaint_handling_status) == 'progress')
                                 @php
                                 $complaint_handling_status = 'Progress'
                                 @endphp
                                 <td><span class="badge badge-primary">{{ $complaint_handling_status }}</span></td>
-                                @elseif (($item->complaint_handling_status) == 'Pending')
+                                @elseif (($item->complaint_handling_status) == 'Pending' ||
+                                ($item->complaint_handling_status) == 'pending')
                                 @php
                                 $complaint_handling_status = 'Pending'
                                 @endphp
-                                <td><span class="badge badge-secondary">{{ $complaint_handling_status }}</span></td>
-                                @elseif (($item->complaint_handling_status) == 'Done')
+                                <td><span class="badge badge-light">{{ $complaint_handling_status }}</span></td>
+                                @elseif (($item->complaint_handling_status) == 'Done' ||
+                                ($item->complaint_handling_status) == 'done')
                                 @php
                                 $complaint_handling_status = 'Done'
                                 @endphp
                                 <td><span class="badge badge-success">{{ $complaint_handling_status }}</span></td>
-                                @elseif (($item->complaint_handling_status) == 'Decline')
+                                @elseif (($item->complaint_handling_status) == 'Decline' ||
+                                ($item->complaint_handling_status) == 'decline')
                                 @php
                                 $complaint_handling_status = 'Decline'
                                 @endphp
@@ -195,9 +199,10 @@
                                         <select name="complaint_handling_status" class="form-control"
                                             id="complaintHandlingStatus">
                                             <option disabled selected>Status Handling</option>
+                                            <option value="done">Done</option>
                                             <option value="progress">Progress</option>
                                             <option value="pending">Pending</option>
-                                            <option value="done">Done</option>
+                                            <option value="freeze">Freeze</option>
                                             <option value="decline">Decline</option>
                                         </select>
                                     </div>
@@ -261,6 +266,8 @@
                                         <input type="text" class="form-control" id="editCustomerName" value=""
                                             placeholder="Customer Name" name="customer_fullName" readonly>
                                         <input type="hidden" name="customer_id" value="" id="editCustomerID" readonly>
+                                        <input type="hidden" name="complaint_handling_id" value=""
+                                            id="editComplaintHandlingID" readonly>
 
                                     </div>
                                     <div class="form-group col-4">
@@ -285,22 +292,23 @@
                                     <div class="form-group col-3">
                                         <input type="text" name="complaint_handling_date"
                                             class="form-control datepicker" id="editComplaintHandlingDate" value=""
-                                            placeholder="Date">
+                                            placeholder="Date" readonly>
                                     </div>
                                     <div class="form-group col-3">
                                         <input type="text" name="complaint_handling_targetDate"
                                             class="form-control datepicker" id="editComplaintHandlingTargetDate"
-                                            placeholder="Target Handling">
+                                            placeholder="Target Handling" readonly>
                                     </div>
                                     <div class="form-group col-6">
                                         <input type="text" name="complaint_handling_handler" class="form-control"
-                                            id="editComplaintHandlingHandler" placeholder="Handler">
+                                            id="editComplaintHandlingHandler" placeholder="Handler" readonly>
                                     </div>
                                 </div>
 
                                 <div class="row justify-content-center range-form">
                                     <div class="form-group col-6">
-                                        <select name="complaint_type_id" class="form-control" id="editComplaintType">
+                                        <select name="complaint_type_id" class="form-control" id="editComplaintType"
+                                            readonly>
                                             <option disabled selected>Complaint Type</option>
                                             @foreach ($complaint_type_list as $item)editItemId
                                             <option value="{{$item->complaint_type_id}}">{{$item->complaint_type_name}}
@@ -313,9 +321,10 @@
                                         <select name="complaint_handling_status" class="form-control"
                                             id="editComplaintHandlingStatus">
                                             <option disabled selected>Status Handling</option>
+                                            <option value="done">Done</option>
                                             <option value="progress">Progress</option>
                                             <option value="pending">Pending</option>
-                                            <option value="done">Done</option>
+                                            <option value="freeze">Freeze</option>
                                             <option value="decline">Decline</option>
                                         </select>
                                     </div>
@@ -323,7 +332,7 @@
 
                                 <div class="row justify-content-center range-form">
                                     <div class="form-group col-6">
-                                        <select name="item_id" class="form-control" id="editItemName">
+                                        <select name="item_id" class="form-control" id="editItemName" readonly>
                                             <option disabled selected>Service/Product Item</option>
                                             @foreach ($item_list as $item)
                                             <option value="{{$item->item_id}}">{{$item->item_name}}</option>
@@ -333,7 +342,7 @@
                                     </div>
                                     <div class="form-group col-6">
                                         <input type="text" name="complaint_handling_fee" class="form-control"
-                                            id="editComplaintHandlingFee" placeholder="Handling Fee">
+                                            id="editComplaintHandlingFee" placeholder="Handling Fee" readonly>
                                     </div>
                                 </div>
 
