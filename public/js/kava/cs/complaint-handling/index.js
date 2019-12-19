@@ -49,96 +49,81 @@ $(document).ready(function () {
         });
     });
 
-    $('#editBtn').on('click', function () {
-        var id = [];
-        $('.checkitem:checked').each(function () {
-            id.push($(this).val());
-        });
-        if (id.length > 1) {
-            Swal.fire(
-                "",
-                "You can't edit data more than 1 at the same time!",
-                'warning'
-            )
-        } else if (id.length == 0) {
-            Swal.fire(
-                '',
-                'Please select at least 1 data!',
-                'warning'
-            )
-        } else {
-            $('#editComplaintHandlingForm').attr('action',
-                '/cs/transaction/complaint-handling/' + id + '/edit');
-            $.ajax({
-                url: "/data/complaint-handling/get/" + id,
-                type: 'GET',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                        'content')
-                },
-                data: id,
-                success: function (complaint) {
-                    if (complaint['status'] == true) {
-                        console.log(id);
-                        $('#editComplaintHandlingID').val(complaint['complaint_customer'][0]
-                            .complaint_handling_id);
-                        $('#editCustomerName').val(complaint['complaint_customer'][0]
-                            .customer_fullName);
-                        $('#editVehicle').val(complaint['complaint_customer'][0]
-                            .vehicle_brand_name + ' ' + complaint[
-                                'complaint_customer'][
-                                0
-                            ].vehicle_model_name);
-                        $('#editLicensePlate').val(complaint['complaint_customer'][0]
-                            .customer_detail_licensePlate);
-                        $('#editCustomerID').val(complaint['complaint_customer'][0]
-                            .customer_id);
-                        $('#editVehicleModelID').val(complaint['complaint_customer'][0]
-                            .vehicle_model_id);
-                        $('#editVehicleBrandID').val(complaint['complaint_customer'][0]
-                            .vehicle_brand_id);
-                        $('#editCustomerDetailID').val(complaint['complaint_customer'][
-                                0
-                            ]
-                            .customer_detail_id);
 
-                        $('#editCustomerID').val(complaint['complaint_customer'][0]
-                            .customer_id);
-
-                        $('#editComplaintHandlingDate').val(complaint[
+    $(document).on('click', '.complaint-handling', function (e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        $('#editComplaintHandlingForm').attr('action',
+            '/cs/transaction/complaint-handling/' + id + '/edit');
+        $.ajax({
+            url: "/data/complaint-handling/get/" + id,
+            type: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                    'content')
+            },
+            data: id,
+            success: function (complaint) {
+                if (complaint['status'] == true) {
+                    console.log(id);
+                    $('#editComplaintHandlingID').val(complaint['complaint_customer'][0]
+                        .complaint_handling_id);
+                    $('#editCustomerName').val(complaint['complaint_customer'][0]
+                        .customer_fullName);
+                    $('#editVehicle').val(complaint['complaint_customer'][0]
+                        .vehicle_brand_name + ' ' + complaint[
                             'complaint_customer'][
                             0
-                        ].complaint_handling_date);
-                        $('#editComplaintHandlingTargetDate').val(complaint[
-                                'complaint_customer'][0]
-                            .complaint_handling_targetDate);
-                        $('#editComplaintHandlingHandler').val(complaint[
-                                'complaint_customer'][0]
-                            .complaint_handling_handler);
-                        $('#editComplaintHandlingStatus').val(complaint['complaint_customer'][0].complaint_handling_status);
-                        $('#editComplaintHandlingDesc').val(complaint[
-                            'complaint_customer'][
+                        ].vehicle_model_name);
+                    $('#editLicensePlate').val(complaint['complaint_customer'][0]
+                        .customer_detail_licensePlate);
+                    $('#editCustomerID').val(complaint['complaint_customer'][0]
+                        .customer_id);
+                    $('#editVehicleModelID').val(complaint['complaint_customer'][0]
+                        .vehicle_model_id);
+                    $('#editVehicleBrandID').val(complaint['complaint_customer'][0]
+                        .vehicle_brand_id);
+                    $('#editCustomerDetailID').val(complaint['complaint_customer'][
                             0
-                        ].complaint_handling_desc);
-                        $('#editComplaintHandlingFee').val(complaint[
-                                'complaint_customer'][0]
-                            .complaint_handling_fee);
-                        $('#editComplaintType').val(complaint['complaint_customer'][0]
-                            .complaint_type_id);
-                        $('#editItemName').val(complaint['complaint_customer'][0]
-                            .item_id);
+                        ]
+                        .customer_detail_id);
 
-                        $('#editComplaintHandlingModal').modal('show');
+                    $('#editCustomerID').val(complaint['complaint_customer'][0]
+                        .customer_id);
 
-                    } else {
-                        alert('Whoops Something went wrong!!');
-                    }
-                },
-                error: function (data) {
-                    alert(data.responseText);
+                    $('#editComplaintHandlingDate').val(complaint[
+                        'complaint_customer'][
+                        0
+                    ].complaint_handling_date);
+                    $('#editComplaintHandlingTargetDate').val(complaint[
+                            'complaint_customer'][0]
+                        .complaint_handling_targetDate);
+                    $('#editComplaintHandlingHandler').val(complaint[
+                            'complaint_customer'][0]
+                        .complaint_handling_handler);
+                    $('#editComplaintHandlingStatus').val(complaint['complaint_customer'][0].complaint_handling_status);
+                    $('#editComplaintHandlingDesc').val(complaint[
+                        'complaint_customer'][
+                        0
+                    ].complaint_handling_desc);
+                    $('#editComplaintHandlingFee').val(complaint[
+                            'complaint_customer'][0]
+                        .complaint_handling_fee);
+                    $('#editComplaintType').val(complaint['complaint_customer'][0]
+                        .complaint_type_id);
+                    $('#editItemName').val(complaint['complaint_customer'][0]
+                        .item_id);
+
+                    $('#editComplaintHandlingModal').modal('show');
+
+                } else {
+                    alert('Whoops Something went wrong!!');
                 }
-            });
-        }
+            },
+            error: function (data) {
+                alert(data.responseText);
+            }
+        });
     });
 
     $('#deleteBtn').on('click', function () {

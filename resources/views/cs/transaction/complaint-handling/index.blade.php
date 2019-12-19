@@ -21,9 +21,6 @@
                         data-target="#addComplaintHandlingModal">
                         <i class="fas fa-plus" aria-hidden="true"></i>
                     </button>
-                    <button class="btn btn-info action-btn ml-1" id="editBtn">
-                        <i class="fas fa-edit" aria-hidden="true"></i>
-                    </button>
                     <button class="btn btn-danger action-btn ml-1" id="deleteBtn">
                         <i class="fas fa-trash-alt" aria-hidden="true"></i>
                     </button>
@@ -59,9 +56,13 @@
                                             class="custom-control-label">&nbsp;</label>
                                     </div>
                                 </td>
-                                <td>{{ $item->complaint_handling_date }}</td>
-                                <td>{{ $item->customer_fullName }}</td>
-                                <td>{{ $item->complaint_type_name }}</td>
+
+                                <td><a href="#" data-id="{{ $item->complaint_handling_id }}"
+                                        class="complaint-handling">{{ $item->complaint_handling_date }}</a></td>
+                                <td><a href="#" data-id="{{ $item->complaint_handling_id }}"
+                                        class="complaint-handling">{{ $item->customer_fullName }}</a></td>
+                                <td><a href="#" data-id="{{ $item->complaint_handling_id }}"
+                                        class="complaint-handling">{{ $item->complaint_type_name }}</a></td>
                                 @if (($item->complaint_handling_status) == 'Progress' ||
                                 ($item->complaint_handling_status) == 'progress')
                                 @php
