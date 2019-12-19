@@ -34,6 +34,8 @@ $(document).ready(function () {
 
             $('.bank-account-number').on('change', function () {
                 var bank_account_id = $(this).val();
+                // console.log(bank_account_id);
+
                 $.get('/data/cash-bank-out/getbankaccountbeginingbalance?bank_account_id=' + bank_account_id, function (data) {
                     $('.cash-bank-saldo').val(formatNumber(parseInt(data[0].bank_account_openingBalanced)));
                 });
@@ -43,18 +45,29 @@ $(document).ready(function () {
         } else if ($('#paymentSource').val() == 'pc') {
             var petty_cash_id = $(this).val();
             $.get('/data/cash-bank-out/getPettyCashID?petty_cash_id=' + petty_cash_id, function (data) {
-                console.log(data.petty_cash_last_date[0].petty_cash_amount);
-                $('.cash-bank-saldo').val(formatNumber(parseInt(data.petty_cash_last_date[0].petty_cash_amount)));
+                console.log(petty_cash_id);
+                $('.cash-bank-saldo').val(formatNumber(parseInt(data.petty_cash_last_date[0].saldo)));
             });
 
             $('#bankName').prop('disabled', true);
             $('#bankAccountNumber').prop('disabled', true);
             // $('.bank-out-type').prop('disabled', true);
         }
+
+        $('#cashBankAmount').on('input', function () {
+            var cashBankAmount = $('#cashBankAmount').val();
+            var cashBankSaldo = $('.cash-bank-saldo').val();
+            console.log(cashBankAmount);
+            if (cashBankAmount == cashBankSaldo) {
+
+                alert('asd');
+            }
+        });
+
     });
 
-    function formatNumber(num) {
-        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    function formatNumber(numero) {
+        return (numero).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$&,');
     }
     // var amount = $('#pettyCashDetailAmount').val();
     // var remaining = $('#pettyCashRemainingBalance').val();

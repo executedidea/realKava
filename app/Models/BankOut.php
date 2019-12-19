@@ -34,9 +34,9 @@ class BankOut extends Model
         return $bank_account_beginingBalance;
     }
 
-    public static function setBankOut($bank_out_id, $bank_out_date, $bank_out_amount, $bank_out_type, $bank_out_desc, $bank_account_id, $outlet_id)
+    public static function setBankOut($bank_out_id, $bank_out_date, $bank_out_amount, $bank_out_desc, $bank_account_id, $outlet_id)
     {
-        $set_bank_out                = DB::select('call SP_BankOut_Insert(?,?,?,?,?,?,?)', [$bank_out_id, $bank_out_date, $bank_out_amount, $bank_out_type, $bank_out_desc, $bank_account_id, $outlet_id]);
+        $set_bank_out                = DB::select('call SP_BankOut_Insert(?,?,?,?,?,?)', [$bank_out_id, $bank_out_date, $bank_out_amount, $bank_out_desc, $bank_account_id, $outlet_id]);
         return $set_bank_out;
     }
 }

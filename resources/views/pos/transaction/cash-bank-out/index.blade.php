@@ -82,16 +82,10 @@
                                 <option value="etc">Lain-lain</option>
                             </select>
                         </div>
-                        {{-- <div class="form-group text-center col-4">
-                            <select name="bank_out_type" class="form-control bank-out-type">
-                                <option disabled selected>Payment Type</option>
-                                <option value="d">Debit</option>
-                                <option value="c">Credit</option>
-                            </select>
-                        </div> --}}
+                        {{-- <input type="hidden" name="bank_out_type" id="bankOutType" class="bank-out-type" value="d"> --}}
                         <div class="form-group text-center col-4">
-                            <input type="text" name="cash_bank_amount" id="pettyCashDetailAmount" class="form-control"
-                                placeholder="Amount">
+                            <input type="text" name="cash_bank_amount" id="cashBankAmount"
+                                class="form-control cash-bank-amount" placeholder="Amount">
                         </div>
                         <div class="form-group col-12">
                             <label>Deskripsi</label>

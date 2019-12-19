@@ -126,16 +126,16 @@
                                 <td>{{ $item->petty_cash_date }}</td>
                                 <td>{{ number_format($item->petty_cash_amount) }}</td>
 
-                                @if (($item->petty_cash_status) == 1)
+                                @if (($item->flag) == 1)
                                 @php
-                                $pettyCashStatus = 'open'
+                                $flag = 'open'
                                 @endphp
-                                <td><span class="badge badge-success">{{ $pettyCashStatus }}</span></td>
-                                @elseif (($item->petty_cash_status) == 0)
+                                <td><span class="badge badge-success">{{ $flag }}</span></td>
+                                @elseif (($item->flag) == 0)
                                 @php
-                                $pettyCashStatus = 'close'
+                                $flag = 'close'
                                 @endphp
-                                <td><span class="badge badge-danger">{{ $pettyCashStatus }}</span></td>
+                                <td><span class="badge badge-danger">{{ $flag }}</span></td>
 
                                 @endif
 
