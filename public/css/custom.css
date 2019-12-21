@@ -17,9 +17,9 @@ table td {
     text-transform: capitalize;
 }
 
-.form-control {
+/* .form-control {
     border-radius: 25px;
-}
+} */
 
 
 .selectric {
@@ -107,10 +107,10 @@ em {
     }
 }
 
-.input-group>.input-group-append>.input-group-text {
+/* .input-group>.input-group-append>.input-group-text {
     border-top-right-radius: 25px;
     border-bottom-right-radius: 25px;
-}
+} */
 
 #Total {
     outline: none;

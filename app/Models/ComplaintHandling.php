@@ -75,6 +75,4 @@ class ComplaintHandling extends Model
         return $set_update_complaint_handling_detail_status;
     }
 
-    
-
 }

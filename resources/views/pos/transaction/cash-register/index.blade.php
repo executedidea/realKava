@@ -75,6 +75,7 @@
                                                 <th class="text-center">Add Disc</th>
                                                 <th class="text-center">Total Price</th>
                                                 <th class="text-center">Action</th>
+                                                <th class="text-center">Total Discount</th>
 
                                             </tr>
                                         </thead>
@@ -139,7 +140,7 @@
                                                 </td>
                                                 <td>
                                                 </td>
-                                                <td class="pt-3 d-none">
+                                                <td class="pt-3">
                                                     <div class="form-group">
                                                         <input type="text"
                                                             class="form-control text-right total-discount"
