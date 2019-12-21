@@ -176,6 +176,10 @@ em {
     float: left !important;
 }
 
+.badge {
+    width: 80px;
+}
+
 /* .showData {
     float: left !important;
     margin-top: -70px !important;
