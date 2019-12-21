@@ -17,8 +17,8 @@ $(document).ready(function () {
             $('.bank-account-number').show();
             // $('#rupiah').autoNumeric('init');
             // $('.bank-out-type').prop('disabled', false);
+            $('.bank-account-number').prop('disabled', true);
             $('#bankName').prop('disabled', false);
-            $('.bank-account-number').prop('disabled', false);
             $('.bank-account-number').append(
                 '<option value="" disabled selected>Account Number</option>'
             );

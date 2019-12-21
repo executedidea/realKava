@@ -46,4 +46,46 @@ class Membership extends Model
         return $delete;
     }
 
+    public static function getCustomerByID($customer_id, $outlet_id)
+    {
+        $customer    = DB::select('call SP_CS_CustomerDetail_ByDetailID_Select(?,?)', [$customer_id, $outlet_id]);
+        return $customer;
+    }
+
+    public static function getMembershipList($outlet_id)
+    {
+        $membership_list    = DB::select('call SP_CS_MembershipList_Select(?)', [$outlet_id]);
+        return $membership_list;
+    }
+
+    public static function getCustomerMembership($outlet_id)
+    {
+        $customer_member    = DB::select('call SP_CS_MembershipRegistration_Select(?)', [$outlet_id]);
+        return $customer_member;
+    }
+
+    public static function getCityList()
+    {
+        $city_list    = DB::select('call SP_CityList_Select');
+        return $city_list;
+    }
+
+    public static function setUpdateMembershipRegistration ($customer_id, $membership_id, $membership_joinDate, $membership_expiredDate, $customer_dateOfBirth, $customer_idCardNo, $customer_religion, $customer_martialStatus, $customer_email, $customer_address, $city_id)
+    {
+        $set_update_membership_registration                = DB::select('call SP_CS_MembershipRegistration_Update(?,?,?,?,?,?,?,?,?,?,?)', [
+        $customer_id,
+        $membership_id,
+        $membership_joinDate,
+        $membership_expiredDate,
+        $customer_dateOfBirth,
+        $customer_idCardNo,
+        $customer_religion,
+        $customer_martialStatus,
+        $customer_email,
+        $customer_address,
+        $city_id
+        ]);
+        return $set_update_membership_registration;
+    }
+
 }

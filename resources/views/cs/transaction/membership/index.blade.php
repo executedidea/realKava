@@ -4,7 +4,6 @@
 @endsection
 @section('css')
 <link rel="stylesheet" href="{{ asset('/modules/select2/dist/css/select2.min.css') }}">
-<link rel="stylesheet" href="{{ asset('/css/kava/cs/check-in-out.css') }}">
 <link rel="stylesheet" href="{{ asset('/modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}">
 <link rel="stylesheet" href="{{ asset('/modules/bootstrap-daterangepicker/daterangepicker.css') }}">
 @endsection
@@ -64,10 +63,19 @@
                                     <th>Category</th>
                                     <th>Member Since</th>
                                     <th>Expired</th>
-                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach($customer_member as $item)
+                                <tr>
+                                    <td>{{ $item->customer_id }}</td>
+                                    <td>{{ $item->customer_fullName }}</td>
+                                    <td>{{ $item->customer_phone }}</td>
+                                    <td>{{ $item->membership_name }}</td>
+                                    <td>{{ $item->membership_joinDate }}</td>
+                                    <td>{{ $item->membership_expiredDate }}</td>
+                                </tr>
+                                @endforeach
 
                             </tbody>
                         </table>
@@ -80,8 +88,7 @@
 @endsection
 @section('modal')
 {{-- Membership Modal --}}
-<div class="modal fade" id="customerCheckInModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-    aria-hidden="true">
+<div class="modal fade" id="customerMembershipModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -90,99 +97,114 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="form-group col-4">
-                            <label for="checkInCustomerName">Customer Name</label>
-                            <input type="text" class="form-control" id="checkInCustomerName" disabled>
-                        </div>
-                        <div class="form-group col-4">
-                            <label for="checkInCustomerPhone">Phone Number</label>
-                            <input type="text" class="form-control" id="checkInCustomerPhone" disabled>
-                        </div>
-                        <div class="form-group col-4">
-                            <label for="checkInCustomerPhone">No. Membership</label>
-                            <input type="text" class="form-control" id="checkInCustomerPhone" value="001201911230012"
-                                disabled>
-                        </div>
-                        <div class="form-group col-6">
-                            <select name="" id="" class="form-control membership-name">
-                                <option disabled selected>Membership Name</option>
 
-                                @foreach ($membership_all as $item)
-                                <option value="{{$item->membership_id}}">{{$item->membership_name}}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group col-6">
+            <form action="{{route('updateMembershipTransaction')}}" method="post" id="editMembershipRegistrationForm">
+                @csrf
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="form-group col-4">
+                                <input name="customer_id" type="hidden" id="customerID">
+                                <label for="checkInCustomerName">Customer Name</label>
+                                <input type="text" class="form-control" id="membershipCustomerName" disabled>
+                            </div>
+                            <div class="form-group col-4">
+                                <label for="checkInCustomerPhone">Phone Number</label>
+                                <input type="text" class="form-control" id="membershipCustomerPhone" disabled>
+                            </div>
+                            <div class="form-group col-4">
+                                <label for="checkInCustomerPhone">No. Membership</label>
+                                <input type="text" class="form-control" id="membershipCustomerPhone"
+                                    value="001201911230012" disabled>
+                            </div>
+                            <div class="form-group col-6">
+                                <select name="membership_id" id="membershipName" class="form-control membership-name">
+                                    <option disabled selected>Membership Name</option>
 
-                            <select name="membership_type" class="form-control membership-type" id="membershipType"
-                                disabled required>
-                                <option disabled selected>Membership Type</option>
-                            </select>
-                            {{-- <select name="" id="" class="form-control membership-type">
-                                <option disabled selected>Membership Type</option>
+                                    @foreach ($membership_list as $item)
+                                    <option value="{{$item->membership_id}}">{{$item->membership_name}}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group col-6">
 
-                                @foreach ($membership_all as $item)
-                                <option value="{{$item->membership_id}}">{{$item->membership_type}}
-                            </option>
-                            @endforeach
-                            </select> --}}
+                                <select name="membership_type" class="form-control membership-type" id="membershipType"
+                                    required>
+                                    <option disabled selected>Membership Type</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-4">
+                                <input name="membership_joinDate" type="text" class="form-control datepicker"
+                                    id="membershipCustomerJoinDate">
+                            </div>
+                            <div class="form-group col-4">
+                                <input name="membership_expiredDate" type="text" class="form-control datepicker"
+                                    id="membershipCustomerExpiredDate">
+                            </div>
+                            <div class="form-group col-4">
+                                <input name="customer_dateOfBirth" type="text" class="form-control datepicker"
+                                    id="membershipCustomerBirthDate">
+                            </div>
                         </div>
-                        <div class="form-group col-4">
-                            <input type="text" class="form-control datepicker" id="checkInCustomerJoinDate">
+                        <div class="row">
+
+                            <div class="form-group col-4">
+                                <input name="customer_idCardNo" type="text" class="form-control" placeholder="NIK"
+                                    id="membershipCustomerIDCardNo">
+                            </div>
+                            <div class="form-group col-4">
+                                <select name="customer_religion" id="" class="form-control" required>
+                                    <option disabled selected>Religion</option>
+                                    <option value="islam">Islam</option>
+                                    <option value="kristen">Kristen</option>
+                                    <option value="katolik">Katolik</option>
+                                    <option value="hindu">Hindu</option>
+                                    <option value="buddha">Buddha</option>
+                                    <option value="konghucu">Konghucu</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-4">
+                                <select name="customer_martialStatus" id="" class="form-control">
+                                    <option disabled selected>Status</option>
+                                    <option value="menikah">Menikah</option>
+                                    <option value="belum menikah">Belum Menikah</option>
+                                    <option value="pernah menikah">Penah Menikah</option>
+
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group col-4">
-                            <input type="text" class="form-control datepicker" id="checkInCustomerExpiredDate">
+                        <div class="row">
+
+                            <div class="form-group col-4">
+                                <input name="customer_email" type="text" class="form-control" placeholder="Email">
+                            </div>
+                            <div class="form-group col-4">
+                                <input name="customer_address" type="text" class="form-control" placeholder="Address">
+                            </div>
+                            <div class="form-group col-4">
+                                <select name="city_id" id="" class="form-control">
+                                    <option disabled selected>City</option>
+                                    @foreach ($city_list as $item)
+                                    <option value="{{$item->city_id}}">{{$item->city_name}}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group col-4">
-                            <input type="text" class="form-control datepicker" id="birthDate">
+                        <div class="row">
+
+                            <div class="form-group col-12">
+                                <textarea type="text" class="form-control" placeholder="Note" id=""></textarea>
+                            </div>
                         </div>
+
                     </div>
-                    <div class="row">
-
-                        <div class="form-group col-4">
-                            <input type="text" class="form-control" placeholder="NIK">
-                        </div>
-                        <div class="form-group col-4">
-                            <select name="" id="" class="form-control membership-type">
-                                <option disabled selected>Religion</option>
-                            </select>
-                        </div>
-                        <div class="form-group col-4">
-                            <select name="" id="" class="form-control membership-type">
-                                <option disabled selected>Status</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-
-                        <div class="form-group col-4">
-                            <input type="text" class="form-control" placeholder="Email">
-                        </div>
-                        <div class="form-group col-4">
-                            <input type="text" class="form-control" placeholder="Address">
-                        </div>
-                        <div class="form-group col-4">
-                            <select name="" id="" class="form-control membership-type">
-                                <option disabled selected>City</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-
-                        <div class="form-group col-12">
-                            <textarea type="text" class="form-control" placeholder="Note"></textarea>
-                        </div>
-                    </div>
-
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-block">Save</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-block" id="submit">Submit</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -224,7 +246,6 @@
 @endsection
 @section('script')
 <script src="{{ asset('/modules/select2/dist/js/select2.full.min.js') }}"></script>
-
 <script src="{{asset('/js/page/modules-ion-icons.js')}}"></script>
 <script src="{{ asset('/modules/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}"></script>
 <script src="{{ asset('/modules/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
@@ -232,9 +253,9 @@
 <script src="{{asset('js/sweetalert2.all.min.js')}}"></script>
 <script>
     $(document).ready(function () {
-        $('#checkInCustomerJoinDate').val('Join Date');
-        $('#checkInCustomerExpiredDate').val('Expired Date');
-        $('#birthDate').val('Birth Date');
+        $('#membershipCustomerJoinDate').val('Join Date');
+        $('#membershipCustomerExpiredDate').val('Expired Date');
+        $('#membershipCustomerBirthDate').val('Birth Date');
 
         // $('#bankName').prop('disabled', true);
         // $('.membership-type').prop('disabled', true);
@@ -242,41 +263,35 @@
         $('#customerSearch').select2();
 
         $('#customerSearch').on('change', function () {
-            var id = $(this).val();
-            $.get('/data/checkin/customer/' + id, function (data) {
-                console.log(data);
-                $('#checkInCustomerName').val(data[0].customer_fullName);
-                $('#checkInCustomerPhone').val(data[0].customer_phone);
-                $('#checkInCustomerLicensePlate').val(data[0].customer_detail_licensePlate);
+
+            var customer_id = $(this).val();
+            // console.log(customer_id);
+            $('#customerID').val(customer_id);
+            $.get('/data/membership/getcustomerbyid/' + customer_id, function (data) {
+                $('#membershipCustomerName').val(data[0].customer_fullName);
+                $('#membershipCustomerPhone').val(data[0].customer_phone);
+                $('#membershipCustomerLicensePlate').val(data[0].customer_detail_licensePlate);
             });
-            $('#customerCheckInModal').modal('show')
+            $('#customerMembershipModal').modal('show');
+
         });
 
 
 
-        // $('.membership-name').on('change', function (e) {
-        //     var membership_id = e.target.value;
-        //     $.get('/data/membership/getMembershipByID?membership_id=' + membership_id,
-        //         function (data) {
-        //             console.log(membership_id);
+        $('.membership-name').select2();
 
-        //             $('.membership-type').empty();
-        //             $('.membership-type').prop("disabled", false);
-        //             $('.membership-type').append(
-        //                 '<option value="" disabled selected>Account Number</option>'
-        //             );
+        $('.membership-name').on('change', function (e) {
+            var id = e.target.value;
+            $.get('/data/membership/getmembershipbyid/' + id, function (data) {
 
-        //             $.each(data, function (index, membershipTypeObj) {
-        //                 $('.membership-type').append(
-        //                     '<option class="text-center" value="' +
-        //                     membershipTypeObj.membership_id + '">' +
-        //                     membershipTypeObj
-        //                     .membership_type + '</option>');
-        //             })
-        //         });
-        // });
-
-
+                $.each(data, function (index, membershipTypeObj) {
+                    $('.membership-type').append(
+                        '<option class="text-center" value="' +
+                        membershipTypeObj.membership_id + '">' +
+                        membershipTypeObj.membership_type + '</option>');
+                });
+            });
+        });
 
     });
 

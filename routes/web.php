@@ -33,7 +33,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/data/checkin/countVisitItem/{customer_detail_id}/{item_id}', 'POS\Transaction\CashRegisterController@getCustomerVisitByItemID');
     Route::get('/data/checkin/getcheckedincustomer/{customer_detail_id}', 'POS\Transaction\CashRegisterController@getCheckedInCustomer');
-    Route::get('/data/membership/getMembershipByID/{membership_id}', 'CS\Transaction\MembershipController@getMembershipByID');
+    Route::get('/data/membership/getcustomerbyid/{customer_id}', 'CS\Transaction\MembershipController@getCustomerByID')->name('getCustomerByID');
+    Route::get('/data/membership/getmembershipbyid/{id}', 'CS\Transaction\MembershipController@getMembershipByID')->name('getMembershipList');
+
 
     Route::get('/data/customerdetail/get/{id}', 'CS\Master\CustomerController@getCustomerDetail')->name('getCustomerDetail');
     Route::get('/data/group', 'UserManagement\GroupController@getUserGroups')->name('userGroupData');
@@ -97,6 +99,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/cs/transaction/check-in-out/checkout/{id}', 'CS\Transaction\CheckInOutController@checkOut')->name('checkOut');
         // Membership
         Route::get('/cs/transaction/membership', 'CS\Transaction\MembershipController@index')->name('membershipTransaction');
+        Route::post('/cs/transaction/membership/edit', 'CS\Transaction\MembershipController@update')->name('updateMembershipTransaction');
+
         // Promo Item
         Route::get('/cs/master/promo-item', 'CS\Master\PromoItemController@index')->name('promoItem');
         Route::post('/cs/master/promo-item/add', 'CS\Master\PromoItemController@store')->name('storePromoItem');
