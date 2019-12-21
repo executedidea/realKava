@@ -59,8 +59,8 @@ class PromoItemController extends Controller
                     $promo_startDate    = $request->promo_startDate;
                     $promo_endDate      = $request->promo_endDate;
                 } else {
-                    $promo_startDate    = null;
-                    $promo_endDate      = null;
+                    $promo_startDate    = '1111-11-11';
+                    $promo_endDate      = '9999-12-31';
                 }
 
                 $outlet_id          = Auth::user()->outlet_id;
@@ -87,8 +87,8 @@ class PromoItemController extends Controller
                     $promo_startDate    = $request->promo_startDate;
                     $promo_endDate      = $request->promo_endDate;
                 } else {
-                    $promo_startDate    = null;
-                    $promo_endDate      = null;
+                    $promo_startDate    = '1111-11-11';
+                    $promo_endDate      = '9999-12-31';
                 }
                 $outlet_id          = Auth::user()->outlet_id;
                 $promo_status       = 1;

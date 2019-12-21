@@ -466,13 +466,148 @@ $(document).ready(function () {
         });
     });
     // ---------------------------------------------------------------------------------------------
-    // Item Select----------------------------------------------------------------------------------
-    $('#itemSelect').on('select2:open', function () {
+    // Items On Select------------------------------------------------------------------------------
+    $('#itemSelect').on('select2:opening', function (e) {
+        $('#itemSelect').empty();
+        $('#itemSelect').append('<option disabled selected>Item Name</option>');
         $.get('/data/items/getitems', function (items) {
-            $.each(items, function (index, Item) {
-                $('#itemSelect').append('<option value="' + Item.item_id + '">' + Item
+            $.each(items, function (index, Obj) {
+                $('#itemSelect').append('<option value="' + Obj.item_id + '">' + Obj
                     .item_name + '</option>');
             });
+        });
+    });
+    // ---------------------------------------------------------------------------------------------
+    // Items On Change------------------------------------------------------------------------------
+    $('#itemSelect').on('change', function () {
+        var item_id = $(this).val();
+        $('#quantity').prop('readonly', false);
+        $('#quantity').val(1);
+        $.get('/data/cashier/getcashierbyid', function (cashier) {
+            if (cashier[0].disc_percent !== 0.00) {
+                $('#itemDiscount').prop('readonly', false);
+            }
+            if (cashier[0].disc_add_1 !== 0.00) {
+                $('#itemAddDiscount').prop('readonly', false);
+            }
+        });
+        $.get('/data/items/getitem/' + item_id, function (item) {
+            $('#itemPrice').val(parseInt(item[0].item_price));
+            $('#itemTotalPrice').val(parseInt(item[0].item_price));
+            var totalPrice = 0;
+            $('.total-price').each(function () {
+                totalPrice += +$(this).val();
+            });
+            $('#totalPrice').val(totalPrice);
+            // PPN---
+            $.get('/data/local-setting/getsetting', function (setting) {
+                if (setting[0].setting_pos_ppn == 0) {
+                    $('#ppn').val(0);
+                } else {
+                    var totalPPN = $('#totalPrice').val() * 10 / 100;
+                    $('#ppn').val(totalPPN)
+                }
+            });
+            // ------
+        });
+
+
+    });
+    // ---------------------------------------------------------------------------------------------
+    // Quantity-------------------------------------------------------------------------------------
+    $('#quantity').on('input', function (e) {
+        var quantityPrice = $('#quantity').val() * $('#itemPrice').val();
+        var disc = ($('#itemDiscount').val() / 100) * quantityPrice;
+        var discPrice = quantityPrice - disc;
+        var addDisc = ($('#itemAddDiscount').val() / 100) * discPrice;
+        var addDiscPrice = discPrice - addDisc;
+        var totalDiscount = disc + addDisc;
+        $('#itemTotalDiscount').val(totalDiscount);
+        $('#itemTotalPrice').val(addDiscPrice);
+
+        // total discount
+        var totalDiscount = 0;
+        $('.total-discount').each(function () {
+            totalDiscount += parseInt($(this).val());
+        });
+        $('#totalAllDiscount').val(totalDiscount);
+        // ---
+        // total price
+        var totalPrice = 0;
+        $('.total-price').each(function () {
+            totalPrice += +$(this).val();
+        });
+        $('#totalPrice').val(totalPrice);
+        // ---
+        $.get('/data/local-setting/getsetting', function (setting) {
+            if (setting[0].setting_pos_ppn == 0) {
+                $('#ppn').val(0);
+            } else {
+                var totalPPN = $('#totalPrice').val() * 10 / 100;
+                $('#ppn').val(totalPPN)
+            }
+        });
+    });
+    // ---------------------------------------------------------------------------------------------
+    // Discount
+    $('#itemDiscount').on('input', function (e) {
+        var quantityPrice = $('#quantity').val() * $('#itemPrice').val();
+        var disc = ($('#itemDiscount').val() / 100) * quantityPrice;
+        var discPrice = quantityPrice - disc;
+        var addDisc = ($('#itemAddDiscount').val() / 100) * discPrice;
+        var addDiscPrice = discPrice - addDisc;
+        var totalDiscount = disc + addDisc;
+        $('#itemTotalDiscount').val(totalDiscount);
+        $('#itemTotalPrice').val(addDiscPrice);
+
+        var totalDiscount = 0;
+        $('.total-discount').each(function () {
+            totalDiscount += parseInt($(this).val());
+        });
+        $('#totalAllDiscount').val(totalDiscount);
+        var totalPrice = 0;
+        $('.total-price').each(function () {
+            totalPrice += +$(this).val();
+        });
+        $('#totalPrice').val(totalPrice);
+        $.get('/data/local-setting/getsetting', function (setting) {
+            if (setting[0].setting_pos_ppn == 0) {
+                $('#ppn').val(0);
+            } else {
+                var totalPPN = $('#totalPrice').val() * 10 / 100;
+                $('#ppn').val(totalPPN)
+            }
+        });
+    });
+    // ---------------------------------------------------------------------------------------------
+    // Add Discount
+    $('#itemAddDiscount').on('input', function (e) {
+        var quantityPrice = $('#quantity').val() * $('#itemPrice').val();
+        var disc = ($('#itemDiscount').val() / 100) * quantityPrice;
+        var discPrice = quantityPrice - disc;
+        var addDisc = ($('#itemAddDiscount').val() / 100) * discPrice;
+        var addDiscPrice = discPrice - addDisc;
+        var totalDiscount = disc + addDisc;
+        $('#itemTotalDiscount').val(totalDiscount);
+        $('#itemTotalPrice').val(addDiscPrice);
+
+        var totalDiscount = 0;
+        $('.total-discount').each(function () {
+            totalDiscount += parseInt($(this).val());
+        });
+        $('#totalAllDiscount').val(totalDiscount);
+        var totalPrice = 0;
+        $('.total-price').each(function () {
+            totalPrice += +$(this).val();
+        });
+        $('#totalPrice').val(totalPrice);
+        $.get('/data/local-setting/getsetting', function (setting) {
+            if (setting[0].setting_pos_ppn == 0) {
+                $('#ppn').val(0);
+            } else {
+                var totalPPN = $('#totalPrice').val() * 10 / 100;
+                $('#ppn').val(totalPPN)
+            }
         });
     });
     // ---------------------------------------------------------------------------------------------

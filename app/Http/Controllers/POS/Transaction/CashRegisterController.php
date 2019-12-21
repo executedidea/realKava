@@ -133,7 +133,7 @@ class CashRegisterController extends Controller
     {
         $user_id        = Auth::user()->user_id;
         $outlet_id      = Auth::user()->outlet_id;
-        $cashier        = Shift::getCashierByID($outlet_id, $user_id);
+        $cashier        = Shift::getCashierByID($user_id);
 
         return response()->json($cashier);
     }
@@ -176,6 +176,13 @@ class CashRegisterController extends Controller
     {
         $outlet_id      = Auth::user()->outlet_id;
         $promo          = PromoItem::getPromoItem($outlet_id);
+
+        return response()->json($promo);
+    }
+    public function getAllPromo()
+    {
+        $outlet_id      = Auth::user()->outlet_id;
+        $promo          = PromoItem::getAllPromo($outlet_id);
 
         return response()->json($promo);
     }

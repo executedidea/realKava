@@ -22,7 +22,7 @@
                                 <div class="row justify-content-center">
                                     <div class="form-group col-12">
                                         <select class="form-control" id="checkedInCustomer">
-                                            <option value="" readonly selected>Search Name, License Plate, or Phone
+                                            <option value="" disabled selected>Search Name, License Plate, or Phone
                                                 Number
                                             </option>
                                             @foreach ($customer as $item)

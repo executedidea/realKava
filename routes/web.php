@@ -30,6 +30,7 @@ Route::group(['middleware' => 'auth'], function () {
     // Route::get('/data/complaint-handling/get/{id}', 'CS\Transaction\ComplaintHandlingeController@getLicensePlate')->name('getLicensePlate');
     Route::get('/data/promo/getpromofree/{customer_detail_id}/{promo_id}', 'POS\Transaction\CashRegisterController@getPromoFree')->name('getPromoFree');
     Route::get('/data/promo/getpromoitem', 'POS\Transaction\CashRegisterController@getPromoItem')->name('getPromoItem');
+    Route::get('/data/promo/getallpromo', 'POS\Transaction\CashRegisterController@getAllPromo')->name('getAllPromo');
 
     Route::get('/data/checkin/countVisitItem/{customer_detail_id}/{item_id}', 'POS\Transaction\CashRegisterController@getCustomerVisitByItemID');
     Route::get('/data/checkin/getcheckedincustomer/{customer_detail_id}', 'POS\Transaction\CashRegisterController@getCheckedInCustomer');
