@@ -103,7 +103,7 @@
                             </div>
                             <div class="form-group col-12 col-lg-5">
                                 <select name="vehicle_category" class="form-control" id="vehicleCategory" required>
-                                    <option disabled selected>Select Category</option>
+                                    <option disabled selected>Category</option>
                                     @foreach ($vehicle_category as $item)
                                     <option value="{{$item->vehicle_category_id}}">{{$item->vehicle_category_name}}
                                     </option>
@@ -112,17 +112,17 @@
                             </div>
                             <div class="form-group col-12 col-lg-5">
                                 <select name="vehicle_brand" class="form-control" id="vehicleBrand" disabled required>
-                                    <option disabled selected>Select Brand</option>
+                                    <option disabled selected>Brand</option>
                                 </select>
                             </div>
                             <div class="form-group col-12 col-lg-5">
                                 <select name="vehicle_model" class="form-control" id="vehicleModel" disabled required>
-                                    <option disabled selected>Select Model</option>
+                                    <option disabled selected>Model</option>
                                 </select>
                             </div>
                             <div class="form-group col-10 col-lg-5">
                                 <select name="vehicle_color" class="form-control" id="vehicleColor" disabled required>
-                                    <option disabled selected>Select Color</option>
+                                    <option disabled selected>Color</option>
                                     @foreach($vehicle_color as $item)
                                     <option value="{{$item->vehicle_color_id}}">{{$item->vehicle_color_name}}</option>
                                     @endforeach
@@ -188,7 +188,7 @@
                 $('#vehicleBrand').empty();
                 $('#vehicleBrand').prop("disabled", false);
                 $('#vehicleBrand').append(
-                    '<option value="" disabled selected>--Select Brand--</option>'
+                    '<option value="" disabled selected>Brand</option>'
                 );
 
 
@@ -206,7 +206,7 @@
                 $('#vehicleModel').empty();
                 $('#vehicleModel').prop("disabled", false);
                 $('#vehicleModel').append(
-                    '<option value="" disabled selected>--Select Model--</option>'
+                    '<option value="" disabled selected>Model</option>'
                 );
 
                 $.each(data, function (index, modelObj) {

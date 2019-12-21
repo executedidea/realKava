@@ -84,7 +84,7 @@
         <form action="{{ route('storeMembership') }}" method="post" class="validate-this">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add Membership</h5>
+                    <h5 class="modal-title">Membership List</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -104,6 +104,7 @@
                                     <option value="personal">Personal</option>
                                     <option value="corporate">Corporate</option>
                                     <option value="family">Family</option>
+                                    <option value="community">Community</option>
 
                                 </select>
                             </div>

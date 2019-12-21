@@ -19,6 +19,9 @@ $(document).ready(function () {
             // $('.bank-out-type').prop('disabled', false);
             $('#bankName').prop('disabled', false);
             $('.bank-account-number').prop('disabled', false);
+            $('.bank-account-number').append(
+                '<option value="" disabled selected>Account Number</option>'
+            );
 
 
             $('.bank-name').on('change', function (e) {

@@ -5,6 +5,8 @@
 @section('css')
 <link rel="stylesheet" href="{{ asset('/modules/select2/dist/css/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/kava/cs/check-in-out.css') }}">
+<link rel="stylesheet" href="{{ asset('/modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}">
+<link rel="stylesheet" href="{{ asset('/modules/bootstrap-daterangepicker/daterangepicker.css') }}">
 @endsection
 @section('content')
 <section id="customerCheck">
@@ -77,7 +79,7 @@
 </section>
 @endsection
 @section('modal')
-{{-- Check In Modal --}}
+{{-- Membership Modal --}}
 <div class="modal fade" id="customerCheckInModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
     aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -88,7 +90,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body p-lg-5">
+            <div class="modal-body">
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="form-group col-4">
@@ -105,77 +107,81 @@
                                 disabled>
                         </div>
                         <div class="form-group col-6">
-                            <label for="checkInCustomerPhone">Membership Category</label>
-                            <select name="" id="" class="form-control membership-category">
-                                <option value="">Bronze</option>
-                                <option value="">Gold</option>
-                                <option value="">Platinum</option>
+                            <select name="" id="" class="form-control membership-name">
+                                <option disabled selected>Membership Name</option>
+
+                                @foreach ($membership_all as $item)
+                                <option value="{{$item->membership_id}}">{{$item->membership_name}}
+                                </option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="form-group col-6">
-                            <label for="checkInCustomerPhone">Memberhip Name</label>
-                            <input type="text" class="form-control" id="checkInCustomerPhone">
+
+                            <select name="membership_type" class="form-control membership-type" id="membershipType"
+                                disabled required>
+                                <option disabled selected>Membership Type</option>
+                            </select>
+                            {{-- <select name="" id="" class="form-control membership-type">
+                                <option disabled selected>Membership Type</option>
+
+                                @foreach ($membership_all as $item)
+                                <option value="{{$item->membership_id}}">{{$item->membership_type}}
+                            </option>
+                            @endforeach
+                            </select> --}}
                         </div>
                         <div class="form-group col-4">
-                            <label for="checkInCustomerPhone">Start Date</label>
-                            <input type="date" class="form-control" id="checkInCustomerPhone">
+                            <input type="text" class="form-control datepicker" id="checkInCustomerJoinDate">
                         </div>
                         <div class="form-group col-4">
-                            <label for="checkInCustomerPhone">End Date</label>
-                            <input type="date" class="form-control" id="checkInCustomerPhone">
+                            <input type="text" class="form-control datepicker" id="checkInCustomerExpiredDate">
+                        </div>
+                        <div class="form-group col-4">
+                            <input type="text" class="form-control datepicker" id="birthDate">
                         </div>
                     </div>
                     <div class="row">
-                        <div class="container">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h4>Customer Detail</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row justify-content-center">
-                                            <div class="form-group col-4">
-                                                <label for="">Birth Date</label>
-                                                <input type="date" class="form-control">
-                                            </div>
-                                            <div class="form-group col-4">
-                                                <label for="">NIK</label>
-                                                <input type="text" class="form-control">
-                                            </div>
-                                            <div class="form-group col-4">
-                                                <label for="">Religion</label>
-                                                <input type="text" class="form-control">
-                                            </div>
-                                            <div class="form-group col-4">
-                                                <label for="">Status</label>
-                                                <input type="text" class="form-control">
-                                            </div>
-                                            <div class="form-group col-4">
-                                                <label for="">Email</label>
-                                                <input type="text" class="form-control">
-                                            </div>
-                                            <div class="form-group col-4">
-                                                <label for="">Address</label>
-                                                <input type="text" class="form-control">
-                                            </div>
-                                            <div class="form-group col-4">
-                                                <label for="">City</label>
-                                                <input type="text" class="form-control">
-                                            </div>
-                                            <div class="form-group col-12">
-                                                <label for="">Note</label>
-                                                <textarea type="text" class="form-control"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
+                        <div class="form-group col-4">
+                            <input type="text" class="form-control" placeholder="NIK">
+                        </div>
+                        <div class="form-group col-4">
+                            <select name="" id="" class="form-control membership-type">
+                                <option disabled selected>Religion</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-4">
+                            <select name="" id="" class="form-control membership-type">
+                                <option disabled selected>Status</option>
+                            </select>
                         </div>
                     </div>
+                    <div class="row">
+
+                        <div class="form-group col-4">
+                            <input type="text" class="form-control" placeholder="Email">
+                        </div>
+                        <div class="form-group col-4">
+                            <input type="text" class="form-control" placeholder="Address">
+                        </div>
+                        <div class="form-group col-4">
+                            <select name="" id="" class="form-control membership-type">
+                                <option disabled selected>City</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="form-group col-12">
+                            <textarea type="text" class="form-control" placeholder="Note"></textarea>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success btn-block">Check In</button>
+                <button type="button" class="btn btn-primary btn-block">Save</button>
             </div>
         </div>
     </div>
@@ -218,19 +224,60 @@
 @endsection
 @section('script')
 <script src="{{ asset('/modules/select2/dist/js/select2.full.min.js') }}"></script>
+
+<script src="{{asset('/js/page/modules-ion-icons.js')}}"></script>
+<script src="{{ asset('/modules/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}"></script>
+<script src="{{ asset('/modules/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+<script src="{{ asset('/js/cleave.min.js') }}"></script>
+<script src="{{asset('js/sweetalert2.all.min.js')}}"></script>
 <script>
     $(document).ready(function () {
+        $('#checkInCustomerJoinDate').val('Join Date');
+        $('#checkInCustomerExpiredDate').val('Expired Date');
+        $('#birthDate').val('Birth Date');
+
+        // $('#bankName').prop('disabled', true);
+        // $('.membership-type').prop('disabled', true);
+        $('.membership-name').selectric();
         $('#customerSearch').select2();
-        $('.membership-category').selectric();
+
         $('#customerSearch').on('change', function () {
             var id = $(this).val();
             $.get('/data/checkin/customer/' + id, function (data) {
+                console.log(data);
                 $('#checkInCustomerName').val(data[0].customer_fullName);
                 $('#checkInCustomerPhone').val(data[0].customer_phone);
                 $('#checkInCustomerLicensePlate').val(data[0].customer_detail_licensePlate);
             });
             $('#customerCheckInModal').modal('show')
         });
+
+
+
+        // $('.membership-name').on('change', function (e) {
+        //     var membership_id = e.target.value;
+        //     $.get('/data/membership/getMembershipByID?membership_id=' + membership_id,
+        //         function (data) {
+        //             console.log(membership_id);
+
+        //             $('.membership-type').empty();
+        //             $('.membership-type').prop("disabled", false);
+        //             $('.membership-type').append(
+        //                 '<option value="" disabled selected>Account Number</option>'
+        //             );
+
+        //             $.each(data, function (index, membershipTypeObj) {
+        //                 $('.membership-type').append(
+        //                     '<option class="text-center" value="' +
+        //                     membershipTypeObj.membership_id + '">' +
+        //                     membershipTypeObj
+        //                     .membership_type + '</option>');
+        //             })
+        //         });
+        // });
+
+
+
     });
 
 </script>
