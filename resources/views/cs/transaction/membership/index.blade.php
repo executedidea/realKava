@@ -57,23 +57,23 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Phone</th>
-                                    <th>Category</th>
-                                    <th>Member Since</th>
-                                    <th>Expired</th>
+                                    <th class="text-center">ID</th>
+                                    <th class="text-center">Name</th>
+                                    <th class="text-center">Phone</th>
+                                    <th class="text-center">Category</th>
+                                    <th class="text-center">Member Since</th>
+                                    <th class="text-center">Expired</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($customer_member as $item)
+                                @foreach($customer_member as $index => $item)
                                 <tr>
-                                    <td>{{ $item->customer_id }}</td>
-                                    <td>{{ $item->customer_fullName }}</td>
-                                    <td>{{ $item->customer_phone }}</td>
-                                    <td>{{ $item->membership_name }}</td>
-                                    <td>{{ $item->membership_joinDate }}</td>
-                                    <td>{{ $item->membership_expiredDate }}</td>
+                                    <td class="text-center">{{ $index+1 }}</td>
+                                    <td class="text-center">{{ $item->customer_fullName }}</td>
+                                    <td class="text-center">{{ $item->customer_phone }}</td>
+                                    <td class="text-center">{{ $item->membership_name }}</td>
+                                    <td class="text-center">{{ $item->membership_joinDate }}</td>
+                                    <td class="text-center">{{ $item->membership_expiredDate }}</td>
                                 </tr>
                                 @endforeach
 
@@ -283,7 +283,9 @@
         $('.membership-name').on('change', function (e) {
             var id = e.target.value;
             $.get('/data/membership/getmembershipbyid/' + id, function (data) {
-
+                $('.membership-type').empty();
+                $('.membership-type').append(
+                    '<option disabled selected>Membership Type</option>');
                 $.each(data, function (index, membershipTypeObj) {
                     $('.membership-type').append(
                         '<option class="text-center" value="' +
@@ -292,6 +294,45 @@
                 });
             });
         });
+
+        $('#membershipCustomerBirthDate').daterangepicker({
+            locale: {
+                format: "DD-MM-YYYY",
+                separator: " - "
+            },
+            startDate: "01-01-1980",
+            singleDatePicker: true,
+            showDropdowns: true,
+            minYear: 1901,
+            maxYear: 2001
+        });
+        $('#membershipCustomerBirthDate').val('Birth Date');
+
+        var date = new Date();
+
+        $('#membershipCustomerJoinDate').daterangepicker({
+            locale: {
+                format: "DD-MM-YYYY",
+                separator: " - "
+            },
+            startDate: moment(date),
+            singleDatePicker: true,
+            showDropdowns: true,
+            minYear: 1901
+        });
+        $('#membershipCustomerJoinDate').val('Join Date');
+
+        $('#membershipCustomerExpiredDate').daterangepicker({
+            locale: {
+                format: "DD-MM-YYYY",
+                separator: " - "
+            },
+            startDate: moment(date),
+            singleDatePicker: true,
+            showDropdowns: true,
+            minYear: 1901
+        });
+        $('#membershipCustomerExpiredDate').val('Expired Date');
 
     });
 
