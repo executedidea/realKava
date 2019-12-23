@@ -117,10 +117,9 @@ em {
 }
 
 
-#customerItems :disabled {
-    background-color: #fcf5b0;
-}
+#customerItems :disabled {}
 
+#customerItems thead {}
 
 #vehicle {
     background-color: #eafbea;
@@ -136,11 +135,6 @@ em {
 
 #calculated .card {
     background-color: #393e46;
-}
-
-#paymentMethodSection :disabled {
-    background-color: #ffe3ed;
-
 }
 
 .select2-container--default.select2-container--disabled .select2-selection--single {

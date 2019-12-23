@@ -41,6 +41,7 @@ class CashRegisterController extends Controller
 
     public function store(Request $request, $customer_detail_id)
     {
+        // dd($request->all());
         $outlet_id              = Auth::user()->outlet_id;
         if(count(PointOfSales::all()) == 0){
             $pos_id             = 1;
@@ -185,5 +186,21 @@ class CashRegisterController extends Controller
         $promo          = PromoItem::getAllPromo($outlet_id);
 
         return response()->json($promo);
+    }
+
+    public function getVisitPromo()
+    {
+        $outlet_id      = Auth::user()->outlet_id;
+        $promo          = PromoItem::getVisitPromo($outlet_id);
+
+        return response()->json($promo);
+    }
+
+    public function getCheckedInCustomer($customer_detail_id)
+    {
+        $outlet_id      = Auth::user()->outlet_id;
+        $customer       = CheckInOut::getCheckedInCustomer($customer_detail_id, $outlet_id);
+
+        return response()->json($customer);
     }
 }

@@ -22,13 +22,12 @@ class CheckInOut extends Model
         return $lastID;
     }
 
-    public static function getCheckedOutCustomer($outlet_id)
+    public static function getCheckedInCustomer($customer_detail_id, $outlet_id)
     {
-        $customer           = DB::select('call SP_CS_CheckedOut_Select(?)', [$outlet_id]);
+        $customer           = DB::select('call SP_CS_CheckedIn_Select(?,?)', [$customer_detail_id, $outlet_id]);
         return $customer;
     }
 
-    
     public static function getCheckedInCustomerByID($outlet_id, $customer_detail_id)
     {
         $customer           = DB::select('call SP_CS_CheckIn_ByID_Select(?,?)', [$outlet_id, $customer_detail_id]);
