@@ -63,17 +63,21 @@
                                     <th class="text-center">Category</th>
                                     <th class="text-center">Member Since</th>
                                     <th class="text-center">Expired</th>
+                                    <th class="text-center">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($customer_member as $index => $item)
                                 <tr>
                                     <td class="text-center">{{ $index+1 }}</td>
-                                    <td class="text-center">{{ $item->customer_fullName }}</td>
+                                    <td class="text-center"><a href="#" data-id="{{ $item->customer_id }}"
+                                            class="complaint-handling">{{ $item->customer_fullName }}</a>
+                                    </td>
                                     <td class="text-center">{{ $item->customer_phone }}</td>
                                     <td class="text-center">{{ $item->membership_name }}</td>
                                     <td class="text-center">{{ $item->membership_joinDate }}</td>
                                     <td class="text-center">{{ $item->membership_expiredDate }}</td>
+                                    <td class="text-center">status</td>
                                 </tr>
                                 @endforeach
 
@@ -136,15 +140,15 @@
                             </div>
                             <div class="form-group col-4">
                                 <input name="membership_joinDate" type="text" class="form-control datepicker"
-                                    id="membershipCustomerJoinDate">
+                                    id="membershipCustomerJoinDate" placeholder="Join Date">
                             </div>
                             <div class="form-group col-4">
                                 <input name="membership_expiredDate" type="text" class="form-control datepicker"
-                                    id="membershipCustomerExpiredDate">
+                                    id="membershipCustomerExpiredDate" placeholder="Expired Date">
                             </div>
                             <div class="form-group col-4">
                                 <input name="customer_dateOfBirth" type="text" class="form-control datepicker"
-                                    id="membershipCustomerBirthDate">
+                                    id="membershipCustomerBirthDate" placeholder="Birth Date">
                             </div>
                         </div>
                         <div class="row">
@@ -154,7 +158,8 @@
                                     id="membershipCustomerIDCardNo">
                             </div>
                             <div class="form-group col-4">
-                                <select name="customer_religion" id="" class="form-control" required>
+                                <select name="customer_religion" id="membershipCustomerReligion" class="form-control"
+                                    required>
                                     <option disabled selected>Religion</option>
                                     <option value="islam">Islam</option>
                                     <option value="kristen">Kristen</option>
@@ -165,7 +170,8 @@
                                 </select>
                             </div>
                             <div class="form-group col-4">
-                                <select name="customer_martialStatus" id="" class="form-control">
+                                <select name="customer_martialStatus" id="membershipCustomerMartialStatus"
+                                    class="form-control">
                                     <option disabled selected>Status</option>
                                     <option value="menikah">Menikah</option>
                                     <option value="belum menikah">Belum Menikah</option>
@@ -177,25 +183,21 @@
                         <div class="row">
 
                             <div class="form-group col-4">
-                                <input name="customer_email" type="text" class="form-control" placeholder="Email">
+                                <input id="membershipCustomerEmail" name="customer_email" type="text"
+                                    class="form-control" placeholder="Email">
                             </div>
                             <div class="form-group col-4">
-                                <input name="customer_address" type="text" class="form-control" placeholder="Address">
+                                <input id="membershipCustomerAddress" name="customer_address" type="text"
+                                    class="form-control" placeholder="Address">
                             </div>
                             <div class="form-group col-4">
-                                <select name="city_id" id="" class="form-control">
+                                <select name="city_id" id="citySearch" class="form-control">
                                     <option disabled selected>City</option>
                                     @foreach ($city_list as $item)
                                     <option value="{{$item->city_id}}">{{$item->city_name}}
                                     </option>
                                     @endforeach
                                 </select>
-                            </div>
-                        </div>
-                        <div class="row">
-
-                            <div class="form-group col-12">
-                                <textarea type="text" class="form-control" placeholder="Note" id=""></textarea>
                             </div>
                         </div>
 
@@ -261,6 +263,9 @@
         // $('.membership-type').prop('disabled', true);
         $('.membership-name').selectric();
         $('#customerSearch').select2();
+        $('#citySearch').select2({
+            dropdownParent: $('#customerMembershipModal')
+        });
 
         $('#customerSearch').on('change', function () {
 
@@ -270,15 +275,74 @@
             $.get('/data/membership/getcustomerbyid/' + customer_id, function (data) {
                 $('#membershipCustomerName').val(data[0].customer_fullName);
                 $('#membershipCustomerPhone').val(data[0].customer_phone);
-                $('#membershipCustomerLicensePlate').val(data[0].customer_detail_licensePlate);
+                console.log(data[0].membership_type);
+
+
+
             });
             $('#customerMembershipModal').modal('show');
 
         });
 
+        $(document).on('click', '.membership-customer', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            console.log(id);
+            $('#editMembershipRegistrationForm').attr('action',
+                '/cs/transaction/membership/edit');
+            $.ajax({
+                url: "/data/membership/getcustomerbyid/" + id,
+                type: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                        'content')
+                },
+                data: id,
+                success: function (membershipCustomer) {
+                    if (membershipCustomer['status'] == true) {
+                        $('#membershipCustomerLicensePlate').val(data[0]
+                            .customer_detail_licensePlate);
+                        $('#membershipName option[value="' + data[0]
+                            .membership_id + '"]').prop('selected',
+                            'selected');
+                        $('#membershipName').selectric('refresh');
+                        $('#membershipType option[value="' + data[0]
+                            .membership_id + '"]').prop('selected',
+                            'selected');
+                        $('#membershipType').selectric('refresh');
+                        $('#membershipCustomerJoinDate').val(data[0].membership_joinDate);
+                        $('#membershipCustomerExpiredDate').val(data[0]
+                            .membership_expiredDate);
+                        $('#membershipCustomerBirthDate').val(data[0].customer_dateOfBirth);
+                        $('#membershipCustomerIDCardNo').val(data[0].customer_idCardNo);
+                        $('#membershipCustomerReligion').val(data[0].customer_religion);
+                        $('#membershipCustomerReligion').append(
+                            '<option disabled selected>Religion</option>');
+                        $('#membershipCustomerMartialStatus').val(data[0]
+                            .customer_martialStatus);
+                        $('#membershipCustomerMartialStatus').append(
+                            '<option disabled selected>Status</option>');
+                        $('#membershipCustomerEmail').val(data[0].customer_email);
+                        $('#membershipCustomerAddress').val(data[0].customer_address);
+                        console.log(data[0].city_id);
+                        $('#citySearch option[value="' + data[0]
+                            .city_id + '"]').prop('selected',
+                            'selected');
+                        $('#citySearch').select2();
+
+                    } else {
+                        alert('Whoops Something went wrong!!');
+                    }
+                },
+                error: function (data) {
+                    alert(data.responseText);
+                }
+            });
+        });
 
 
-        $('.membership-name').select2();
+
+        // $('.membership-name').selectric();
 
         $('.membership-name').on('change', function (e) {
             var id = e.target.value;
@@ -295,24 +359,23 @@
             });
         });
 
+        var date = new Date();
+
         $('#membershipCustomerBirthDate').daterangepicker({
             locale: {
-                format: "DD-MM-YYYY",
+                format: "YYYY-MM-DD",
                 separator: " - "
             },
-            startDate: "01-01-1980",
+            startDate: moment(date),
             singleDatePicker: true,
             showDropdowns: true,
-            minYear: 1901,
-            maxYear: 2001
+            minYear: 1901
         });
         $('#membershipCustomerBirthDate').val('Birth Date');
 
-        var date = new Date();
-
         $('#membershipCustomerJoinDate').daterangepicker({
             locale: {
-                format: "DD-MM-YYYY",
+                format: "YYYY-MM-DD",
                 separator: " - "
             },
             startDate: moment(date),
@@ -324,7 +387,7 @@
 
         $('#membershipCustomerExpiredDate').daterangepicker({
             locale: {
-                format: "DD-MM-YYYY",
+                format: "YYYY-MM-DD",
                 separator: " - "
             },
             startDate: moment(date),

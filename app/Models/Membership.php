@@ -48,7 +48,7 @@ class Membership extends Model
 
     public static function getCustomerByID($customer_id, $outlet_id)
     {
-        $customer    = DB::select('call SP_CS_CustomerDetail_ByDetailID_Select(?,?)', [$customer_id, $outlet_id]);
+        $customer    = DB::select('call SP_CS_CustomerMembership_ByID_Select(?,?)', [$customer_id, $outlet_id]);
         return $customer;
     }
 

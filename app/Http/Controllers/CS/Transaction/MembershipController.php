@@ -35,7 +35,6 @@ class MembershipController extends Controller
         $customer_email             = $request->customer_email;
         $customer_address           = $request->customer_address;
         $city_id                    = $request->city_id;
-
         Membership::setUpdateMembershipRegistration(
             $customer_id, 
             $membership_id, 
