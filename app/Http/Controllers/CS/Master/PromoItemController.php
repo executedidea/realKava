@@ -50,27 +50,35 @@ class PromoItemController extends Controller
             return back()->withErrors($validator);
         } else {
             if ($request->has('promo_all_item')) {
+                if (count(PromoDetail::all()) == 0) {
+                    $promo_detail_id    = 1;
+                } else {
+                    $promo_detail_lastID = PromoDetail::getPromoDetailLastID();
+                    $promo_detail_id     = $promo_detail_lastID[0]->promo_detail_id + 1;
+                }
                 $promo_id           = $request->promo_id;
                 $promo_name         = $request->promo_name;
                 $promo_type         = $request->promo_type;
                 $promo_maxValue     = $request->promo_maxValue;
                 $promo_free         = $request->promo_free;
+                $promo_item         = 0;
+                $promo_freeItem     = 0;
                 if (!$request->has('promo_periode')) {
                     $promo_startDate    = $request->promo_startDate;
                     $promo_endDate      = $request->promo_endDate;
                 } else {
-                    $promo_startDate    = null;
-                    $promo_endDate      = null;
+                    $promo_startDate    = '1111-11-11';
+                    $promo_endDate      = '9999-12-31';
                 }
 
                 $outlet_id          = Auth::user()->outlet_id;
                 $promo_status       = 1;
                 $promo_all_item     = 1;
 
-                PromoItem::insertPromo($promo_id, $promo_name, $promo_type, $promo_maxValue, $promo_free, $promo_startDate, $promo_endDate, $outlet_id, $promo_status, $promo_all_item);
+                PromoItem::insertPromo($promo_id, $promo_name, $promo_type, $promo_startDate, $promo_endDate, $outlet_id, $promo_status, $promo_all_item);
+                PromoDetail::insertPromoDetail($promo_detail_id, $promo_maxValue, $promo_free, $promo_id, $promo_item, $promo_freeItem, $outlet_id);
 
                 return back()->with('promoStored');
-                die;
             } else {
                 if (count(PromoDetail::all()) == 0) {
                     $promo_detail_id    = 1;
@@ -87,14 +95,14 @@ class PromoItemController extends Controller
                     $promo_startDate    = $request->promo_startDate;
                     $promo_endDate      = $request->promo_endDate;
                 } else {
-                    $promo_startDate    = null;
-                    $promo_endDate      = null;
+                    $promo_startDate    = '1111-11-11';
+                    $promo_endDate      = '9999-12-31';
                 }
                 $outlet_id          = Auth::user()->outlet_id;
                 $promo_status       = 1;
                 $promo_all_item     = 0;
 
-                PromoItem::insertPromo($promo_id, $promo_name, $promo_type, $promo_maxValue, $promo_free, $promo_startDate, $promo_endDate, $outlet_id, $promo_status, $promo_all_item);
+                PromoItem::insertPromo($promo_id, $promo_name, $promo_type, $promo_startDate, $promo_endDate, $outlet_id, $promo_status, $promo_all_item);
                 foreach ($request->promo_item as $key => $item) {
                     PromoDetail::insertPromoDetail($promo_detail_id, $request->promo_maxValue[$key], $request->promo_freeValue[$key], $promo_id, $request->promo_item[$key], $request->promo_freeItem[$key], $outlet_id);
                 }

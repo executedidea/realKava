@@ -116,20 +116,10 @@ em {
     outline: none;
 }
 
-#customerItems th {
-    font-size: 18px !important;
-    font-weight: bold !important;
-    color: #fff;
-}
 
-#customerItems thead {
-    background-color: #eb8242;
-}
+#customerItems :disabled {}
 
-#customerItems :disabled {
-    background-color: #fcf5b0;
-}
-
+#customerItems thead {}
 
 #vehicle {
     background-color: #eafbea;
@@ -145,11 +135,6 @@ em {
 
 #calculated .card {
     background-color: #393e46;
-}
-
-#paymentMethodSection :disabled {
-    background-color: #ffe3ed;
-
 }
 
 .select2-container--default.select2-container--disabled .select2-selection--single {

@@ -75,14 +75,14 @@
                                     <td>{{ $item->promo_name }}</td>
                                     <td>{{ $item->promo_type_name }}</td>
                                     <td>
-                                        @if($item->promo_startDate == null)
+                                        @if($item->promo_startDate == '1111-11-11')
                                         -
                                         @else
                                         {{ date('d M Y', strtotime($item->promo_startDate)) }}
                                         @endif
                                     </td>
                                     <td>
-                                        @if($item->promo_endDate == null)
+                                        @if($item->promo_endDate == '9999-12-31')
                                         -
                                         @else
                                         {{ date('d M Y', strtotime($item->promo_endDate)) }}

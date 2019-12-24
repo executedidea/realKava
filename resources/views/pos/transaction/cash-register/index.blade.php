@@ -22,7 +22,7 @@
                                 <div class="row justify-content-center">
                                     <div class="form-group col-12">
                                         <select class="form-control" id="checkedInCustomer">
-                                            <option value="" readonly selected>Search Name, License Plate, or Phone
+                                            <option value="" disabled selected>Search Name, License Plate, or Phone
                                                 Number
                                             </option>
                                             @foreach ($customer as $item)
@@ -83,9 +83,10 @@
                                             <tr id="row1">
                                                 <td class="pt-3" width="20%">
                                                     <div class="form-group mx-auto">
-                                                        <select name="item[]" class="items px-3" id="itemSelect">
+                                                        <select class="items px-3" id="itemSelect">
                                                             <option value="" readonly selected>Item Name</option>
                                                         </select>
+                                                        <input type="hidden" name="item[]" id="itemValue">
                                                     </div>
                                                 </td>
                                                 <td class="pt-3" width="10%">
@@ -151,11 +152,8 @@
                                         </tbody>
                                     </table>
                                     <div class="form-group text-right">
-                                        <button type="button" class="btn btn-success" id="addRows">
+                                        <button type="button" class="btn btn-success" id="addRow">
                                             <i class="fa fa-plus" aria-hidden="true"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-primary" id="calculatePrice">
-                                            Calculate
                                         </button>
                                     </div>
                                 </div>
@@ -173,17 +171,18 @@
                                 </div>
                                 <div class="form-group col-2 totalPrice">
                                     <label for="">Total Price</label>
-                                    <input type="text" id="totalPrice" name="total_dpp" class="form-control text-center"
-                                        value="" readonly>
+                                    <input type="text" id="totalPrice" name="total_dpp"
+                                        class="form-control text-center rupiah" value="0" readonly>
                                 </div>
                                 <div class="form-group col-2">
                                     <label for="">PPN</label>
-                                    <input type="text" name="ppn" class="form-control text-center" id="ppn" readonly>
+                                    <input type="text" name="ppn" class="form-control text-center" id="ppn" value="0"
+                                        readonly>
                                 </div>
                                 <div class="form-group col-2">
                                     <label for="">Total Discount</label>
                                     <input type="text" name="total_discount" class="form-control text-center"
-                                        id="totalAllDiscount" readonly>
+                                        id="totalAllDiscount" value="0" readonly>
                                 </div>
                                 <div class="form-group col-2">
                                     <label for="ccCharge">CC Charge</label>
@@ -191,7 +190,12 @@
                                         readonly>
                                 </div>
                             </div>
-
+                            <div class="row justify-content-center">
+                                <div class="col-6">
+                                    <button type="button" class="btn btn-primary btn-block btn-lg"
+                                        id="payBtn">Pay</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -199,7 +203,7 @@
         </section>
     </div>
     <div class="container">
-        <section id="paymentMethodSection">
+        <section id="paymentMethodSection" style="display:none">
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -210,7 +214,7 @@
                             <div class="row justify-content-center">
                                 <div class="form-group col-3">
                                     <select name="payment_method1" id="paymentMethod">
-                                        <option selected readonly>Payment Method</option>
+                                        <option selected disabled>Payment Method</option>
                                         <option value="1">Cash</option>
                                         <option value="2">Debit</option>
                                         <option value="3">Credit Card</option>
@@ -219,15 +223,15 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-3">
-                                    <select name="credit_card" id="paymentCC" readonly>
-                                        <option selected readonly>Credit Card</option>
+                                    <select name="credit_card" id="paymentCC" disabled>
+                                        <option selected disabled>Credit Card</option>
                                         <option value="1">Master Card</option>
                                         <option value="2">Visa</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-3">
-                                    <select name="bank" id="paymentBank" readonly>
-                                        <option selected readonly>Bank</option>
+                                    <select name="bank" id="paymentBank" disabled>
+                                        <option selected disabled>Bank</option>
                                         <option value="1">BCA</option>
                                         <option value="2">Mandiri</option>
                                         <option value="3">Suzuki</option>
@@ -235,19 +239,19 @@
                                 </div>
                                 <div class="form-group col-3">
                                     <input type="text" name="card_number" class="form-control" id="cardNo"
-                                        placeholder="Card Number" readonly>
+                                        placeholder="Card Number" disabled>
                                 </div>
                                 <div class="form-group col-4">
                                     <label for="Payment">Payment</label>
-                                    <input type="text" name="paid1" class="form-control" id="Payment">
+                                    <input type="text" name="paid1" class="form-control" id="Payment" disabled>
                                 </div>
                                 <div class="form-group col-4">
                                     <label for="Balance">Balance</label>
-                                    <input type="text" class="form-control" id="Balance" readonly>
+                                    <input type="text" class="form-control" id="Balance" disabled>
                                 </div>
                                 <div class="form-group col-4">
                                     <label for="Change">Change</label>
-                                    <input type="text" name="change" class="form-control" id="Change" readonly>
+                                    <input type="text" name="change" class="form-control" id="Change" disabled>
                                 </div>
                                 <div class="form-group col-12 text-right">
                                     <button type="button" id="addPaymentMethodBtn" class="btn btn-info">Additional
@@ -307,58 +311,7 @@
 </form>
 @endsection
 @section('modal')
-{{-- BankAccount AddModal --}}
-<div class="modal fade" id="addBankAccountModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <form action="{{ route('storeBankAccount') }}" method="post" class="validate-this">
-            @csrf
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Bank Account</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="container">
-                        <div class="row">
-                            <div class="form-group col-12 col-lg-6">
-                                <label for="bank">Bank</label>
-                                <select name="bank" id="bank" required>
-                                    <option value="" readonly selected>Select Bank</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-12 col-lg-6">
-                                <label for="branch">Branch</label>
-                                <input type="text" name="branch" class="form-control" id="branch" required>
-                            </div>
-                            <div class="form-group col-12 col-lg-4">
-                                <label for="accountNumber">Account Number</label>
-                                <input type="text" name="account_number" class="form-control" id="accountNumber"
-                                    required>
-                            </div>
-                            <div class="form-group col-12 col-lg-4">
-                                <label for="openingBalance">Opening Balance</label>
-                                <input type="text" name="opening_balance" class="form-control" id="openingBalance"
-                                    required>
-                            </div>
-                            <div class="form-group col-12 col-lg-4">
-                                <label for="openingDate">Opening Date</label>
-                                <input type="text" name="opening_date" class="form-control datepicker" id="openingDate"
-                                    required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary btn-block">Save</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-{{--  --}}
+
 <div class="modal fade" id="todaysPromo" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -372,8 +325,6 @@
                         <th>Action</th>
                     </thead>
                     <tbody>
-                        <tr>
-                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -386,6 +337,7 @@
 <script src="{{ asset('/modules/select2/dist/js/select2.full.min.js') }}"></script>
 <script src="{{ asset('/modules/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
 <script src="{{asset('js/sweetalert2.all.min.js')}}"></script>
+<script src="{{asset('/modules/cleave-js/dist/cleave.min.js')}}"></script>
 <script src="{{ asset('/js/kava/pos/cash-register/index.js') }}"></script>
 <script>
 

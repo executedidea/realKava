@@ -23,6 +23,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/data/cashier/getcashierbyid', 'POS\Transaction\CashRegisterController@getCashierByID')->name('getcashierByID');
     Route::get('/data/local-setting/getsetting', 'POS\Transaction\CashRegisterController@getSetting')->name('getSetting');
     Route::get('/data/promo/get', 'POS\Transaction\CashRegisterController@getTodaysPromo')->name('getTodaysPromo');
+    Route::get('/data/promo/getvisitpromo', 'POS\Transaction\CashRegisterController@getVisitPromo')->name('getVisitPromo');
     Route::get('/data/checkin/getcustomerdetail/{id}', 'CS\Transaction\CheckInOutController@getCheckedInCustomerDetail');
     Route::get('/data/checkin/getcustomer/{id}', 'CS\Transaction\CheckInOutController@getCheckedInCustomer');
     Route::get('/data/complaint-handling/getcustomer/{id}', 'CS\Transaction\ComplaintHandlingController@getComplaintCustomer')->name('getComplaintCustomer');
@@ -30,6 +31,7 @@ Route::group(['middleware' => 'auth'], function () {
     // Route::get('/data/complaint-handling/get/{id}', 'CS\Transaction\ComplaintHandlingeController@getLicensePlate')->name('getLicensePlate');
     Route::get('/data/promo/getpromofree/{customer_detail_id}/{promo_id}', 'POS\Transaction\CashRegisterController@getPromoFree')->name('getPromoFree');
     Route::get('/data/promo/getpromoitem', 'POS\Transaction\CashRegisterController@getPromoItem')->name('getPromoItem');
+    Route::get('/data/promo/getallpromo', 'POS\Transaction\CashRegisterController@getAllPromo')->name('getAllPromo');
 
     Route::get('/data/checkin/countVisitItem/{customer_detail_id}/{item_id}', 'POS\Transaction\CashRegisterController@getCustomerVisitByItemID');
     Route::get('/data/checkin/getcheckedincustomer/{customer_detail_id}', 'POS\Transaction\CashRegisterController@getCheckedInCustomer');

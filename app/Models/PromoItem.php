@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\DB;
 class PromoItem extends Model
 {
     //
-    public static function insertPromo($promo_id, $promo_name, $promo_type_id, $promo_maxValue, $promo_free, $promo_startDate, $promo_endDate, $outlet_id, $promo_status, $promo_all_item)
+    public static function insertPromo($promo_id, $promo_name, $promo_type_id, $promo_startDate, $promo_endDate, $outlet_id, $promo_status, $promo_all_item)
     {
-        $insert         = DB::select('call SP_POS_Promo_Insert(?,?,?,?,?,?,?,?,?,?)', [$promo_id, $promo_name, $promo_type_id, $promo_maxValue, $promo_free, $promo_startDate, $promo_endDate, $outlet_id, $promo_status, $promo_all_item]);
+        $insert         = DB::select('call SP_POS_Promo_Insert(?,?,?,?,?,?,?,?)', [$promo_id, $promo_name, $promo_type_id, $promo_startDate, $promo_endDate, $outlet_id, $promo_status, $promo_all_item]);
 
         return $insert;
     }
@@ -21,7 +21,7 @@ class PromoItem extends Model
         return $promo;
     }
 
-    public static function getTodaysPromo($outlet_id)
+    public static function getTodaysPromo($outlet_id) 
     {
         $promo          = DB::select('call SP_POS_Promo_GetTodaysPromo_Select(?)', [$outlet_id]);
         return $promo;
@@ -30,6 +30,12 @@ class PromoItem extends Model
     public static function getPromoItem($outlet_id)
     {
         $promo          = DB::select('call SP_POS_Promo_GetTodaysPromo_Select_Items(?)', [$outlet_id]);
+        return $promo;
+    }
+
+    public static function getVisitPromo($outlet_id)
+    {
+        $promo          = DB::select('call SP_POS_Promo_GetTodaysPromo_Select_Visit(?)', [$outlet_id]);
         return $promo;
     }
 }
