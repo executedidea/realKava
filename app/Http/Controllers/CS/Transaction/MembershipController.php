@@ -66,6 +66,17 @@ class MembershipController extends Controller
         return response()->json($customer);
     }
 
+    public function getCustomerByIDs($customer_id)
+    {
+        $outlet_id              = Auth::user()->outlet_id;
+        $customer               = Membership::getCustomerByID($customer_id, $outlet_id);
+
+        return response()->json([
+            'status' => true,
+            'customer' => $customer
+        ]);
+    }
+
     public function getMembershipList()
     {
         $outlet_id              = Auth::user()->outlet_id;

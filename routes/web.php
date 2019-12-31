@@ -35,7 +35,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/data/checkin/countVisitItem/{customer_detail_id}/{item_id}', 'POS\Transaction\CashRegisterController@getCustomerVisitByItemID');
     Route::get('/data/checkin/getcheckedincustomer/{customer_detail_id}', 'POS\Transaction\CashRegisterController@getCheckedInCustomer');
-    Route::get('/data/membership/getcustomerbyid/{customer_id}', 'CS\Transaction\MembershipController@getCustomerByID')->name('getCustomerByID');
+    Route::get('/data/membership/getcustomerbyid/{id}', 'CS\Transaction\MembershipController@getCustomerByID')->name('getCustomerByID');
+    Route::get('/data/membership/getcustomerbyids/{id}', 'CS\Transaction\MembershipController@getCustomerByIDs')->name('getCustomerByIDs');
     Route::get('/data/membership/getmembershipbyid/{id}', 'CS\Transaction\MembershipController@getMembershipByID')->name('getMembershipList');
 
 

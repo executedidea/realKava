@@ -184,5 +184,32 @@ $(document).ready(function () {
     });
 
 
-
 });
+
+
+// Formatting
+var rupiah = new Cleave('#complaintHandlingFee', {
+    numeral: true,
+    numeralThousandsGroupStyle: 'thousand'
+});
+$('#complaintHandlingForm').on('submit', function () {
+    $('#complaintHandlingFee').val(rupiah.getRawValue());
+});
+
+var rupiah = new Cleave('#editComplaintHandlingFee', {
+    numeral: true,
+    numeralThousandsGroupStyle: 'thousand'
+});
+$('#editComplaintHandlingForm').on('submit', function () {
+    $('#editComplaintHandlingFee').val(rupiah.getRawValue());
+});
+
+// var rupiah1 = new Cleave('#packagePrice1', {
+//     numeral: true,
+//     numeralThousandsGroupStyle: 'thousand'
+// });
+// $('#complaintHandlingFee').on('input', function (e) {
+//     var value = parseFloat(rupiah.getRawValue());
+//     var value1 = parseFloat(rupiah1.getRawValue());
+//     console.log(value + value1);
+// });

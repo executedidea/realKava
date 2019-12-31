@@ -37,10 +37,10 @@
                                         <label for="checkAll" class="custom-control-label">&nbsp;</label>
                                     </div>
                                 </th>
-                                <th>Date</th>
-                                <th>Customer</th>
-                                <th>Type</th>
-                                <th>Status</th>
+                                <th class="text-center">Date</th>
+                                <th class="text-center">Customer</th>
+                                <th class="text-center">Type</th>
+                                <th class="text-center">Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -57,36 +57,56 @@
                                     </div>
                                 </td>
 
-                                <td><a href="#" data-id="{{ $item->complaint_handling_id }}"
-                                        class="complaint-handling">{{ $item->complaint_handling_date }}</a></td>
-                                <td><a href="#" data-id="{{ $item->complaint_handling_id }}"
+                                <td class="text-center"><a href="#" data-id="{{ $item->complaint_handling_id }}"
+                                        class="complaint-handling">{{ $item->complaint_handling_date }}</a>
+                                </td>
+                                <td class="text-center"><a href="#" data-id="{{ $item->complaint_handling_id }}"
                                         class="complaint-handling">{{ $item->customer_fullName }}</a></td>
-                                <td><a href="#" data-id="{{ $item->complaint_handling_id }}"
+                                <td class="text-center"><a href="#" data-id="{{ $item->complaint_handling_id }}"
                                         class="complaint-handling">{{ $item->complaint_type_name }}</a></td>
+                                {{-- <td class="text-center"><a href="#" data-id="{{ $item->complaint_handling_id }}"
+                                class="complaint-handling {{ $item->status_color }}">{{ $item->status_name }}</a>
+                                </td> --}}
                                 @if (($item->complaint_handling_status) == 'Progress' ||
                                 ($item->complaint_handling_status) == 'progress')
                                 @php
                                 $complaint_handling_status = 'Progress'
                                 @endphp
-                                <td><span class="badge badge-primary">{{ $complaint_handling_status }}</span></td>
+                                <td class="text-center"><span
+                                        class="badge badge-primary">{{ $complaint_handling_status }}</span></td>
+
                                 @elseif (($item->complaint_handling_status) == 'Pending' ||
                                 ($item->complaint_handling_status) == 'pending')
                                 @php
                                 $complaint_handling_status = 'Pending'
                                 @endphp
-                                <td><span class="badge badge-light">{{ $complaint_handling_status }}</span></td>
+                                <td class="text-center"><span
+                                        class="badge badge-light">{{ $complaint_handling_status }}</span></td>
+
                                 @elseif (($item->complaint_handling_status) == 'Done' ||
                                 ($item->complaint_handling_status) == 'done')
                                 @php
                                 $complaint_handling_status = 'Done'
                                 @endphp
-                                <td><span class="badge badge-success">{{ $complaint_handling_status }}</span></td>
+                                <td class="text-center"><span
+                                        class="badge badge-success">{{ $complaint_handling_status }}</span></td>
+
+                                @elseif (($item->complaint_handling_status) == 'Freeze' ||
+                                ($item->complaint_handling_status) == 'freeze')
+                                @php
+                                $complaint_handling_status = 'Freeze'
+                                @endphp
+                                <td class="text-center"><span
+                                        class="badge badge-info">{{ $complaint_handling_status }}</span></td>
+
                                 @elseif (($item->complaint_handling_status) == 'Decline' ||
                                 ($item->complaint_handling_status) == 'decline')
                                 @php
                                 $complaint_handling_status = 'Decline'
                                 @endphp
-                                <td><span class="badge badge-danger">{{ $complaint_handling_status }}</span></td>
+                                <td class="text-center"><span
+                                        class="badge badge-danger">{{ $complaint_handling_status }}</span></td>
+
                                 @endif
 
                             </tr>

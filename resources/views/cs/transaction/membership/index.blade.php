@@ -69,15 +69,27 @@
                             <tbody>
                                 @foreach($customer_member as $index => $item)
                                 <tr>
-                                    <td class="text-center">{{ $index+1 }}</td>
                                     <td class="text-center"><a href="#" data-id="{{ $item->customer_id }}"
-                                            class="complaint-handling">{{ $item->customer_fullName }}</a>
+                                            class="membership-customer">{{ $index+1 }}</a>
                                     </td>
-                                    <td class="text-center">{{ $item->customer_phone }}</td>
-                                    <td class="text-center">{{ $item->membership_name }}</td>
-                                    <td class="text-center">{{ $item->membership_joinDate }}</td>
-                                    <td class="text-center">{{ $item->membership_expiredDate }}</td>
-                                    <td class="text-center">status</td>
+                                    <td class="text-center"><a href="#" data-id="{{ $item->customer_id }}"
+                                            class="membership-customer">{{ $item->customer_fullName }}</a>
+                                    </td>
+                                    <td class="text-center"><a href="#" data-id="{{ $item->customer_id }}"
+                                            class="membership-customer">{{ $item->customer_phone }}</a>
+                                    </td>
+                                    <td class="text-center"><a href="#" data-id="{{ $item->customer_id }}"
+                                            class="membership-customer">{{ $item->membership_name }}</a>
+                                    </td>
+                                    <td class="text-center"><a href="#" data-id="{{ $item->customer_id }}"
+                                            class="membership-customer">{{ $item->membership_joinDate }}</a>
+                                    </td>
+                                    <td class="text-center"><a href="#" data-id="{{ $item->customer_id }}"
+                                            class="membership-customer">{{ $item->membership_expiredDate }}</a>
+                                    </td>
+                                    <td class="text-center"><a href="#" data-id="{{ $item->customer_id }}"
+                                            class="membership-customer {{ $item->status_color }}">{{ $item->status_name }}</a>
+                                    </td>
                                 </tr>
                                 @endforeach
 
@@ -136,6 +148,10 @@
                                 <select name="membership_type" class="form-control membership-type" id="membershipType"
                                     required>
                                     <option disabled selected>Membership Type</option>
+                                    @foreach ($membership_list as $item)
+                                    <option value="{{$item->membership_id}}">{{$item->membership_type}}
+                                    </option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="form-group col-4">
@@ -262,6 +278,7 @@
         // $('#bankName').prop('disabled', true);
         // $('.membership-type').prop('disabled', true);
         $('.membership-name').selectric();
+        $('.membership-type').selectric();
         $('#customerSearch').select2();
         $('#citySearch').select2({
             dropdownParent: $('#customerMembershipModal')
@@ -270,14 +287,11 @@
         $('#customerSearch').on('change', function () {
 
             var customer_id = $(this).val();
-            // console.log(customer_id);
             $('#customerID').val(customer_id);
             $.get('/data/membership/getcustomerbyid/' + customer_id, function (data) {
+                console.log(data);
                 $('#membershipCustomerName').val(data[0].customer_fullName);
                 $('#membershipCustomerPhone').val(data[0].customer_phone);
-                console.log(data[0].membership_type);
-
-
 
             });
             $('#customerMembershipModal').modal('show');
@@ -285,60 +299,109 @@
         });
 
         $(document).on('click', '.membership-customer', function (e) {
-            e.preventDefault();
-            var id = $(this).data('id');
-            console.log(id);
-            $('#editMembershipRegistrationForm').attr('action',
-                '/cs/transaction/membership/edit');
-            $.ajax({
-                url: "/data/membership/getcustomerbyid/" + id,
-                type: 'GET',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                        'content')
-                },
-                data: id,
-                success: function (membershipCustomer) {
-                    if (membershipCustomer['status'] == true) {
-                        $('#membershipCustomerLicensePlate').val(data[0]
-                            .customer_detail_licensePlate);
-                        $('#membershipName option[value="' + data[0]
-                            .membership_id + '"]').prop('selected',
-                            'selected');
-                        $('#membershipName').selectric('refresh');
-                        $('#membershipType option[value="' + data[0]
-                            .membership_id + '"]').prop('selected',
-                            'selected');
-                        $('#membershipType').selectric('refresh');
-                        $('#membershipCustomerJoinDate').val(data[0].membership_joinDate);
-                        $('#membershipCustomerExpiredDate').val(data[0]
-                            .membership_expiredDate);
-                        $('#membershipCustomerBirthDate').val(data[0].customer_dateOfBirth);
-                        $('#membershipCustomerIDCardNo').val(data[0].customer_idCardNo);
-                        $('#membershipCustomerReligion').val(data[0].customer_religion);
-                        $('#membershipCustomerReligion').append(
-                            '<option disabled selected>Religion</option>');
-                        $('#membershipCustomerMartialStatus').val(data[0]
-                            .customer_martialStatus);
-                        $('#membershipCustomerMartialStatus').append(
-                            '<option disabled selected>Status</option>');
-                        $('#membershipCustomerEmail').val(data[0].customer_email);
-                        $('#membershipCustomerAddress').val(data[0].customer_address);
-                        console.log(data[0].city_id);
-                        $('#citySearch option[value="' + data[0]
-                            .city_id + '"]').prop('selected',
-                            'selected');
-                        $('#citySearch').select2();
 
-                    } else {
-                        alert('Whoops Something went wrong!!');
-                    }
-                },
-                error: function (data) {
-                    alert(data.responseText);
-                }
+            var customer_id = $(this).data('id');
+            console.log(customer_id);
+            $('#customerID').val(customer_id);
+            $.get('/data/membership/getcustomerbyid/' + customer_id, function (data) {
+                $('#membershipCustomerName').val(data[0].customer_fullName);
+                $('#membershipCustomerPhone').val(data[0].customer_phone);
+                $('#membershipCustomerLicensePlate').val(data[0].customer_detail_licensePlate);
+                $('#membershipName option[value="' + data[0]
+                    .membership_id + '"]').prop('selected',
+                    'selected');
+                $('#membershipName').selectric('refresh');
+                $('#membershipType option[value="' + data[0]
+                    .membership_id + '"]').prop('selected',
+                    'selected');
+                $('#membershipType').selectric('refresh');
+                $('#membershipCustomerIDCardNo').val(data[0].customer_idCardNo);
+                $(
+                    '#membershipCustomerJoinDate').val(data[0].membership_joinDate);
+                $(
+                    '#membershipCustomerExpiredDate').val(data[0]
+                    .membership_expiredDate);
+                $('#membershipCustomerBirthDate').val(
+                    data[0].customer_dateOfBirth);
+                $('#membershipCustomerReligion').val(
+                    data[0].customer_religion);
+                $('#membershipCustomerMartialStatus')
+                    .val(data[0].customer_martialStatus);
+                $('#membershipCustomerEmail').val(
+                    data[0].customer_email);
+                $('#membershipCustomerAddress').val(data[0]
+                    .customer_address);
+                $('#citySearch option[value="' + data[0]
+                    .city_id + '"]').prop('selected',
+                    'selected');
+                $('#citySearch').select2();
             });
+            $('#customerMembershipModal').modal('show');
+
         });
+
+        // $(document).on('click', '.membership-customer', function (e) {
+        //     e.preventDefault();
+        //     var id = $(this).data('id');
+        //     console.log(id);
+        //     $('#editMembershipRegistrationForm').attr('action',
+        //         '/cs/transaction/membership/edit');
+        //     $.ajax({
+        //         url: "/data/membership/getcustomerbyid/" + id,
+        //         type: 'GET',
+        //         headers: {
+        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+        //                 'content')
+        //         },
+        //         data: id,
+        //         success: function (membershipCustomer) {
+        //             if (membershipCustomer['status'] == true) {
+        //                 $('#customerID').val(id);
+        //                 $('#membershipCustomerName').val(data[0].customer_fullName);
+        //                 $('#membershipCustomerPhone').val(data[0].customer_phone);
+        //                 $('#membershipCustomerLicensePlate').val(data[0]
+        //                     .customer_detail_licensePlate);
+        //                 $('#membershipName option[value="' + data[0]
+        //                     .membership_id + '"]').prop('selected',
+        //                     'selected');
+        //                 $('#membershipName').selectric('refresh');
+        //                 $('#membershipType option[value="' + data[0]
+        //                     .membership_id + '"]').prop('selected',
+        //                     'selected');
+        //                 $('#membershipType').selectric('refresh');
+        //                 $('#membershipCustomerJoinDate').val(data[0].membership_joinDate);
+        //                 $('#membershipCustomerExpiredDate').val(data[0]
+        //                     .membership_expiredDate);
+        //                 $('#membershipCustomerBirthDate').val(data[0].customer_dateOfBirth);
+        //                 $('#membershipCustomerIDCardNo').val(data[0].customer_idCardNo);
+        //                 $('#membershipCustomerReligion').val(data[0].customer_religion);
+        //                 $('#membershipCustomerReligion').append(
+        //                     '<option disabled selected>Religion</option>');
+        //                 $('#membershipCustomerMartialStatus').val(data[0]
+        //                     .customer_martialStatus);
+        //                 $('#membershipCustomerMartialStatus').append(
+        //                     '<option disabled selected>Status</option>');
+        //                 $('#membershipCustomerEmail').val(data[0].customer_email);
+        //                 $('#membershipCustomerAddress').val(data[0].customer_address);
+        //                 console.log(data[0].city_id);
+        //                 $('#citySearch option[value="' + data[0]
+        //                     .city_id + '"]').prop('selected',
+        //                     'selected');
+        //                 $('#citySearch').select2();
+
+        //                 $('#customerMembershipModal').modal('show');
+
+
+
+        //             } else {
+        //                 alert('Whoops Something went wrong!!');
+        //             }
+        //         },
+        //         error: function (data) {
+        //             alert(data.responseText);
+        //         }
+        //     });
+        // });
 
 
 

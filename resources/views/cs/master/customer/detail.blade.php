@@ -47,7 +47,8 @@
                                     </div>
                                     <div class="form-group col-12 col-lg-6">
                                         <label for="outletName">Membership</label>
-                                        <input type="text" class="form-control" value="Non Member" disabled>
+                                        <input type="text" class="form-control" value="{{$item->membership_name}}"
+                                            disabled>
                                     </div>
                                     <div class="form-group col-12 col-lg-6">
                                         <label for="outletName">Last Visit</label>
