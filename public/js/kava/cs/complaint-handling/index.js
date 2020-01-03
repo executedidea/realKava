@@ -183,6 +183,21 @@ $(document).ready(function () {
         };
     });
 
+    $('#testPrint').click(function () {
+        $.ajax({
+            url: '/cs/transaction/complaint-handling/print',
+            type: 'GET',
+
+            // success: function (response) {
+            //     if (response == 1) {
+            //         alert('mantap');
+            //     } else {
+            //         alert('tidak mantap');
+            //     }
+            // }
+        })
+    });
+
 
 });
 

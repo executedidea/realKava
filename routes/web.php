@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 Auth::routes();
@@ -173,5 +173,31 @@ Route::group(['middleware' => 'auth'], function () {
         // GLOBAL SETTING
         Route::get('global-setting', 'GlobalSetting\GlobalSettingController@index');
         Route::get('global-setting/single-outlet', 'GlobalSetting\SingleOutletController@index');
+
+        Route::get('/cs/transaction/complaint-handling/print', 'CS\Transaction\ComplaintHandlingController@testPrint');
+
     });
+
+
+
+    // Route::post('/print', function(Request $request){
+    //     if($request->ajax()){
+    //         try {
+    //             $ip = '192.168.100.9'; // IP Komputer kita atau printer lain yang masih satu jaringan
+    //             $printer = 'RP58EN'; // Nama Printer yang di sharing
+    //                 $connector = new WindowsPrintConnector("smb://" . $ip . "/" . $printer);
+    //                 $printer = new Printer($connector);
+    //                 $printer -> text("Email :");
+    //                 $printer -> text("Username:");
+    //                 $printer -> cut();
+    //                 $printer -> close();
+    //                 $response = ['success'=>'true'];
+    //         } catch (Exception $e) {
+    //                 $response = ['success'=>'false'];
+    //         }
+    //         return response()
+    //             ->json($response);
+    //     }
+    //     return;
+    // });
 });

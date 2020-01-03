@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\CS\Transaction;
 
+use Mike42\Escpos\Printer; 
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\ComplaintHandling;
@@ -227,6 +229,25 @@ class ComplaintHandlingController extends Controller
             'complaint_customer'  => $complaint_customer
         ]);
     }
+
+    public function testPrint(Request $request)
+    {
+        $outlet_id                                  = Auth::user()->outlet_id;
+        $complaint_handling                     = ComplaintHandling::getComplaintHandlingList($outlet_id);
+        return view('cs.transaction.complaint-handling.testprint', compact('complaint_handling'));
+    }
+
+    // public function testPrint()
+    // {
+    //     $ip = '192.168.100.9'; // IP Komputer kita atau printer lain yang masih satu jaringan
+    //     $printer = 'RP58EN'; // Nama Printer yang di sharing
+    //         $connector = new WindowsPrintConnector("smb://" . $ip . "/" . $printer);
+    //         $printer = new Printer($connector);
+    //         $printer -> text("Email :");
+    //         $printer -> text("Username:");
+    //         $printer -> cut();
+    //         $printer -> close();
+    // }
     
     // public function getComplaintCustomerID($customer_detail_licensePlate)
     // {

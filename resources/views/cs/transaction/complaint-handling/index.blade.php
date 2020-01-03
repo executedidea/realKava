@@ -24,6 +24,9 @@
                     <button class="btn btn-danger action-btn ml-1" id="deleteBtn">
                         <i class="fas fa-trash-alt" aria-hidden="true"></i>
                     </button>
+                    <button class="btn btn-primary action-btn ml-1" id="testPrint">
+                        <i class="fas fa-trash-alt" aria-hidden="true"></i>
+                    </button>
 
                 </div>
                 <div class="card-body">
@@ -388,6 +391,7 @@
         </div>
     </div>
 </div>
+
 @endsection
 @section('script')
 <script src="{{asset('/js/page/modules-ion-icons.js')}}"></script>
@@ -396,5 +400,7 @@
 <script src="{{ asset('/js/cleave.min.js') }}"></script>
 <script src="{{ asset('/modules/select2/dist/js/select2.full.min.js') }}"></script>
 <script src="{{asset('js/sweetalert2.all.min.js')}}"></script>
+{{-- <script src="{{asset('js/jquery-3.1.1.min.js')}}"></script> --}}
 <script src="{{ asset('/js/kava/cs/complaint-handling/index.js') }}"></script>
+
 @endsection
