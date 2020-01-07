@@ -51,5 +51,10 @@ class CheckInOut extends Model
         $update             = DB::select('call SP_CS_CheckIn_Update(?)', [$check_in_id, $check_out_time]);
         return $update;
     }
+    public static function setUpdateCheckInPaid($check_in_id)
+    {
+        $update             = DB::select('call SP_CheckIn_Paid_Update(?)', [$check_in_id]);
+        return $update;
+    }
 
 }

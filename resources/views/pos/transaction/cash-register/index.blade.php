@@ -65,6 +65,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-12">
+                                    <input type="hidden" name="check_in_id" id="checkInID">
                                     <table class="table table-striped table-responsive" id="customerItems">
                                         <thead>
                                             <tr>
