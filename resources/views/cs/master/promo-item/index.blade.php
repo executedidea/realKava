@@ -1,10 +1,16 @@
 @extends('layouts.main')
+
+@section('meta')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
+@endsection
 @section('css')
 <link rel="stylesheet" href="{{ asset('/modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}">
 <link rel="stylesheet" href="{{ asset('/modules/bootstrap-daterangepicker/daterangepicker.css') }}">
 <link rel="stylesheet" href="{{ asset('css/kava/pos/cash-account.css') }}">
 <link rel="stylesheet" href="{{ asset('/modules/select2/dist/css/select2.min.css') }}">
 @endsection
+@section('title', 'Promo | Customer Service - KAVA')
 @section('content')
 
 <section id="promoList">
@@ -21,12 +27,9 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Promo List</h4>
+                        <h4>Active Promo</h4>
                         <button class="btn btn-success" data-toggle="modal" data-target="#addModal">
                             <i class="fas fa-plus" aria-hidden="true"></i>
-                        </button>
-                        <button class="btn btn-info ml-1" id="editBtn">
-                            <i class="fas fa-edit" aria-hidden="true"></i>
                         </button>
                         <button class="btn btn-danger ml-1" id="deleteBtn">
                             <i class="fas fa-trash" aria-hidden="true"></i>
@@ -223,6 +226,7 @@
                                                         </thead>
                                                         <tbody>
                                                             <form id="promoItemsForm">
+                                                                @csrf
                                                                 <tr id="row1">
                                                                     <td class="" width="30%">
                                                                         <div class="form-group mx-auto">
@@ -664,6 +668,63 @@
         $('#startDate').val('Start Date');
         $('#endDate').val('Expire Date');
 
+
+        $('#deleteBtn').on('click', function () {
+            var id = [];
+            $('.checkitem:checked').each(function () {
+                id.push($(this).val());
+            });
+            if (id.length == 0) {
+                Swal.fire(
+                    '',
+                    'Please select at least 1 data!',
+                    'warning'
+                )
+            } else {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    // confirmButtonColor: '#3085d6',
+                    // cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete them!',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.value) {
+                        var strIds = id.join(",");
+
+                        $.ajax({
+                            url: "{{ route('destroyPromoItem') }}",
+                            type: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                                    'content')
+                            },
+                            data: 'id=' + strIds,
+                            success: function (data) {
+                                if (data['status'] == true) {
+                                    $(".checkitem:checked").each(function () {
+                                        $(this).parents("tr").remove();
+                                    });
+                                    Swal.fire(
+                                        'Deleted!',
+                                        'Your file has been deleted.',
+                                        'success'
+                                    );
+                                } else {
+                                    alert('Whoops Something went wrong!!');
+                                }
+                            },
+                            error: function (data) {
+                                alert(data.responseText);
+                            }
+                        });
+
+                    }
+                });
+            };
+        });
     });
 
 </script>

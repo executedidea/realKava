@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="{{ asset('/modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}">
 <link rel="stylesheet" href="{{ asset('/modules/bootstrap-daterangepicker/daterangepicker.css') }}">
 @endsection
+@section('title', 'Membership | Customer Service - KAVA')
 @section('content')
 <section id="customerCheck">
     <div class="container">

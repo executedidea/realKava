@@ -187,4 +187,6 @@ class CheckInOutController extends Controller
         
         return view('cs.transaction.check-in-out.print-ticket', compact('checked_in_customer'));
     }
+
+    
 }

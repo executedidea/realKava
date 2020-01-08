@@ -108,6 +108,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/cs/master/promo-item', 'CS\Master\PromoItemController@index')->name('promoItem');
         Route::post('/cs/master/promo-item/add', 'CS\Master\PromoItemController@store')->name('storePromoItem');
         Route::post('/cs/master/membership/{id}/edit', 'CS\Master\MembershipController@update')->name('updateMembership');
+        Route::delete('/cs/master/promo-item/delete', 'CS\master\PromoItemController@destroy')->name('destroyPromoItem');
         // Complaint Handling
         Route::get('/cs/transaction/complaint-handling', 'CS\Transaction\ComplaintHandlingController@index')->name('complaintHandlingTransaction');
         Route::post('/cs/transaction/complaint-handling/add', 'CS\Transaction\ComplaintHandlingController@store')->name('storeComplaintHandlingTransaction');
@@ -170,13 +171,17 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/user-management/account/add', 'UserManagement\AccountController@store')->name('storeAccount');
         Route::post('/user-management/account/{account}/edit', 'UserManagement\AccountController@update')->name('updateAccount');
 
-        // GLOBAL SETTING
+    // GLOBAL SETTING
         Route::get('global-setting', 'GlobalSetting\GlobalSettingController@index');
         Route::get('global-setting/single-outlet', 'GlobalSetting\SingleOutletController@index');
 
         // PRINT
         Route::get('/cs/transaction/check-in-out/print', 'CS\Transaction\CheckInOutController@printTicket');
-
+    
+    // REPORT
+        // Sales Report
+        // PDF
+        Route::get('/pos/report/sales-report/pdf','POS\Report\SalesReportController@reportPDF');
     });
 
 

@@ -28,6 +28,10 @@ $printer -> setTextSize(2,2);
 $printer -> setJustification(Printer::JUSTIFY_CENTER);
 $printer -> text( $checked_in_customer[0]->check_in_ticket+1 );
 
+$printer -> setTextSize(2,2);
+$printer -> setJustification(Printer::JUSTIFY_CENTER);
+$printer -> text( "plat nomor \n" );
+
 $printer->feed(5);
 
 

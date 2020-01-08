@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="{{ asset('/modules/select2/dist/css/select2.min.css') }}">
 
 @endsection
-@section('title', 'Customer Service - KAVA')
+@section('title', 'Complaint Handling | Customer Service - KAVA')
 @section('content')
 <div class="container">
     <div class="row">

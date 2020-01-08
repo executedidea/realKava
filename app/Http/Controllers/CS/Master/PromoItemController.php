@@ -140,8 +140,20 @@ class PromoItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $promo_id                    = $request->id;
+        // CONDITION----------------------------------------------------------------------------
+        if (!strpos($promo_id, ',') !== false) {
+            PromoItem::setDeletePromoItem($promo_id);
+        } else {
+            $promo_ids               = explode(",", $promo_id);
+            foreach ($promo_ids as $item) {
+                PromoItem::setDeletePromoItem($item);
+            }
+        }
+        // -------------------------------------------------------------------------------------
+
+        return response()->json(['status' => true, 'message' => 'Complaint Handling deleted successfuly!']);
     }
 }

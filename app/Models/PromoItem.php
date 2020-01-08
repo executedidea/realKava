@@ -38,4 +38,10 @@ class PromoItem extends Model
         $promo          = DB::select('call SP_POS_Promo_GetTodaysPromo_Select_Visit(?)', [$outlet_id]);
         return $promo;
     }
+    
+    public static function setDeletePromoItem($promo_id)
+    {
+        $delete                = DB::select('call SP_Promo_Delete(?)', [$promo_id]);
+        return $delete;
+    }
 }
