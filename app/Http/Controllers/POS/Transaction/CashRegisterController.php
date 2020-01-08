@@ -87,6 +87,7 @@ class CashRegisterController extends Controller
         foreach($request->item as $index => $item) {
             PointOfSales_Detail::setInsertPOSDetail($pos_detail_id, $pos_id, $item, $request->item_quantity[$index], $request->item_discount[$index], $request->item_add_discount[$index]);
         }
+        CheckInOut::setUpdateCheckInPaid($request->check_in_id);
 
         return back()->with('paid');
 
