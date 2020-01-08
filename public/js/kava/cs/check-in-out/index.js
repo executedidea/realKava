@@ -37,53 +37,65 @@ $(document).ready(function () {
         e.preventDefault();
         var id = $(this).data('id');
         var cst = $(this).data('customer');
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            type: 'warning',
-            showCancelButton: true,
-            // confirmButtonColor: '#3085d6',
-            // cancelButtonColor: '#d33',
-            confirmButtonText: 'Check Out',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.value) {
-                $('#keamanan').rateYo({
-                    fullStar: true,
-                    onSet: function (rating) {
-                        $('#keamananRating').val(rating);
+        $.get('/data/checkin/getcustomerdetail/' + cst, function (detail) {
+            if (detail[0].paid !== 1) {
+                Swal.fire({
+                    title: 'Action can not be proceeded!',
+                    text: 'Please pay first',
+                    type: 'warning'
+                })
+            } else {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    // confirmButtonColor: '#3085d6',
+                    // cancelButtonColor: '#d33',
+                    confirmButtonText: 'Check Out',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.value) {
+                        $('#keamanan').rateYo({
+                            fullStar: true,
+                            onSet: function (rating) {
+                                $('#keamananRating').val(rating);
+                            }
+                        });
+                        $('#kebersihan').rateYo({
+                            fullStar: true,
+                            onSet: function (rating) {
+                                $('#kebersihanRating').val(rating);
+                            }
+                        });
+                        $('#pelayanan').rateYo({
+                            fullStar: true,
+                            onSet: function (rating) {
+                                $('#pelayananRating').val(rating);
+                            }
+                        });
+                        $('#kualitas').rateYo({
+                            fullStar: true,
+                            onSet: function (rating) {
+                                $('#kualitasRating').val(rating);
+                            }
+                        });
+                        $('#kenyamanan').rateYo({
+                            fullStar: true,
+                            onSet: function (rating) {
+                                $('#kenyamananRating').val(rating);
+                            }
+                        });
+                        $('#customerDetailID').val(cst);
+                        $('#feedbackForm').attr('action',
+                            '/cs/transaction/check-in-out/checkout/' +
+                            id);
+                        $('#feedbackModal').modal('show');
                     }
-                });
-                $('#kebersihan').rateYo({
-                    fullStar: true,
-                    onSet: function (rating) {
-                        $('#kebersihanRating').val(rating);
-                    }
-                });
-                $('#pelayanan').rateYo({
-                    fullStar: true,
-                    onSet: function (rating) {
-                        $('#pelayananRating').val(rating);
-                    }
-                });
-                $('#kualitas').rateYo({
-                    fullStar: true,
-                    onSet: function (rating) {
-                        $('#kualitasRating').val(rating);
-                    }
-                });
-                $('#kenyamanan').rateYo({
-                    fullStar: true,
-                    onSet: function (rating) {
-                        $('#kenyamananRating').val(rating);
-                    }
-                });
-                $('#customerDetailID').val(cst);
-                $('#feedbackForm').attr('action', '/cs/transaction/check-in-out/checkout/' +
-                    id);
-                $('#feedbackModal').modal('show');
+                })
             }
         })
+
     });
 
 
