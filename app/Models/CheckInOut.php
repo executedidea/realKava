@@ -40,9 +40,9 @@ class CheckInOut extends Model
         return $visit;
     }
 
-    public static function setInsertCheckIn($check_in_id, $ucstomer_detail_id, $check_in_time, $outlet_id)
+    public static function setInsertCheckIn($check_in_id, $customer_detail_id, $check_in_time, $outlet_id)
     {
-        $insert             = DB::select('call SP_CS_CheckIn_Insert(?,?,?,?)', [$check_in_id, $ucstomer_detail_id, $check_in_time, $outlet_id]);
+        $insert             = DB::select('call SP_CS_CheckIn_Insert(?,?,?,?)', [$check_in_id, $customer_detail_id, $check_in_time, $outlet_id]);
         return $insert;
     }
 

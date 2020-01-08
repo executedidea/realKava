@@ -53,6 +53,7 @@ $(document).ready(function () {
     $(document).on('click', '.complaint-handling', function (e) {
         e.preventDefault();
         var id = $(this).data('id');
+
         $('#editComplaintHandlingForm').attr('action',
             '/cs/transaction/complaint-handling/' + id + '/edit');
         $.ajax({
@@ -183,20 +184,7 @@ $(document).ready(function () {
         };
     });
 
-    $('#testPrint').click(function () {
-        $.ajax({
-            url: '/cs/transaction/complaint-handling/print',
-            type: 'GET',
 
-            // success: function (response) {
-            //     if (response == 1) {
-            //         alert('mantap');
-            //     } else {
-            //         alert('tidak mantap');
-            //     }
-            // }
-        })
-    });
 
 
 });
@@ -218,6 +206,20 @@ var rupiah = new Cleave('#editComplaintHandlingFee', {
 $('#editComplaintHandlingForm').on('submit', function () {
     $('#editComplaintHandlingFee').val(rupiah.getRawValue());
 });
+
+
+
+// var bilangan = $('#editComplaintHandlingForm');
+
+// var reverse = bilangan.toString().split('').reverse().join(''),
+//     ribuan = reverse.match(/\d{1,3}/g);
+// ribuan = ribuan.join('.').split('').reverse().join('');
+
+// // Cetak hasil	
+// document.write(ribuan); // Hasil: 23.456.789
+
+
+
 
 // var rupiah1 = new Cleave('#packagePrice1', {
 //     numeral: true,

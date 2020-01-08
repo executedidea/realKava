@@ -144,7 +144,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success btn-block">Check In</button>
+                    <button id="btnCheckIn" type="submit" class="btn btn-success btn-block">Check In</button>
                 </div>
             </form>
         </div>
@@ -253,97 +253,6 @@
 <script src="{{ asset('/modules/select2/dist/js/select2.full.min.js') }}"></script>
 <script src="{{asset('js/sweetalert2.all.min.js')}}"></script>
 <script src="{{asset('js/jquery.rateyo.min.js')}}"></script>
-<script>
-    $(document).ready(function () {
-        $('#customerSearch').select2();
-        $('#customerSearch').on('change', function () {
-            var id = $(this).val();
-            $.get('/data/checkin/customer/' + id, function (data) {
-                $('#checkInCustomerID').val(data[0].customer_detail_id);
-                $('#checkInCustomerName').val(data[0].customer_fullName);
-                $('#checkInCustomerPhone').val(data[0].customer_phone);
-                $('#checkInCustomerLicensePlate').val(data[0].customer_detail_licensePlate);
-            });
-            $('#customerCheckInModal').modal('show')
-        });
+<script src="{{ asset('/js/kava/cs/check-in-out/index.js') }}"></script>
 
-        $(document).on('click', '.customer-detail', function (e) {
-            e.preventDefault();
-            var id = $(this).data('id');
-
-            $.get('/data/checkin/getcustomer/' + id, function (customer) {
-                $('#customerName').val(customer[0].customer_fullName);
-                $('#customerPhone').val(customer[0].customer_phone);
-                $('#customerPlate').val(customer[0].customer_detail_licensePlate);
-                $('#checkInTime').html(customer[0].check_in_time);
-
-            });
-            $.get('/data/checkin/getcustomerdetail/' + id, function (detail) {
-                $('#checkedInDetailTable tbody tr').empty();
-                $.each(detail, function (index, Obj) {
-                    $('#checkedInDetailTable tbody').append('<tr><td>' + (index + 1) +
-                        '</td><td>' + Obj.item_name +
-                        '</td></tr>');
-                });
-            });
-            $('#customerCheckedInDetailModal').modal('show');
-        });
-
-        $(document).on('click', '.check-out-btn', function (e) {
-            e.preventDefault();
-            var id = $(this).data('id');
-            var cst = $(this).data('customer');
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                type: 'warning',
-                showCancelButton: true,
-                // confirmButtonColor: '#3085d6',
-                // cancelButtonColor: '#d33',
-                confirmButtonText: 'Check Out',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.value) {
-                    $('#keamanan').rateYo({
-                        fullStar: true,
-                        onSet: function (rating) {
-                            $('#keamananRating').val(rating);
-                        }
-                    });
-                    $('#kebersihan').rateYo({
-                        fullStar: true,
-                        onSet: function (rating) {
-                            $('#kebersihanRating').val(rating);
-                        }
-                    });
-                    $('#pelayanan').rateYo({
-                        fullStar: true,
-                        onSet: function (rating) {
-                            $('#pelayananRating').val(rating);
-                        }
-                    });
-                    $('#kualitas').rateYo({
-                        fullStar: true,
-                        onSet: function (rating) {
-                            $('#kualitasRating').val(rating);
-                        }
-                    });
-                    $('#kenyamanan').rateYo({
-                        fullStar: true,
-                        onSet: function (rating) {
-                            $('#kenyamananRating').val(rating);
-                        }
-                    });
-                    $('#customerDetailID').val(cst);
-                    $('#feedbackForm').attr('action', '/cs/transaction/check-in-out/checkout/' +
-                        id);
-                    $('#feedbackModal').modal('show');
-                }
-            })
-        });
-
-
-    });
-
-</script>
 @endsection

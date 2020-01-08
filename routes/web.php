@@ -174,7 +174,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('global-setting', 'GlobalSetting\GlobalSettingController@index');
         Route::get('global-setting/single-outlet', 'GlobalSetting\SingleOutletController@index');
 
-        Route::get('/cs/transaction/complaint-handling/print', 'CS\Transaction\ComplaintHandlingController@testPrint');
+        // PRINT
+        Route::get('/cs/transaction/check-in-out/print', 'CS\Transaction\CheckInOutController@printTicket');
 
     });
 

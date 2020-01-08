@@ -178,4 +178,13 @@ class CheckInOutController extends Controller
 
         return response()->json($customer);
     }
+
+    public function printTicket()
+    {
+        $outlet_id                      = Auth::user()->outlet_id;
+        $checked_in_customer            = CheckInOut::getTodayCustomer($outlet_id);
+        // $complaint_handling          = ComplaintHandling::getComplaintHandlingList($outlet_id);
+        
+        return view('cs.transaction.check-in-out.print-ticket', compact('checked_in_customer'));
+    }
 }

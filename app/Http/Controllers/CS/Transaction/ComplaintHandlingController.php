@@ -170,6 +170,7 @@ class ComplaintHandlingController extends Controller
             }
 
             $complaint_handling_status          = $request->complaint_handling_status;
+            $complaint_handling_desc          = $request->complaint_handling_desc;
             $complaint_handling_detail_status   = $request->complaint_handling_status;
             $complaint_handling_detail_desc     = $request->complaint_handling_desc;
             $complaint_handling_id              = $request->complaint_handling_id;
@@ -179,6 +180,7 @@ class ComplaintHandlingController extends Controller
                 $complaint_handling_detail_status, 
                 $complaint_handling_detail_desc, 
                 $complaint_handling_status, 
+                $complaint_handling_desc, 
                 $complaint_handling_id
             ); 
 
@@ -230,12 +232,7 @@ class ComplaintHandlingController extends Controller
         ]);
     }
 
-    public function testPrint(Request $request)
-    {
-        $outlet_id                                  = Auth::user()->outlet_id;
-        $complaint_handling                     = ComplaintHandling::getComplaintHandlingList($outlet_id);
-        return view('cs.transaction.complaint-handling.testprint', compact('complaint_handling'));
-    }
+    
 
     // public function testPrint()
     // {

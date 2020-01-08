@@ -69,9 +69,9 @@ class ComplaintHandling extends Model
         return $delete;
     }
 
-    public static function setUpdateComplaintHandlingDetailStatus($complaint_handling_detail_id, $complaint_handling_detail_status, $complaint_handling_detail_desc, $complaint_handling_status, $complaint_handling_id)
+    public static function setUpdateComplaintHandlingDetailStatus($complaint_handling_detail_id, $complaint_handling_detail_status, $complaint_handling_detail_desc, $complaint_handling_status, $complaint_handling_desc, $complaint_handling_id)
     {
-        $set_update_complaint_handling_detail_status                = DB::select('call SP_ComplaintHandling_FollowUp(?,?,?,?,?)', [$complaint_handling_detail_id, $complaint_handling_detail_status, $complaint_handling_detail_desc, $complaint_handling_status, $complaint_handling_id]);
+        $set_update_complaint_handling_detail_status                = DB::select('call SP_ComplaintHandling_FollowUp(?,?,?,?,?,?)', [$complaint_handling_detail_id, $complaint_handling_detail_status, $complaint_handling_detail_desc, $complaint_handling_status, $complaint_handling_desc, $complaint_handling_id]);
         return $set_update_complaint_handling_detail_status;
     }
 

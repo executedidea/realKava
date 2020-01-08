@@ -24,10 +24,6 @@
                     <button class="btn btn-danger action-btn ml-1" id="deleteBtn">
                         <i class="fas fa-trash-alt" aria-hidden="true"></i>
                     </button>
-                    <button class="btn btn-primary action-btn ml-1" id="testPrint">
-                        <i class="fas fa-trash-alt" aria-hidden="true"></i>
-                    </button>
-
                 </div>
                 <div class="card-body">
                     <table class="table table-striped">
