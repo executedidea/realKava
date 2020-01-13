@@ -53,6 +53,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/data/cash-bank-out/getpettycashdetailbalanced', 'POS\Transaction\CashBankOutController@getPettyCashDetailBalancedList')->name('getPettyCashDetailBalancedList');
     Route::get('/data/cash-bank-out/getpettycashamount', 'POS\Transaction\CashBankOutController@getPettyCashAmountByFlag')->name('getPettyCashAmountByFlag');
     
+    // Route::get('/data/sales-report/getreportdata', 'POS\Report\SalesReportController@getReportData')->name('getReportData');
+
 
 
     Route::group(['middleware' => 'UserHasNoOutlet'], function () {

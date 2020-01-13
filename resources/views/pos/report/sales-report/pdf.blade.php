@@ -8,35 +8,54 @@
         <td>{{ $item->vehicle_category_name }}</td>
         <td>{{ $item->vehicle_size_name }}</td>
         <td>{{ number_format($item->point_of_sales_totalPayment) }}</td>
-        @if (($item->point_of_sales_paid1 + $item->point_of_sales_paid2) >= $item->point_of_sales_totalPayment)) 
-            <td>{{ number_format($item->point_of_sales_totalPayment) }}</td>
-            <td>{{ number_format(($item->point_of_sales_totalPayment)-($item->point_of_sales_totalPayment)) }}</td>
+        @if (($item->point_of_sales_paid1 + $item->point_of_sales_paid2) >= $item->point_of_sales_totalPayment))
+        <td>{{ number_format($item->point_of_sales_totalPayment) }}</td>
+        <td>{{ number_format(($item->point_of_sales_totalPayment)-($item->point_of_sales_totalPayment)) }}</td>
         @else
         <td>{{ number_format($item->point_of_sales_paid1 + $item->point_of_sales_paid2) }}</td>
-        <td>{{ number_format(($item->point_of_sales_paid1 + $item->point_of_sales_paid2)-($item->point_of_sales_totalPayment)) }}</td>
+        <td>{{ number_format(($item->point_of_sales_paid1 + $item->point_of_sales_paid2)-($item->point_of_sales_totalPayment)) }}
+        </td>
         @endif
     </tr>
 </tbody>
 @endforeach
+<tfoot>
+    <tr>
+        <td colspan="5"><b>Total</b></td>
+        <td><b>{{ number_format($report_data[0]->SUMTotalPayment) }}</b></td>
+        @if (($item->point_of_sales_paid1 + $item->point_of_sales_paid2) >= $item->point_of_sales_totalPayment))
+        <td><b>{{ number_format($report_data[0]->SUMTotalPayment) }}</b></td>
+        <td><b>{{ number_format(($item->point_of_sales_totalPayment)-($item->point_of_sales_totalPayment)) }}</b></td>
 
+        @else
+        <td width="120px"><b>{{ number_format($item->point_of_sales_paid1 + $item->point_of_sales_paid2) }}</b></td>
+        <td width="157px">
+            <b>{{ number_format(($item->point_of_sales_paid1 + $item->point_of_sales_paid2)-($item->point_of_sales_totalPayment)) }}</b>
+        </td>
+        @endif
+    </tr>
+</tfoot>
 </table>
 
-<table class="table-head">
+{{-- <table class="table-head">
     <tfoot>
         <tr>
             <td colspan="5" width="357px"><b>Total</b></td>
             <td width="57px"><b>{{ number_format($report_data[0]->SUMTotalPayment) }}</b></td>
-            @if (($item->point_of_sales_paid1 + $item->point_of_sales_paid2) >= $item->point_of_sales_totalPayment)) 
-            <td width="120px"><b>{{ number_format($report_data[0]->SUMTotalPayment) }}</b></td>
-            <td width="157px"><b>{{ number_format(($item->point_of_sales_totalPayment)-($item->point_of_sales_totalPayment)) }}</b></td>
+@if (($item->point_of_sales_paid1 + $item->point_of_sales_paid2) >= $item->point_of_sales_totalPayment))
+<td width="120px"><b>{{ number_format($report_data[0]->SUMTotalPayment) }}</b></td>
+<td width="157px"><b>{{ number_format(($item->point_of_sales_totalPayment)-($item->point_of_sales_totalPayment)) }}</b>
+</td>
 
-        @else
-        <td width="120px"><b>{{ number_format($item->point_of_sales_paid1 + $item->point_of_sales_paid2) }}</b></td>
-        <td width="157px"><b>{{ number_format(($item->point_of_sales_paid1 + $item->point_of_sales_paid2)-($item->point_of_sales_totalPayment)) }}</b></td>
-        @endif
-        </tr>
-    </tfoot>
-</table>
+@else
+<td width="120px"><b>{{ number_format($item->point_of_sales_paid1 + $item->point_of_sales_paid2) }}</b></td>
+<td width="157px">
+    <b>{{ number_format(($item->point_of_sales_paid1 + $item->point_of_sales_paid2)-($item->point_of_sales_totalPayment)) }}</b>
+</td>
+@endif
+</tr>
+</tfoot>
+</table> --}}
 
 <div class="page-no">
     <script type="text/php">

@@ -22,6 +22,12 @@ class SalesReport extends Model
         return $report;
     }
 
+    // public static function getReportDataNoByCategory($outlet_id, $period_StartDate, $period_EndDate)
+    // {
+    //     $report_nobycategory            = DB::select('call SP_SalesReport_PDF_NoByCategory_Select(?,?,?)', [$outlet_id, $period_StartDate, $period_EndDate]);
+    //     return $report_nobycategory;
+    // }
+
     public static function getOutletAll($outlet_id)
     {
         $outlet_all            = DB::select('call SP_Outlet_All_Select(?)', [$outlet_id]);

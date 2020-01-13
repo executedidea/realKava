@@ -132,6 +132,20 @@
         });
         $('#periodEndDate').val('End Date');
 
+
+
+
+        // $(document).on('click', '.pdf-btn', function (e) {
+        //     var vehicle_category_id = $(this).data('id');
+        //     console.log(vehicle_category_id);
+        //     $.get('/data/membership/getcustomerbyid/' + customer_id, function (data) {
+        //         $('#membershipCustomerName').val(data[0].customer_fullName);
+        //     });
+        //     $('#customerMembershipModal').modal('show');
+        // });
+
+
+
     });
 
 </script>
