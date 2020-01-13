@@ -27,7 +27,8 @@ class PromoItemController extends Controller
         $promo_type     = PromoType::getAllPromoType();
         $items          = Item::getAllItem(Auth::user()->outlet_id);
         $promos         = PromoItem::getAllPromo($outlet_id);
-        return view('cs.master.promo-item.index', compact('items', 'promo_type', 'promos'));
+        $inactive_promos            = PromoItem::getAllInactivePromo($outlet_id);
+        return view('cs.master.promo-item.index', compact('items', 'promo_type', 'promos', 'inactive_promos'));
     }
 
     /**
@@ -155,5 +156,20 @@ class PromoItemController extends Controller
         // -------------------------------------------------------------------------------------
 
         return response()->json(['status' => true, 'message' => 'Complaint Handling deleted successfuly!']);
+    }
+
+    public function deactivatePromo(Request $request)
+    {  
+        $promo_id                    = $request->id;
+        PromoItem::setDeactivatePromoItem($promo_id);
+        return response()->json(['status' => true, 'message' => 'Promo Item deactivated successfuly!']);
+
+    }
+
+    public function inactivePromos()
+    {
+        $outlet_id                  = Auth::user()->outlet_id;
+        $inactive_promos            = PromoItem::getAllInactivePromo($outlet_id);
+        return response()->json($inactive_promos);
     }
 }

@@ -466,9 +466,9 @@ $(document).ready(function () {
         var customer_detail_id = $(this).val();
         $.get('/data/checkin/getcheckedincustomer/' + customer_detail_id, function (customers) {
             $('#checkInID').val(customers[0].check_in_id);
-            //     $('#customerName').val(customers[0].customer_fullName);
-            //     $('#vehicle').val(customers[0].vehicle_brand_name + ' ' + customers[0].vehicle_model_name);
-            //     $('#licensePlate').val(customers[0].customer_detail_licensePlate);
+                $('#customerName').val(customers[0].customer_fullName);
+                $('#vehicle').val(customers[0].vehicle_brand_name + ' ' + customers[0].vehicle_model_name);
+                $('#licensePlate').val(customers[0].customer_detail_licensePlate);
             if ($('#customerItems tbody tr').length > 0) {
                 $('#customerItems tbody tr').remove();
             }

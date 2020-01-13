@@ -4,7 +4,11 @@ namespace App\Http\Controllers\POS\Report;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\SalesReport;
+use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade as PDF;
+// use Barryvdh\Snappy\Facade as PDF;
+
 
 
 class SalesReportController extends Controller
@@ -16,7 +20,10 @@ class SalesReportController extends Controller
      */
     public function index()
     {
-        //
+        $outlet_id      = Auth::user()->outlet_id;
+        $outlet_all     = SalesReport::getOutletAll($outlet_id);
+        $vehicle_category_all     = SalesReport::getVehicleCategory();
+        return view('pos.report.sales-report.index', compact('outlet_all', 'vehicle_category_all'));
     }
 
     /**
@@ -85,13 +92,18 @@ class SalesReportController extends Controller
         //
     }
 
-
-
-
-    public function reportPDF()
+    public function reportPDF(Request $request)
     {
-        $data = ['title' => 'Welcome to belajarphp.net'];
-        $pdf = PDF::loadView('pos/report/sales-report/pdf', $data);
-        return $pdf->download('SalesReport-pdf.pdf');
+        $period_StartDate                   = $request->period_StartDate;
+        $period_EndDate                     = $request->period_EndDate;
+        $vehicle_category                   = $request->vehicle_category;
+        $outlet_id                          = Auth::user()->outlet_id;
+        $name                               = Auth::user()->name;
+        $date_now                           = date('d-m-Y H:i:s');
+        $carwash_data                       = SalesReport::getCarwashData($outlet_id);
+        $report_data                        = SalesReport::getReportData($outlet_id, $period_StartDate, $period_EndDate, $vehicle_category);
+        $pdf                                = PDF::loadView('pos/report/sales-report/pdf', compact('carwash_data', 'name', 'date_now', 'report_data'));
+        return $pdf->stream('SalesReport-pdf.pdf');
+        // return $pdf->download('SalesReport-pdf.pdf');
     }
 }

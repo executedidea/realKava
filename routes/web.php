@@ -106,9 +106,11 @@ Route::group(['middleware' => 'auth'], function () {
 
         // Promo Item
         Route::get('/cs/master/promo-item', 'CS\Master\PromoItemController@index')->name('promoItem');
+        Route::get('/cs/master/promo-item/inactive', 'CS\Master\PromoItemController@inactivePromos')->name('promoItem');
         Route::post('/cs/master/promo-item/add', 'CS\Master\PromoItemController@store')->name('storePromoItem');
         Route::post('/cs/master/membership/{id}/edit', 'CS\Master\MembershipController@update')->name('updateMembership');
         Route::delete('/cs/master/promo-item/delete', 'CS\master\PromoItemController@destroy')->name('destroyPromoItem');
+        Route::delete('/cs/master/promo-item/{id}/deactivate', 'CS\master\PromoItemController@deactivatePromo')->name('deactivatePromoItem');
         // Complaint Handling
         Route::get('/cs/transaction/complaint-handling', 'CS\Transaction\ComplaintHandlingController@index')->name('complaintHandlingTransaction');
         Route::post('/cs/transaction/complaint-handling/add', 'CS\Transaction\ComplaintHandlingController@store')->name('storeComplaintHandlingTransaction');
@@ -152,7 +154,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/pos/transaction/cash-bank-out/bank-out', 'POS\Transaction\BankOutController@index')->name('bankOutTransaction');
         // Change Shift
         Route::get('/pos/transaction/change-shift', 'POS\Transaction\ChangeShiftController@index')->name('changeShiftTransaction');
-
+        // REPORT-----
+        // Sales Report
+            // PDF
+            Route::get('/pos/report/sales-report/pdf','POS\Report\SalesReportController@reportPDF')->name('salesReportPrint');
+            // index
+            Route::get('/pos/report/sales-report', 'POS\Report\SalesReportController@index')->name('salesReport');
 
 
 
@@ -178,10 +185,7 @@ Route::group(['middleware' => 'auth'], function () {
         // PRINT
         Route::get('/cs/transaction/check-in-out/print', 'CS\Transaction\CheckInOutController@printTicket');
     
-    // REPORT
-        // Sales Report
-        // PDF
-        Route::get('/pos/report/sales-report/pdf','POS\Report\SalesReportController@reportPDF');
+    
     });
 
 

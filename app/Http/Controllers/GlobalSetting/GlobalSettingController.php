@@ -10,6 +10,6 @@ class GlobalSettingController extends Controller
     //
     public function index()
     {
-        return view('global-setting/dashboard');
+        return view('global-setting.dashboard');
     }
 }

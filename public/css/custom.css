@@ -210,3 +210,9 @@ em {
 .imagecheck-input:checked~.imagecheck-figure {
     border-color: transparent;
 }
+
+.pdf-btn {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}

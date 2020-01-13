@@ -21,6 +21,12 @@ class PromoItem extends Model
         return $promo;
     }
 
+    public static function getAllInactivePromo($outlet_id)
+    {
+        $promo          = DB::select('call SP_POS_InactivePromo_Select(?)', [$outlet_id]);
+        return $promo;
+    }
+
     public static function getTodaysPromo($outlet_id) 
     {
         $promo          = DB::select('call SP_POS_Promo_GetTodaysPromo_Select(?)', [$outlet_id]);
@@ -42,6 +48,12 @@ class PromoItem extends Model
     public static function setDeletePromoItem($promo_id)
     {
         $delete                = DB::select('call SP_Promo_Delete(?)', [$promo_id]);
+        return $delete;
+    }
+    
+    public static function setDeactivatePromoItem($promo_id)
+    {
+        $delete                = DB::select('call SP_Promo_Deactivate(?)', [$promo_id]);
         return $delete;
     }
 }

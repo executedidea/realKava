@@ -9,102 +9,161 @@
 <link rel="stylesheet" href="{{ asset('/modules/bootstrap-daterangepicker/daterangepicker.css') }}">
 <link rel="stylesheet" href="{{ asset('css/kava/pos/cash-account.css') }}">
 <link rel="stylesheet" href="{{ asset('/modules/select2/dist/css/select2.min.css') }}">
+<style>
+    #inactivePromo {
+        display: none;
+    }
+
+</style>
 @endsection
 @section('title', 'Promo | Customer Service - KAVA')
 @section('content')
-
-<section id="promoList">
-    <div class="container">
-        <div class="row mb-5">
-            <div class="col-6">
-                <button class="btn btn-lg bg-white w-100" id="bankAccountBtn">Active Promo</button>
-            </div>
-            <div class="col-6">
-                <button class="btn btn-lg bg-white w-100" id="pettyCashBtn">Inactive Promo</button>
-            </div>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <button class="btn btn-lg bg-white w-100" id="activePromoBtn">Active Promo</button>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Active Promo</h4>
-                        <button class="btn btn-success" data-toggle="modal" data-target="#addModal">
-                            <i class="fas fa-plus" aria-hidden="true"></i>
-                        </button>
-                        <button class="btn btn-danger ml-1" id="deleteBtn">
-                            <i class="fas fa-trash" aria-hidden="true"></i>
-                        </button>
-                        <h4 class="ml-auto">Export to:</h4>
-                        <a href="http://" class="ml-1">
-                            <img src="{{asset('img/icons/pdf.png')}}" alt="pdf" height="50px">
-                        </a>
-                        <a href="http://" class="ml-1">
-                            <img src="{{asset('img/icons/excel.png')}}" alt="excel" height="50px">
-                        </a>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th class="th-sm text-center">
-                                        <div class="custom-checkbox custom-control">
-                                            <input type="checkbox" data-checkboxes="customers"
-                                                class="custom-control-input" name="id[]" id="checkAll" value="">
-                                            <label for="checkAll" class="custom-control-label">&nbsp;</label>
-                                        </div>
-                                    </th>
-                                    <th>Promo ID</th>
-                                    <th>Name</th>
-                                    <th>Type</th>
-                                    <th>Start Date</th>
-                                    <th>Expire Date</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($promos as $item)
-                                <tr>
-                                    <td class="text-center">
-                                        <div class="custom-checkbox custom-control">
-                                            <input type="checkbox" data-checkboxes="promo"
-                                                class="custom-control-input checkitem" name="id[]"
-                                                id="checkbox{{$item->promo_id}}" value="{{$item->promo_id}}">
-                                            <label for="checkbox{{$item->promo_id}}"
-                                                class="custom-control-label">&nbsp;</label>
-                                        </div>
-                                    <td>
-                                        <a href="">{{ $item->promo_id }}</a>
-                                    </td>
-                                    <td>{{ $item->promo_name }}</td>
-                                    <td>{{ $item->promo_type_name }}</td>
-                                    <td>
-                                        @if($item->promo_startDate == '1111-11-11')
-                                        -
-                                        @else
-                                        {{ date('d M Y', strtotime($item->promo_startDate)) }}
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($item->promo_endDate == '9999-12-31')
-                                        -
-                                        @else
-                                        {{ date('d M Y', strtotime($item->promo_endDate)) }}
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-danger">Deactive</button>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+        <div class="col-6">
+            <button class="btn btn-lg bg-white w-100" id="inactivePromoBtn">Inactive Promo</button>
+        </div>
+    </div>
+    <div class="row mt-4" id="activePromo">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Active Promo</h4>
+                    <button class="btn btn-success" data-toggle="modal" data-target="#addModal">
+                        <i class="fas fa-plus" aria-hidden="true"></i>
+                    </button>
+                    <button class="btn btn-danger ml-1" id="deleteBtn">
+                        <i class="fas fa-trash" aria-hidden="true"></i>
+                    </button>
+                    <h4 class="ml-auto">Export to:</h4>
+                    <a href="http://" class="ml-1">
+                        <img src="{{asset('img/icons/pdf.png')}}" alt="pdf" height="50px">
+                    </a>
+                    <a href="http://" class="ml-1">
+                        <img src="{{asset('img/icons/excel.png')}}" alt="excel" height="50px">
+                    </a>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="th-sm text-center">
+                                    <div class="custom-checkbox custom-control">
+                                        <input type="checkbox" data-checkboxes="customers" class="custom-control-input"
+                                            name="id[]" id="checkAll" value="">
+                                        <label for="checkAll" class="custom-control-label">&nbsp;</label>
+                                    </div>
+                                </th>
+                                <th>Promo ID</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Start Date</th>
+                                <th>Expire Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($promos as $item)
+                            <tr>
+                                <td class="text-center">
+                                    <div class="custom-checkbox custom-control">
+                                        <input type="checkbox" data-checkboxes="promo"
+                                            class="custom-control-input checkitem" name="id[]"
+                                            id="checkbox{{$item->promo_id}}" value="{{$item->promo_id}}">
+                                        <label for="checkbox{{$item->promo_id}}"
+                                            class="custom-control-label">&nbsp;</label>
+                                    </div>
+                                <td>
+                                    <a href="">{{ $item->promo_id }}</a>
+                                </td>
+                                <td>{{ $item->promo_name }}</td>
+                                <td>{{ $item->promo_type_name }}</td>
+                                <td>
+                                    @if($item->promo_startDate == '1111-11-11')
+                                    -
+                                    @else
+                                    {{ date('d M Y', strtotime($item->promo_startDate)) }}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($item->promo_endDate == '9999-12-31')
+                                    -
+                                    @else
+                                    {{ date('d M Y', strtotime($item->promo_endDate)) }}
+                                    @endif
+                                </td>
+                                <td>
+
+                                    <button class="btn btn-danger deactivate-btn"
+                                        data-promo="{{$item->promo_id}}">Deactivate</button>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-</section>
+    <div class="row mt-4" id="inactivePromo">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Inactive Promo</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped" id="inactivePromoTable">
+                        <thead>
+                            <tr>
+                                
+                                <th>Promo ID</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Start Date</th>
+                                <th>Expire Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($inactive_promos as $item)
+                            <tr>
+                                <td>
+                                    <a href="">{{ $item->promo_id }}</a>
+                                </td>
+                                <td>{{ $item->promo_name }}</td>
+                                <td>{{ $item->promo_type_name }}</td>
+                                <td>
+                                    @if($item->promo_startDate == '1111-11-11')
+                                    -
+                                    @else
+                                    {{ date('d M Y', strtotime($item->promo_startDate)) }}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($item->promo_endDate == '9999-12-31')
+                                    -
+                                    @else
+                                    {{ date('d M Y', strtotime($item->promo_endDate)) }}
+                                    @endif
+                                </td>
+                                <td>
 
+                                    <button class="btn btn-success deactivate-btn"
+                                        data-promo="{{$item->promo_id}}">Active</button>
+                                </td>
+                            </tr>
+                            @endforeach
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @section('modal')
 {{-- Add Modal --}}
@@ -515,6 +574,17 @@
 
 <script>
     $(document).ready(function () {
+
+        $('#activePromoBtn').on('click', function () {
+            $('#inactivePromo').hide();
+            $('#activePromo').show(200, 'swing');
+        });
+        $('#inactivePromoBtn').on('click', function () {
+            $('#activePromo').hide();
+            $('#inactivePromo').show(200, 'swing');
+        });
+
+
         $("#checkAll").on('change', function () {
             $(".checkitem").prop('checked', $(this).is(":checked"));
         });
@@ -724,6 +794,54 @@
                     }
                 });
             };
+        });
+
+
+        $('.deactivate-btn').on('click', function () {
+            var id = $(this).data('promo');
+            var tr = $(this).parents("tr");
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                // confirmButtonColor: '#3085d6',
+                // cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, deactivate!',
+                reverseButtons: true
+            }).then(() => {
+
+                $.ajax({
+                    url: '/cs/master/promo-item/' + id + '/deactivate',
+                    type: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                            'content')
+                    },
+                    success: function (data) {
+                        if (data['status'] == true) {
+                            // console.log($(this).parent());
+                            tr.remove();
+                        } else {
+                            alert('Whoops Something went wrong!!');
+                        }
+                    },
+                    error: function (data) {
+                        alert(data.responseText);
+                    },
+                    complete: function () {
+                        Swal.fire(
+                                'Deactivated!',
+                                'Your file has been deactivated.',
+                                'success'
+                        ).then(() => {
+                        window.location.reload();
+                        });
+                    }
+                })
+            });
+
         });
     });
 
