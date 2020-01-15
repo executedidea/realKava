@@ -34,23 +34,8 @@
                             @csrf
                             <div class="row justify-content-center">
                                 <div class="form-group col-10">
-                                    <select name="outlet" class="form-control category">
-                                        <option disabled selected>Outlet</option>
-
-                                        @foreach ($outlet_all as $item)
-                                        <option value="{{ $item->outlet_id }}">
-                                            {{ $item->outlet_name }}
-                                        </option>
-                                        @endforeach
-
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row justify-content-center">
-                                <div class="form-group col-10">
                                     <select name="vehicle_category" class="form-control vehicle_category">
-                                        <option disabled selected>Vehicle</option>
-
+                                        <option selected disabled>Vehicle</option>
                                         <option value="4">
                                             All
                                         </option>
@@ -59,7 +44,18 @@
                                             {{ $item->vehicle_category_name }}
                                         </option>
                                         @endforeach
-
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="form-group col-10">
+                                    <select name="outlet" class="form-control category">
+                                        <option selected disabled>Outlet</option>
+                                        @foreach ($outlet_all as $item)
+                                        <option value="{{ $item->outlet_id }}">
+                                            {{ $item->outlet_name }}
+                                        </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -71,6 +67,7 @@
                                     <input name="period_StartDate" type="text" class="form-control datepicker"
                                         id="periodStartDate" placeholder="Start Date">
                                 </div>
+                                <div class="mt-2">-</div>
                                 <div class="form-group col-5">
                                     <input name="period_EndDate" type="text" class="form-control datepicker"
                                         id="periodEndDate" placeholder="End Date">
@@ -132,7 +129,14 @@
         });
         $('#periodEndDate').val('End Date');
 
-
+    var msg = '{{Session::get('alert')}}';
+    var exist = '{{Session::has('alert')}}';
+    if(exist){
+        Swal.fire(
+            'No Data',
+            'Choose another option!'
+        );
+    }
 
 
         // $(document).on('click', '.pdf-btn', function (e) {

@@ -102,9 +102,12 @@ class SalesReportController extends Controller
         $date_now                           = date('d-m-Y H:i:s');
         $carwash_data                       = SalesReport::getCarwashData($outlet_id);
         $report_data                        = SalesReport::getReportData($outlet_id, $period_StartDate, $period_EndDate, $vehicle_category);
-        // dd($report_data);
-        $pdf                                = PDF::loadView('pos/report/sales-report/pdf', compact('carwash_data', 'name', 'date_now', 'report_data'));
-        return $pdf->stream('SalesReport-pdf.pdf');
-        // return $pdf->download('SalesReport-pdf.pdf');
+        if(empty($report_data)) {              
+            return back()->with('alert', 'Data kosong');   
+        } elseif(!empty($report_data)) {
+            $pdf                                = PDF::loadView('pos/report/sales-report/pdf', compact('carwash_data', 'name', 'date_now', 'report_data'));
+            // return $pdf->stream('SalesReport-pdf.pdf');
+            return $pdf->download('SalesReport-pdf.pdf');
+        }
     }
 }
