@@ -13,6 +13,7 @@
             margin-top: 60px;
             margin-bottom: 60px;
         }
+
         body {
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         }
@@ -57,9 +58,8 @@
         }
 
         thead {
-            position: fixed;        
+            position: fixed;
         }
-        
 
     </style>
 </head>
@@ -88,7 +88,14 @@
         </tr>
         <tr>
             <td></td>
-            <td class="head-content" colspan="3">Kategori : ['jenis_kendaraan']</td>
+            
+            <td class="head-content" colspan="3">Kategori : 
+                @if (count($report_data) === 1)
+                    {{ $report_data[0]->vehicle_category_name }}
+                @elseif (count($report_data) > 1)
+                    All
+                @endif
+            </td>
         </tr>
         <tr>
             <td height="10"></td>
@@ -99,7 +106,8 @@
             <td class="head-content">{{ number_format($report_data[0]->SUMTotalPayment) }}</td>
         </tr>
 
-        @if (($report_data[0]->point_of_sales_paid1 + $report_data[0]->point_of_sales_paid2) >= $report_data[0]->point_of_sales_totalPayment)) 
+        @if (($report_data[0]->point_of_sales_paid1 + $report_data[0]->point_of_sales_paid2) >=
+        $report_data[0]->point_of_sales_totalPayment))
         <tr>
             <td class="head-content">Total Penerimaan</td>
             <td class="head-content">:</td>
@@ -108,18 +116,22 @@
         <tr>
             <td class="head-content">Sisa Penerimaan</td>
             <td class="head-content">:</td>
-            <td class="head-content">{{ number_format(($report_data[0]->SUMTotalPayment)-($report_data[0]->SUMTotalPayment)) }}</td>
+            <td class="head-content">
+                {{ number_format(($report_data[0]->SUMTotalPayment)-($report_data[0]->SUMTotalPayment)) }}</td>
         </tr>
         @else
         <tr>
             <td class="head-content">Total Penerimaan</td>
             <td class="head-content">:</td>
-            <td class="head-content">{{ number_format($report_data[0]->point_of_sales_paid1 + $report_data[0]->point_of_sales_paid2) }}</td>
+            <td class="head-content">
+                {{ number_format($report_data[0]->point_of_sales_paid1 + $report_data[0]->point_of_sales_paid2) }}</td>
         </tr>
         <tr>
             <td class="head-content">Sisa Penerimaan</td>
             <td class="head-content">:</td>
-            <td class="head-content">{{ number_format(($report_data[0]->SUMTotalPayment)-($report_data[0]->point_of_sales_paid1 + $report_data[0]->point_of_sales_paid2)) }}</td>
+            <td class="head-content">
+                {{ number_format(($report_data[0]->SUMTotalPayment)-($report_data[0]->point_of_sales_paid1 + $report_data[0]->point_of_sales_paid2)) }}
+            </td>
         </tr>
         @endif
 
@@ -127,7 +139,7 @@
             <td height="10"></td>
         </tr>
 
-       
+
 
     </table>
     <table class="table-head" width="100%">
@@ -143,4 +155,3 @@
                 <td><b>Sisa</b></td>
             </tr>
         </thead>
-

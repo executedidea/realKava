@@ -51,14 +51,14 @@
                                     <select name="vehicle_category" class="form-control vehicle_category">
                                         <option disabled selected>Vehicle</option>
 
+                                        <option value="4">
+                                            All
+                                        </option>
                                         @foreach ($vehicle_category_all as $item)
                                         <option value="{{ $item->vehicle_category_id }}">
                                             {{ $item->vehicle_category_name }}
                                         </option>
                                         @endforeach
-                                        <option value="">
-                                            All
-                                        </option>
 
                                     </select>
                                 </div>

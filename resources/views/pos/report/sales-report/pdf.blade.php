@@ -23,6 +23,7 @@
     <tr>
         <td colspan="5"><b>Total</b></td>
         <td><b>{{ number_format($report_data[0]->SUMTotalPayment) }}</b></td>
+        
         @if (($item->point_of_sales_paid1 + $item->point_of_sales_paid2) >= $item->point_of_sales_totalPayment))
         <td><b>{{ number_format($report_data[0]->SUMTotalPayment) }}</b></td>
         <td><b>{{ number_format(($item->point_of_sales_totalPayment)-($item->point_of_sales_totalPayment)) }}</b></td>
