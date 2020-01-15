@@ -30,7 +30,7 @@
                         <h4>Sales Report</h4>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('salesReportPrint') }}" method="get" id="">
+                        <form action="{{ route('salesReportPrint') }}" method="get" id="" class="validate-this">
                             @csrf
                             <div class="row justify-content-center">
                                 <div class="form-group col-10">
@@ -49,7 +49,7 @@
                             </div>
                             <div class="row justify-content-center">
                                 <div class="form-group col-10">
-                                    <select name="outlet" class="form-control category">
+                                    <select name="outlet_name_report" class="form-control category">
                                         <option selected disabled>Outlet</option>
                                         @foreach ($outlet_all as $item)
                                         <option value="{{ $item->outlet_id }}">
@@ -99,8 +99,8 @@
 <script src="{{asset('js/sweetalert2.all.min.js')}}"></script>
 <script>
     $(document).ready(function () {
-        $('#periodStartDate').val('Start Date');
-        $('#periodEndDate').val('End Date');
+        // $('#periodStartDate').val('Start Date');
+        // $('#periodEndDate').val('End Date');
 
 
         var date = new Date();
@@ -115,7 +115,7 @@
             showDropdowns: true,
             minYear: 1901
         });
-        $('#periodStartDate').val('Start Date');
+        // $('#periodStartDate').val('Start Date');
 
         $('#periodEndDate').daterangepicker({
             locale: {
@@ -127,7 +127,7 @@
             showDropdowns: true,
             minYear: 1901
         });
-        $('#periodEndDate').val('End Date');
+        // $('#periodEndDate').val('End Date');
 
     var msg = '{{Session::get('alert')}}';
     var exist = '{{Session::has('alert')}}';

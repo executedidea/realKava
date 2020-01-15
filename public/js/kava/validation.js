@@ -70,6 +70,18 @@ $('.validate-this').validate({
         license_plate: {
             required: true,
         },
+        vehicle_category: {
+            required: true,
+        },
+        period_StartDate: {
+            required: true,
+        },
+        period_EndDate: {
+            required: true,
+        },
+        outlet_name_report: {
+            required: true,
+        },
     },
     errorClass: "invalid",
     errorElement: "em"

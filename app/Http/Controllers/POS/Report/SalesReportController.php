@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\SalesReport;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\Validator;
+
 // use Barryvdh\Snappy\Facade as PDF;
 
 
@@ -94,20 +96,30 @@ class SalesReportController extends Controller
 
     public function reportPDF(Request $request)
     {
-        $period_StartDate                   = $request->period_StartDate;
-        $period_EndDate                     = $request->period_EndDate;
-        $vehicle_category                   = $request->vehicle_category;
-        $outlet_id                          = Auth::user()->outlet_id;
-        $name                               = Auth::user()->name;
-        $date_now                           = date('d-m-Y H:i:s');
-        $carwash_data                       = SalesReport::getCarwashData($outlet_id);
-        $report_data                        = SalesReport::getReportData($outlet_id, $period_StartDate, $period_EndDate, $vehicle_category);
-        if(empty($report_data)) {              
-            return back()->with('alert', 'Data kosong');   
-        } elseif(!empty($report_data)) {
-            $pdf                                = PDF::loadView('pos/report/sales-report/pdf', compact('carwash_data', 'name', 'date_now', 'report_data'));
-            // return $pdf->stream('SalesReport-pdf.pdf');
-            return $pdf->download('SalesReport-pdf.pdf');
+        $validator                     = Validator::make($request->all(), [
+            'vehicle_category'                  => 'required',
+            'period_StartDate'                  => 'required',
+            'period_EndDate'                    => 'required',
+            'outlet_name_report'                       => 'required',
+        ]);
+        if ($validator->fails()) {
+            return back()->withErrors($validator);
+        } else {
+            $period_StartDate                   = $request->period_StartDate;
+            $period_EndDate                     = $request->period_EndDate;
+            $vehicle_category                   = $request->vehicle_category;
+            $outlet_id                          = Auth::user()->outlet_id;
+            $name                               = Auth::user()->name;
+            $date_now                           = date('d-m-Y H:i:s');
+            $carwash_data                       = SalesReport::getCarwashData($outlet_id);
+            $report_data                        = SalesReport::getReportData($outlet_id, $period_StartDate, $period_EndDate, $vehicle_category);
+            if(empty($report_data)) {              
+                return back()->with('alert', 'Data kosong');   
+            } elseif(!empty($report_data)) {
+                $pdf                                = PDF::loadView('pos/report/sales-report/pdf', compact('carwash_data', 'name', 'date_now', 'report_data'));
+                // return $pdf->stream('SalesReport-pdf.pdf');
+                return $pdf->download('SalesReport-pdf (' . date('d-m-Y') . ').pdf');
+            }
         }
     }
 }
