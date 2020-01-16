@@ -3,18 +3,21 @@
 <tbody class="table-content">
     <tr>
         <td>{{ $index+1 }}</td>
-        <td>{{ $item->customer_fullName }}</td>
+        <td style="text-align:left;">{{ $item->customer_fullName }}</td>
         <td>{{ $item->customer_detail_licensePlate }}</td>
         <td>{{ $item->vehicle_category_name }}</td>
         <td>{{ $item->vehicle_size_name }}</td>
-        <td>{{ number_format($item->point_of_sales_totalPayment) }}</td>
+        <td style="text-align:right;">{{ number_format($item->point_of_sales_totalPayment) }}</td>
         @if (($item->point_of_sales_paid1 + $item->point_of_sales_paid2) >= $item->point_of_sales_totalPayment))
-        <td>{{ number_format($item->point_of_sales_totalPayment) }}</td>
-        <td>{{ number_format(($item->point_of_sales_totalPayment)-($item->point_of_sales_totalPayment)) }}</td>
+        <td style="text-align:right;">{{ number_format($item->point_of_sales_totalPayment) }}</td>
+        <td style="text-align:right;">
+            {{ number_format(($item->point_of_sales_totalPayment)-($item->point_of_sales_totalPayment)) }}</td>
         @else
-        <td>{{ number_format($item->point_of_sales_paid1 + $item->point_of_sales_paid2) }}</td>
-        <td>{{ number_format(($item->point_of_sales_paid1 + $item->point_of_sales_paid2)-($item->point_of_sales_totalPayment)) }}
+        <td style="text-align:right;">{{ number_format($item->point_of_sales_paid1 + $item->point_of_sales_paid2) }}
         </td>
+        <td style="text-align:right;">
+            {{ number_format(($item->point_of_sales_paid1 + $item->point_of_sales_paid2)-($item->point_of_sales_totalPayment)) }}
+        </td style="text-align:right;">
         @endif
     </tr>
 </tbody>
@@ -22,15 +25,18 @@
 <tfoot>
     <tr>
         <td colspan="5"><b>Total</b></td>
-        <td><b>{{ number_format($report_data[0]->SUMTotalPayment) }}</b></td>
-        
+        <td style="text-align:right;"><b>{{ number_format($report_data[0]->SUMTotalPayment) }}</b></td>
+
         @if (($item->point_of_sales_paid1 + $item->point_of_sales_paid2) >= $item->point_of_sales_totalPayment))
-        <td><b>{{ number_format($report_data[0]->SUMTotalPayment) }}</b></td>
-        <td><b>{{ number_format(($item->point_of_sales_totalPayment)-($item->point_of_sales_totalPayment)) }}</b></td>
+        <td style="text-align:right;"><b>{{ number_format($report_data[0]->SUMTotalPayment) }}</b></td>
+        <td style="text-align:right;">
+            <b>{{ number_format(($item->point_of_sales_totalPayment)-($item->point_of_sales_totalPayment)) }}</b></td>
 
         @else
-        <td width="120px"><b>{{ number_format($item->point_of_sales_paid1 + $item->point_of_sales_paid2) }}</b></td>
-        <td width="157px">
+        <td style="text-align:right;">
+            <b>{{ number_format($item->point_of_sales_paid1 + $item->point_of_sales_paid2) }}</b>
+        </td>
+        <td style="text-align:right;">
             <b>{{ number_format(($item->point_of_sales_paid1 + $item->point_of_sales_paid2)-($item->point_of_sales_totalPayment)) }}</b>
         </td>
         @endif

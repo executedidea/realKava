@@ -113,6 +113,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/cs/master/membership/{id}/edit', 'CS\Master\MembershipController@update')->name('updateMembership');
         Route::delete('/cs/master/promo-item/delete', 'CS\master\PromoItemController@destroy')->name('destroyPromoItem');
         Route::delete('/cs/master/promo-item/{id}/deactivate', 'CS\master\PromoItemController@deactivatePromo')->name('deactivatePromoItem');
+        Route::post('/cs/master/promo-item/{id}/activate', 'CS\master\PromoItemController@activatePromo')->name('activatePromoItem');
         // Complaint Handling
         Route::get('/cs/transaction/complaint-handling', 'CS\Transaction\ComplaintHandlingController@index')->name('complaintHandlingTransaction');
         Route::post('/cs/transaction/complaint-handling/add', 'CS\Transaction\ComplaintHandlingController@store')->name('storeComplaintHandlingTransaction');

@@ -73,7 +73,7 @@
                                 <td>{{ $item->bank_account_number }}</td>
                                 <td>{{ $item->bank_account_branch }}</td>
                                 <td>{{ $item->bank_account_openingDate }}</td>
-                                <td>{{ $item->bank_account_openingBalanced }}</td>
+                                <td>{{ number_format($item->bank_account_openingBalanced) }}</td>
                             </tr>
                         </tbody>
                         @endforeach

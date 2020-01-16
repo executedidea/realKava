@@ -11,6 +11,7 @@ use App\Models\ComplaintType;
 use App\Models\Customer_Detail;
 use App\Models\Feedback;
 use App\Models\Item;
+use App\Models\SalesReport;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -183,9 +184,10 @@ class CheckInOutController extends Controller
     {
         $outlet_id                      = Auth::user()->outlet_id;
         $checked_in_customer            = CheckInOut::getTodayCustomer($outlet_id);
+        $carwash_data                   = SalesReport::getCarwashData($outlet_id);
         // $complaint_handling          = ComplaintHandling::getComplaintHandlingList($outlet_id);
         
-        return view('cs.transaction.check-in-out.print-ticket', compact('checked_in_customer'));
+        return view('cs.transaction.check-in-out.print-ticket', compact('checked_in_customer', 'carwash_data'));
     }
 
     

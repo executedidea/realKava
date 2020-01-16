@@ -118,7 +118,7 @@
                     <table class="table table-striped" id="inactivePromoTable">
                         <thead>
                             <tr>
-                                
+
                                 <th>Promo ID</th>
                                 <th>Name</th>
                                 <th>Type</th>
@@ -151,12 +151,12 @@
                                 </td>
                                 <td>
 
-                                    <button class="btn btn-success deactivate-btn"
-                                        data-promo="{{$item->promo_id}}">Active</button>
+                                    <button class="btn btn-success activate-btn"
+                                        data-promo="{{$item->promo_id}}">Activate</button>
                                 </td>
                             </tr>
                             @endforeach
-                            
+
                         </tbody>
                     </table>
                 </div>
@@ -810,39 +810,87 @@
                 // cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes, deactivate!',
                 reverseButtons: true
-            }).then(() => {
-
-                $.ajax({
-                    url: '/cs/master/promo-item/' + id + '/deactivate',
-                    type: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                            'content')
-                    },
-                    success: function (data) {
-                        if (data['status'] == true) {
-                            // console.log($(this).parent());
-                            tr.remove();
-                        } else {
-                            alert('Whoops Something went wrong!!');
-                        }
-                    },
-                    error: function (data) {
-                        alert(data.responseText);
-                    },
-                    complete: function () {
-                        Swal.fire(
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        url: '/cs/master/promo-item/' + id + '/deactivate',
+                        type: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                                'content')
+                        },
+                        success: function (data) {
+                            if (data['status'] == true) {
+                                // console.log($(this).parent());
+                                tr.remove();
+                            } else {
+                                alert('Whoops Something went wrong!!');
+                            }
+                        },
+                        error: function (data) {
+                            alert(data.responseText);
+                        },
+                        complete: function () {
+                            Swal.fire(
                                 'Deactivated!',
                                 'Your file has been deactivated.',
                                 'success'
-                        ).then(() => {
-                        window.location.reload();
-                        });
-                    }
-                })
+                            ).then(() => {
+                                window.location.reload();
+                            });
+                        }
+                    });
+                }
             });
-
         });
+
+        $('.activate-btn').on('click', function () {
+            var id = $(this).data('promo');
+            var tr = $(this).parents("tr");
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                // confirmButtonColor: '#3085d6',
+                // cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, deactivate!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        url: '/cs/master/promo-item/' + id + '/activate',
+                        type: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                                'content')
+                        },
+                        success: function (data) {
+                            if (data['status'] == true) {
+                                // console.log($(this).parent());
+                                tr.remove();
+                            } else {
+                                alert('Whoops Something went wrong!!');
+                            }
+                        },
+                        error: function (data) {
+                            alert(data.responseText);
+                        },
+                        complete: function () {
+                            Swal.fire(
+                                'Activated!',
+                                'Your file has been activated.',
+                                'success'
+                            ).then(() => {
+                                window.location.reload();
+                            });
+                        }
+                    })
+                }
+            });
+        });
+
     });
 
 </script>
