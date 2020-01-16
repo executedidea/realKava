@@ -88,18 +88,36 @@
         </tr>
         <tr>
             <td></td>
-            <td class="head-content" colspan="3">{{ $carwash_data[0]->outlet_detail_address }}</td>
+            <td class="head-content" colspan="3" style="padding-top: -15px;">
+                {{ $carwash_data[0]->outlet_detail_address }}</td>
         </tr>
         <tr>
             <td></td>
-
-            <td class="head-content" colspan="3">Kategori :
+            <td class="head-content" colspan="3" style="padding-top: -29px;">Kategori :
                 @if (count($report_data) === 1)
                 {{ $report_data[0]->vehicle_category_name }}
                 @elseif (count($report_data) > 1)
                 All
                 @endif
             </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+
+
+            @if (empty($report_data[0]->pperiod_StartDate) AND empty($report_data[0]->pperiod_EndDate))
+            <td class="head-content" colspan="3" style="padding-top: -20px;">As Of :
+                {{ date('d-m-Y', strtotime($report_data[0]->pasof_EndDate)) }}
+            </td>
+            @elseif (empty($report_data[0]->pasof_StartDate) AND empty($report_data[0]->pasof_EndDate))
+            <td class="head-content" colspan="3" style="padding-top: -20px;">Periode :
+                {{ date('d-m-Y', strtotime($report_data[0]->pperiod_StartDate)) }}
+                s/d
+                {{ date('d-m-Y', strtotime($report_data[0]->pperiod_EndDate)) }}
+            </td>
+            @endif
+
         </tr>
         <tr>
             <td height="10"></td>

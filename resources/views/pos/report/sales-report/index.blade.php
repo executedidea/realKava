@@ -11,18 +11,32 @@
 @section('content')
 <section id="openStore">
     <div class="container">
+
+        @if(Session::has('alert'))
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <span>Data kosong!</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        @endif
+
         <div class="row justify-content-center">
             <div class="col-6">
                 <div class="card">
                     <div class="card-header">
                         <h4>Sales Report</h4>
-                        <form action="{{ route('salesReportPrint') }}" method="get" id="" class="validate-this">
+                        <form action="{{ route('salesReportPrint') }}" method="get" class="validate-this ml-auto">
                             @csrf
-                            <button type="submit" class="pdf-btn ml-auto">
-                                <img src="{{asset('img/icons/pdf.png')}}" alt="pdf" height="50px">
+                            <button type="submit" class="pdf-btn">
+                                <img src="{{asset('img/icons/pdf.png')}}" alt="pdf" height="40px">
                             </button>
                             <button type="submit" class="xls-btn">
-                                <img src="{{asset('img/icons/excel.png')}}" alt="excel" height="50px">
+                                <img src="{{asset('img/icons/excel.png')}}" alt="excel" height="40px">
                             </button>
                     </div>
                     <div class="card-body p-2">
@@ -64,13 +78,13 @@
                             {{-- <label>Period Date</label> --}}
                         </div>
                         <div class="row justify-content-center asof-date">
-                            <div class="form-group col-5">
-                                <input name="period_StartDate" type="text" class="form-control datepicker"
-                                    id="periodStartDate" placeholder="Start Date">
+                            <div class="form-group">
+                                <input name="asof_StartDate" type="text" class="form-control datepicker"
+                                    id="asofStartDate" placeholder="Start Date">
                             </div>
                             <div class="form-group col-5">
-                                <input name="period_EndDate" type="text" class="form-control datepicker"
-                                    id="periodEndDate" placeholder="End Date">
+                                <input name="asof_EndDate" type="text" class="form-control datepicker" id="asofEndDate"
+                                    placeholder="End Date">
                             </div>
                         </div>
 
@@ -113,8 +127,11 @@
         $('.asof-date').hide();
         $('.period-date-date').hide();
 
+        $('#asofStartDate').hide();
+
 
         $('.filter-date').on('change', function () {
+
             if ($('.filter-date').val() == 'period_date') {
                 $('.asof-date').hide();
                 $('.period-date-date').show();
@@ -143,72 +160,57 @@
                     minYear: 1901
                 });
                 // $('#periodEndDate').val('End Date');
-                var msg = '{{Session::get('
-                alert ')}}';
-                var exist = '{{Session::has('
-                alert ')}}';
-                if (exist) {
-                    Swal.fire(
-                        'No Data',
-                        'Choose another option!'
-                    );
-                }
+
+                console.log($('#periodStartDate').val());
+                console.log($('#periodEndDate').val());
 
             } else if ($('.filter-date').val() == 'as_of') {
                 $('.period-date-date').hide();
-                // $('#periodStartDate').hide();
                 $('.asof-date').show();
+                var date = new Date();
 
-                $('#periodStartDate').daterangepicker({
+                $('#asofStartDate').daterangepicker({
                     locale: {
                         format: "YYYY-MM-DD",
                         separator: " - "
                     },
-                    startDate: "01/01/1901",
+                    startDate: "2001-10-01",
                     singleDatePicker: true,
                     showDropdowns: true,
                     minYear: 1901
                 });
-                // $('#periodStartDate').val('Start Date');
-                $('#periodEndDate').daterangepicker({
+                // $('#asofStartDate').val('Start Date');
+
+                $('#asofEndDate').daterangepicker({
                     locale: {
                         format: "YYYY-MM-DD",
                         separator: " - "
                     },
-                    endDate: moment(date),
+                    startDate: moment(date),
                     singleDatePicker: true,
                     showDropdowns: true,
                     minYear: 1901
                 });
-                // $('#periodEndDate').val('End Date');
-                var msg = '{{Session::get('
-                alert ')}}';
-                var exist = '{{Session::has('
-                alert ')}}';
-                if (exist) {
-                    Swal.fire(
-                        'No Data',
-                        'Choose another option!'
-                    );
-                }
+                // $('#asofEndDate').val('End Date');
+
+                console.log($('#asofStartDate').val());
+                console.log($('#asofEndDate').val());
+                // var msg = '{{Session::get('
+                // alert ')}}';
+                // var exist = '{{Session::has('
+                // alert ')}}';
+                // if (exist) {
+                //     Swal.fire(
+                //         'No Data',
+                //         'Choose another option!'
+                //     );
+                // }
+
             }
 
+
+
         });
-
-
-
-
-        // $(document).on('click', '.pdf-btn', function (e) {
-        //     var vehicle_category_id = $(this).data('id');
-        //     console.log(vehicle_category_id);
-        //     $.get('/data/membership/getcustomerbyid/' + customer_id, function (data) {
-        //         $('#membershipCustomerName').val(data[0].customer_fullName);
-        //     });
-        //     $('#customerMembershipModal').modal('show');
-        // });
-
-
-
     });
 
 </script>

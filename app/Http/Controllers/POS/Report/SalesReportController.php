@@ -100,19 +100,24 @@ class SalesReportController extends Controller
             'vehicle_category'                  => 'required',
             'period_StartDate'                  => 'required',
             'period_EndDate'                    => 'required',
-            'outlet_name_report'                       => 'required',
+            'asof_StartDate'                    => 'required',
+            'asof_EndDate'                      => 'required',
+            'outlet_name_report'                => 'required',
         ]);
         if ($validator->fails()) {
             return back()->withErrors($validator);
         } else {
             $period_StartDate                   = $request->period_StartDate;
             $period_EndDate                     = $request->period_EndDate;
+            $asof_StartDate                     = $request->asof_StartDate;
+            $asof_EndDate                       = $request->asof_EndDate;
+            $filter_date                        = $request->filter_date;
             $vehicle_category                   = $request->vehicle_category;
             $outlet_id                          = Auth::user()->outlet_id;
             $name                               = Auth::user()->name;
             $date_now                           = date('d-m-Y H:i:s');
             $carwash_data                       = SalesReport::getCarwashData($outlet_id);
-            $report_data                        = SalesReport::getReportData($outlet_id, $period_StartDate, $period_EndDate, $vehicle_category);
+            $report_data                        = SalesReport::getReportData($outlet_id, $period_StartDate, $period_EndDate, $asof_StartDate, $asof_EndDate, $filter_date, $vehicle_category);
             // dd($report_data);
             if(empty($report_data)) {              
                 return back()->with('alert', 'Data kosong');   

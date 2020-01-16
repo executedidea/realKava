@@ -120,6 +120,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/cs/transaction/complaint-handling/{id}/edit', 'CS\Transaction\ComplaintHandlingController@update')->name('updateComplaintHandlingTransaction');
         Route::delete('/cs/transaction/complaint-handling/delete', 'CS\Transaction\ComplaintHandlingController@destroy')->name('destroyComplaintHandlingTransaction');
 
+        // Booking Online
+        // Route::get('/cs/transaction/booking-online', 'CS\Transaction\BookingOnlineController@index')->name('bookingOnlineTransaction');
+
+
 
 
 

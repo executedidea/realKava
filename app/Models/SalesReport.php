@@ -16,9 +16,9 @@ class SalesReport extends Model
         return $carwash;
     }
 
-    public static function getReportData($outlet_id, $period_StartDate, $period_EndDate, $vehicle_category)
+    public static function getReportData($outlet_id, $period_StartDate, $period_EndDate, $asof_StartDate, $asof_EndDate, $filter_date, $vehicle_category)
     {
-        $report            = DB::select('call SP_SalesReport_PDF_Select(?,?,?,?)', [$outlet_id, $period_StartDate, $period_EndDate, $vehicle_category]);
+        $report            = DB::select('call SP_SalesReport_PDF_Select(?,?,?,?,?,?,?)', [$outlet_id, $period_StartDate, $period_EndDate, $asof_StartDate, $asof_EndDate, $filter_date, $vehicle_category]);
         return $report;
     }
 
