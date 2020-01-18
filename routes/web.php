@@ -163,6 +163,7 @@ Route::group(['middleware' => 'auth'], function () {
             // index
             Route::get('/pos/report/sales-report', 'POS\Report\SalesReportController@index')->name('salesReport');
 
+            Route::get('/pos/transaction/cashdrawer', 'POS\Transaction\CashDrawerController@index');
 
 
 
