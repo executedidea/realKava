@@ -79,6 +79,12 @@ $('.validate-this').validate({
         period_EndDate: {
             required: true,
         },
+        asof_StartDate: {
+            required: true,
+        },
+        asof_EndDate: {
+            required: true,
+        },
         outlet_name_report: {
             required: true,
         },

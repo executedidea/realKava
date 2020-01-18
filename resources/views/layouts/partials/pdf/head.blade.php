@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
 
-    <title>Sales Report</title>
+    <title>Report</title>
 
     <style>
         /* PDF */
@@ -61,6 +61,10 @@
             position: fixed;
         }
 
+        .head-nominal {
+            text-align: right;
+        }
+
     </style>
 </head>
 
@@ -68,90 +72,34 @@
     <div class="author">
         User: {{ $name }} | Print: {{ $date_now }}
     </div>
-    <table border="0">
-
+    <table border="">
         <tr>
-            <td class="logo" rowspan="4">
+            <td class="logo" rowspan="4" style="width: 100px; height: 100px;">
                 <?php $image_path = 'storage/images/outlet_logo/thumbnails/' . $carwash_data[0]->outlet_logo ; ?>
-                <img src="{{ $image_path }}" height="75px">
+                <img src="{{ $image_path }}" height="75px" width="75px">
             </td>
-            <td></td>
-            <td class="head-title" colspan="3">LAPORAN PENJUALAN</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td class="head-content" colspan="3">{{ $carwash_data[0]->outlet_name }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td class="head-content" colspan="3">{{ $carwash_data[0]->outlet_detail_address }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            
-            <td class="head-content" colspan="3">Kategori : 
-                @if (count($report_data) === 1)
-                    {{ $report_data[0]->vehicle_category_name }}
-                @elseif (count($report_data) > 1)
-                    All
-                @endif
+            <td class="head-title" colspan="19">LAPORAN @yield('title')
             </td>
         </tr>
         <tr>
-            <td height="10"></td>
-        </tr>
-        <tr>
-            <td class="head-content">Total Penjualan</td>
-            <td class="head-content">:</td>
-            <td class="head-content">{{ number_format($report_data[0]->SUMTotalPayment) }}</td>
-        </tr>
-
-        @if (($report_data[0]->point_of_sales_paid1 + $report_data[0]->point_of_sales_paid2) >=
-        $report_data[0]->point_of_sales_totalPayment))
-        <tr>
-            <td class="head-content">Total Penerimaan</td>
-            <td class="head-content">:</td>
-            <td class="head-content">{{ number_format($report_data[0]->SUMTotalPayment) }}</td>
-        </tr>
-        <tr>
-            <td class="head-content">Sisa Penerimaan</td>
-            <td class="head-content">:</td>
-            <td class="head-content">
-                {{ number_format(($report_data[0]->SUMTotalPayment)-($report_data[0]->SUMTotalPayment)) }}</td>
-        </tr>
-        @else
-        <tr>
-            <td class="head-content">Total Penerimaan</td>
-            <td class="head-content">:</td>
-            <td class="head-content">
-                {{ number_format($report_data[0]->point_of_sales_paid1 + $report_data[0]->point_of_sales_paid2) }}</td>
-        </tr>
-        <tr>
-            <td class="head-content">Sisa Penerimaan</td>
-            <td class="head-content">:</td>
-            <td class="head-content">
-                {{ number_format(($report_data[0]->SUMTotalPayment)-($report_data[0]->point_of_sales_paid1 + $report_data[0]->point_of_sales_paid2)) }}
+            <td class="head-content" colspan="19">
+                {{ $carwash_data[0]->outlet_name }}
             </td>
         </tr>
-        @endif
-
         <tr>
-            <td height="10"></td>
+            <td class="head-content" colspan="19" style="padding-top: -15px;">
+                {{ $carwash_data[0]->outlet_detail_address }}
+            </td>
         </tr>
-
-
-
+        @yield('title-caption')
+        @yield('title-footer')
+        <tr>
+            <td height="5"></td>
+        </tr>
     </table>
+
     <table class="table-head" width="100%">
         <thead>
-            <tr>
-                <td><b>No</b></td>
-                <td><b>Customer</b></td>
-                <td><b>Plat Nomor</b></td>
-                <td><b>Jenis</b></td>
-                <td><b>Ukuran</b></td>
-                <td><b>Harga</b></td>
-                <td><b>Pembayaran</b></td>
-                <td><b>Sisa</b></td>
-            </tr>
+            @yield('table-head')
+            @yield('table-head-sub')
         </thead>

@@ -56,4 +56,10 @@ class PromoItem extends Model
         $delete                = DB::select('call SP_Promo_Deactivate(?)', [$promo_id]);
         return $delete;
     }
+    
+    public static function setActivatePromoItem($promo_id)
+    {
+        $activate                = DB::select('call SP_Promo_Activate(?)', [$promo_id]);
+        return $activate;
+    }
 }

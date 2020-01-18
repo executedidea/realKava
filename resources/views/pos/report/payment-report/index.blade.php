@@ -7,9 +7,9 @@
 <link rel="stylesheet" href="{{ asset('/modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}">
 <link rel="stylesheet" href="{{ asset('/modules/bootstrap-daterangepicker/daterangepicker.css') }}">
 @endsection
-@section('title', 'Sales Report | Finance - KAVA')
+@section('title', 'Payment Report | Finance - KAVA')
 @section('content')
-<section id="salesReport">
+<section id="paymentReport">
     <div class="container">
 
         @if(Session::has('alert'))
@@ -29,8 +29,8 @@
             <div class="col-6">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Sales Report</h4>
-                        <form action="{{ route('salesReportPrint') }}" method="get" class="validate-this ml-auto">
+                        <h4>Payment Report</h4>
+                        <form action="{{ route('paymentReportPrint') }}" method="get" class="validate-this ml-auto">
                             @csrf
                             <button type="submit" class="pdf-btn">
                                 <img src="{{asset('img/icons/pdf.png')}}" alt="pdf" height="40px">
@@ -44,11 +44,11 @@
                             <div class="form-group col-10">
                                 <select name="outlet_name_report" class="form-control category">
                                     <option selected disabled>Outlet</option>
-                                    @foreach ($outlet_all as $item)
-                                    <option value="{{ $item->outlet_id }}">
-                                        {{ $item->outlet_name }}
-                                    </option>
-                                    @endforeach
+                                    {{-- @foreach ($outlet_all as $item) --}}
+                                    {{-- <option value="{{ $item->outlet_id }}"> --}}
+                                    {{-- {{ $item->outlet_name }} --}}
+                                    {{-- </option> --}}
+                                    {{-- @endforeach --}}
                                 </select>
                             </div>
                         </div>
@@ -59,11 +59,11 @@
                                     <option value="4">
                                         All
                                     </option>
-                                    @foreach ($vehicle_category_all as $item)
-                                    <option value="{{ $item->vehicle_category_id }}">
-                                        {{ $item->vehicle_category_name }}
-                                    </option>
-                                    @endforeach
+                                    {{-- @foreach ($vehicle_category_all as $item) --}}
+                                    {{-- <option value="{{ $item->vehicle_category_id }}"> --}}
+                                    {{-- {{ $item->vehicle_category_name }} --}}
+                                    {{-- </option> --}}
+                                    {{-- @endforeach --}}
                                 </select>
                             </div>
                         </div>
@@ -195,20 +195,20 @@
 
                 console.log($('#asofStartDate').val());
                 console.log($('#asofEndDate').val());
-
+                // var msg = '{{Session::get('
+                // alert ')}}';
+                // var exist = '{{Session::has('
+                // alert ')}}';
+                // if (exist) {
+                //     Swal.fire(
+                //         'No Data',
+                //         'Choose another option!'
+                //     );
+                // }
 
             }
 
-            var msg = '{{Session::get('
-            alert ')}}';
-            var exist = '{{Session::has('
-            alert ')}}';
-            if (exist) {
-                Swal.fire(
-                    'No Data',
-                    'Choose another option!'
-                );
-            }
+
 
         });
     });

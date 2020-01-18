@@ -113,11 +113,26 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/cs/master/membership/{id}/edit', 'CS\Master\MembershipController@update')->name('updateMembership');
         Route::delete('/cs/master/promo-item/delete', 'CS\master\PromoItemController@destroy')->name('destroyPromoItem');
         Route::delete('/cs/master/promo-item/{id}/deactivate', 'CS\master\PromoItemController@deactivatePromo')->name('deactivatePromoItem');
+        Route::post('/cs/master/promo-item/{id}/activate', 'CS\master\PromoItemController@activatePromo')->name('activatePromoItem');
         // Complaint Handling
         Route::get('/cs/transaction/complaint-handling', 'CS\Transaction\ComplaintHandlingController@index')->name('complaintHandlingTransaction');
         Route::post('/cs/transaction/complaint-handling/add', 'CS\Transaction\ComplaintHandlingController@store')->name('storeComplaintHandlingTransaction');
         Route::post('/cs/transaction/complaint-handling/{id}/edit', 'CS\Transaction\ComplaintHandlingController@update')->name('updateComplaintHandlingTransaction');
         Route::delete('/cs/transaction/complaint-handling/delete', 'CS\Transaction\ComplaintHandlingController@destroy')->name('destroyComplaintHandlingTransaction');
+        // REPORT-----
+                // Customer Report
+                    // PDF
+                    Route::get('/cs/report/customer-report/pdf','CS\Report\CustomerReportController@reportPDF')->name('customerReportPrint');
+                    // index
+                    Route::get('/cs/report/customer-report', 'CS\Report\CustomerReportController@index')->name('customerReport');
+                // Membership Report
+                    // PDF
+                    Route::get('/cs/report/membership-report/pdf','CS\Report\MembershipReportController@reportPDF')->name('membershipReportPrint');
+                    // index
+                    Route::get('/cs/report/membership-report', 'CS\Report\MembershipReportController@index')->name('membershipReport');
+        // Booking Online
+        // Route::get('/cs/transaction/booking-online', 'CS\Transaction\BookingOnlineController@index')->name('bookingOnlineTransaction');
+
 
 
 
@@ -162,6 +177,11 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/pos/report/sales-report/pdf','POS\Report\SalesReportController@reportPDF')->name('salesReportPrint');
             // index
             Route::get('/pos/report/sales-report', 'POS\Report\SalesReportController@index')->name('salesReport');
+        // Payment Report
+            // PDF
+            Route::get('/pos/report/payment-report/pdf','POS\Report\PaymentReportController@reportPDF')->name('paymentReportPrint');
+            // index
+            Route::get('/pos/report/payment-report', 'POS\Report\PaymentReportController@index')->name('paymentReport');
 
             Route::get('/pos/transaction/cashdrawer', 'POS\Transaction\CashDrawerController@index');
 

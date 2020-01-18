@@ -166,6 +166,14 @@ class PromoItemController extends Controller
 
     }
 
+    public function activatePromo(Request $request)
+    {  
+        $promo_id                    = $request->id;
+        PromoItem::setActivatePromoItem($promo_id);
+        return response()->json(['status' => true, 'message' => 'Promo Item activated successfuly!']);
+
+    }
+
     public function inactivePromos()
     {
         $outlet_id                  = Auth::user()->outlet_id;

@@ -217,6 +217,10 @@ em {
     cursor: pointer;
 }
 
+.btn-export {
+    width: 100px;
+}
+
 .xls-btn {
     border: none;
     background-color: transparent;
