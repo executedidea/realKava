@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class SalesReport extends Model
+class MembershipReport extends Model
 {
     //
     protected $table        = 'tbl_outlet';
@@ -16,10 +16,16 @@ class SalesReport extends Model
         return $carwash;
     }
 
-    public static function getReportData($outlet_id, $period_StartDate, $period_EndDate, $asof_StartDate, $asof_EndDate, $filter_date, $vehicle_category)
+    public static function getReportData($outlet_id, $period_StartDate, $period_EndDate, $asof_StartDate, $asof_EndDate, $filter_date, $membership)
     {
-        $report            = DB::select('call SP_PDF_SalesReport_Select(?,?,?,?,?,?,?)', [$outlet_id, $period_StartDate, $period_EndDate, $asof_StartDate, $asof_EndDate, $filter_date, $vehicle_category]);
+        $report            = DB::select('call SP_PDF_MembershipReport_Select(?,?,?,?,?,?,?)', [$outlet_id, $period_StartDate, $period_EndDate, $asof_StartDate, $asof_EndDate, $filter_date, $membership]);
         return $report;
+    }
+
+    public static function getCustomerAll($outlet_id)
+    {
+        $customer_all            = DB::select('call SP_CS_One_CustomerList_Select(?)', [$outlet_id]);
+        return $customer_all;
     }
 
     public static function getOutletAll($outlet_id)

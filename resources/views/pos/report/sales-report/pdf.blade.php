@@ -1,3 +1,106 @@
+@section('title')
+PENJUALAN
+@endsection
+
+
+@section('title-caption')
+<tr>
+    <td></td>
+    <td class="head-content" colspan="3" style="padding-top: -29px;">Kategori </td>
+    <td class="head-content" style="padding-top: -29px;">:</td>
+    <td class="head-content" style="padding-top: -29px;">
+        @if (count($report_data) === 1)
+        {{ $report_data[0]->vehicle_category_name }}
+        @elseif (count($report_data) > 1)
+        All
+        @endif
+    </td>
+</tr>
+<tr>
+    <td></td>
+    <td></td>
+
+
+    @if (empty($report_data[0]->pperiod_StartDate) AND empty($report_data[0]->pperiod_EndDate))
+    <td class="head-content" colspan="3" style="padding-top: -20px;">As Of </td>
+    <td class="head-content" style="padding-top: -29px;">:</td>
+    <td class="head-content" style="padding-top: -29px;">
+        {{ date('d-m-Y', strtotime($report_data[0]->pasof_EndDate)) }}
+    </td>
+    @elseif (empty($report_data[0]->pasof_StartDate) AND empty($report_data[0]->pasof_EndDate))
+    <td class="head-content" colspan="3" style="padding-top: -20px;">Periode </td>
+    <td class="head-content">:</td>
+    <td class="head-content">
+        {{ date('d-m-Y', strtotime($report_data[0]->pperiod_StartDate)) }}
+        s/d
+        {{ date('d-m-Y', strtotime($report_data[0]->pperiod_EndDate)) }}
+    </td>
+    @endif
+
+</tr>
+@endsection
+
+
+@section('title-footer')
+<tr>
+    <td class="head-content">Total Penjualan</td>
+    <td class="head-content">:</td>
+    <td class="head-content head-nominal">
+        {{ number_format($report_data[0]->SUMTotalPayment) }}
+    </td>
+</tr>
+
+@if (($report_data[0]->point_of_sales_paid1 + $report_data[0]->point_of_sales_paid2) >=
+$report_data[0]->point_of_sales_totalPayment))
+<tr>
+    <td class="head-content">Total Pembayaran</td>
+    <td class="head-content">:</td>
+    <td class="head-content head-nominal">
+        {{ number_format($report_data[0]->SUMTotalPayment) }}
+    </td>
+</tr>
+<tr>
+    <td class="head-content">Sisa Pembayaran</td>
+    <td class="head-content">:</td>
+    <td class="head-content head-nominal">
+        {{ number_format(($report_data[0]->SUMTotalPayment)-($report_data[0]->SUMTotalPayment)) }}
+    </td>
+</tr>
+@else
+<tr>
+    <td class="head-content">Total Pembayaran</td>
+    <td class="head-content">:</td>
+    <td class="head-content head-nominal">
+        {{ number_format($report_data[0]->point_of_sales_paid1 + $report_data[0]->point_of_sales_paid2) }}
+
+    </td>
+</tr>
+<tr>
+    <td class="head-content">Sisa Pembayaran</td>
+    <td class="head-content">:</td>
+    <td class="head-content head-nominal">
+        {{ number_format(($report_data[0]->SUMTotalPayment)-($report_data[0]->point_of_sales_paid1 + $report_data[0]->point_of_sales_paid2)) }}
+
+    </td>
+</tr>
+@endif
+@endsection
+
+
+@section('table-head')
+<tr>
+    <td style="width:20px;"><b>No</b></td>
+    <td style="width:150px;"><b>Customer</b></td>
+    <td style="width:70px;"><b>Plat Nomor</b></td>
+    <td style="width:60px;"><b>Jenis</b></td>
+    <td style="width:70px;"><b>Ukuran</b></td>
+    <td style="width:75;"><b>Harga</b></td>
+    <td style="width:75;"><b>Pembayaran</b></td>
+    <td style="width:75;"><b>Sisa</b></td>
+</tr>
+@endsection
+
+
 @include('layouts.partials.pdf.head')
 @foreach($report_data as $index => $item)
 <tbody class="table-content">
@@ -63,6 +166,7 @@
 </tr>
 </tfoot>
 </table> --}}
+
 
 <div class="page-no">
     <script type="text/php">

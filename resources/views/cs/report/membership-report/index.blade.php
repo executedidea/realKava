@@ -3,16 +3,17 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 @section('css')
+{{-- <link rel="stylesheet" href="{{ asset('css/kava/cs/membership-report.css') }}"> --}}
 <link rel="stylesheet" href="{{ asset('/modules/select2/dist/css/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('/modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}">
 <link rel="stylesheet" href="{{ asset('/modules/bootstrap-daterangepicker/daterangepicker.css') }}">
 @endsection
-@section('title', 'Sales Report | Finance - KAVA')
+@section('title', 'Membership Report | Membership Service - KAVA')
 @section('content')
-<section id="salesReport">
+<section id="membershipReport">
     <div class="container">
 
-        @if(Session::has('alert'))
+        {{-- @if(Session::has('alert'))
         <div class="row justify-content-center">
             <div class="col-6">
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -23,14 +24,14 @@
                 </div>
             </div>
         </div>
-        @endif
+        @endif --}}
 
         <div class="row justify-content-center">
             <div class="col-6">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Sales Report</h4>
-                        <form action="{{ route('salesReportPrint') }}" method="get" class="validate-this ml-auto">
+                        <h4>Membership Report</h4>
+                        <form action="{{ route('membershipReportPrint') }}" method="get" class="validate-this ml-auto">
                             @csrf
                             <button type="submit" class="pdf-btn">
                                 <img src="{{asset('img/icons/pdf.png')}}" alt="pdf" height="40px">
@@ -54,16 +55,17 @@
                         </div>
                         <div class="row justify-content-center">
                             <div class="form-group col-10">
-                                <select name="vehicle_category" class="form-control vehicle_category">
-                                    <option selected disabled>Vehicle</option>
-                                    <option value="4">
+                                <select name="membership" class="form-control customer">
+                                    <option selected disabled>Membership</option>
+                                    <option value="all">
                                         All
                                     </option>
-                                    @foreach ($vehicle_category_all as $item)
-                                    <option value="{{ $item->vehicle_category_id }}">
-                                        {{ $item->vehicle_category_name }}
+                                    <option value="active">
+                                        Active
                                     </option>
-                                    @endforeach
+                                    <option value="non-active">
+                                        Non-Active
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -122,13 +124,9 @@
 <script src="{{asset('js/sweetalert2.all.min.js')}}"></script>
 <script>
     $(document).ready(function () {
-        // $('#periodStartDate').val('Start Date');
-        // $('#periodEndDate').val('End Date');
         $('.asof-date').hide();
         $('.period-date-date').hide();
-
         $('#asofStartDate').hide();
-
 
         $('.filter-date').on('change', function () {
 
@@ -195,20 +193,20 @@
 
                 console.log($('#asofStartDate').val());
                 console.log($('#asofEndDate').val());
-
+                // var msg = '{{Session::get('
+                // alert ')}}';
+                // var exist = '{{Session::has('
+                // alert ')}}';
+                // if (exist) {
+                //     Swal.fire(
+                //         'No Data',
+                //         'Choose another option!'
+                //     );
+                // }
 
             }
 
-            var msg = '{{Session::get('
-            alert ')}}';
-            var exist = '{{Session::has('
-            alert ')}}';
-            if (exist) {
-                Swal.fire(
-                    'No Data',
-                    'Choose another option!'
-                );
-            }
+
 
         });
     });
