@@ -135,6 +135,11 @@ Route::group(['middleware' => 'auth'], function () {
                     Route::get('/cs/report/check-in-out-report/pdf','CS\Report\CheckInOutReportController@reportPDF')->name('checkInOutReportPrint');
                     // index
                     Route::get('/cs/report/check-in-out-report', 'CS\Report\CheckInOutReportController@index')->name('checkInOutReport');
+                // Complaint Handling Report
+                    // PDF
+                    Route::get('/cs/report/complaint-handling-report/pdf','CS\Report\ComplaintHandlingReportController@reportPDF')->name('complaintHandlingReportPrint');
+                    // index
+                    Route::get('/cs/report/complaint-handling-report', 'CS\Report\ComplaintHandlingReportController@index')->name('complaintHandlingReport');
         // Booking Online
         // Route::get('/cs/transaction/booking-online', 'CS\Transaction\BookingOnlineController@index')->name('bookingOnlineTransaction');
 

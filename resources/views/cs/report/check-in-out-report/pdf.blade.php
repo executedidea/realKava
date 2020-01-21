@@ -11,7 +11,6 @@ CHECK IN OUT
     <td class="head-content" colspan="2" style="padding-top: -29px; text-transform:capitalize;">
         {{ $report_data[0]->pstatus }}
     </td>
-
 </tr>
 <tr>
     <td></td>
