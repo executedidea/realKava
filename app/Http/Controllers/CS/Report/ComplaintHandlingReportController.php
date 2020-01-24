@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\POS\Report;
+namespace App\Http\Controllers\CS\Report;
 
 use App\Http\Controllers\Controller;
+use App\Models\ComplaintHandlingReport;
 use Illuminate\Http\Request;
-use App\Models\PaymentReport;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Validator;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Validator;
 
 
 
-class PaymentReportController extends Controller
+class ComplaintHandlingReportController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,7 +22,9 @@ class PaymentReportController extends Controller
      */
     public function index()
     {
-        return view('pos.report.payment-report.index');
+        $outlet_id      = Auth::user()->outlet_id;
+        $outlet_all     = ComplaintHandlingReport::getOutletAll($outlet_id);
+        return view('cs.report.complaint-handling-report.index', compact('outlet_all'));
     }
 
     /**
@@ -104,24 +106,25 @@ class PaymentReportController extends Controller
         // if ($validator->fails()) {
         //     return back()->withErrors($validator);
         // } else {
+            $complaint_status                   = $request->complaint_status;
+            $filter_date                        = $request->filter_date;
             $period_StartDate                   = $request->period_StartDate;
             $period_EndDate                     = $request->period_EndDate;
             $asof_StartDate                     = $request->asof_StartDate;
             $asof_EndDate                       = $request->asof_EndDate;
-            $filter_date                        = $request->filter_date;
-            $vehicle_category                   = $request->vehicle_category;
+
             $outlet_id                          = Auth::user()->outlet_id;
             $name                               = Auth::user()->name;
             $date_now                           = date('d-m-Y H:i:s');
-            $carwash_data                       = PaymentReport::getCarwashData($outlet_id);
-            $report_data                        = PaymentReport::getReportData($outlet_id, $period_StartDate, $period_EndDate, $asof_StartDate, $asof_EndDate, $filter_date, $vehicle_category);
+            $carwash_data                       = ComplaintHandlingReport::getCarwashData($outlet_id);
+            $report_data                        = ComplaintHandlingReport::getReportData($outlet_id, $period_StartDate, $period_EndDate, $asof_StartDate, $asof_EndDate, $filter_date, $complaint_status);
             // dd($report_data);
             // if(empty($report_data)) {              
             //     return back()->with('alert', 'Data kosong');   
             // } elseif(!empty($report_data)) {
-                $pdf                                = PDF::loadView('pos/report/payment-report/pdf', compact('carwash_data', 'name', 'date_now'));
-                return $pdf->stream('PaymentReport-pdf.pdf');
-                // return $pdf->download('PaymentReport-pdf (' . date('d-m-Y') . ').pdf');
+                $pdf                            = PDF::loadView('cs/report/complaint-handling-report/pdf', compact('name', 'date_now', 'carwash_data', 'report_data'));
+                return $pdf->stream('ComplaintHandlingReport-pdf.pdf');
+                // return $pdf->download('ComplaintHandlingReport-pdf (' . date('d-m-Y') . ').pdf');
             // }
         // }
     }

@@ -2,6 +2,7 @@
 CUSTOMER
 @endsection
 
+@if ( $report_data[0]->pcustomer == 'all')
 
 @section('title-caption')
 <tr>
@@ -12,15 +13,80 @@ CUSTOMER
     <td></td>
     @if (empty($report_data[0]->pperiod_StartDate) AND empty($report_data[0]->pperiod_EndDate))
     <td class="head-content" colspan="3" style="padding-top: -20px;">As Of </td>
-    <td class="head-content" style="padding-top: -29px;">:</td>
-    <td class="head-content" style="padding-top: -29px;">
+    <td class="head-content" style="padding-top: -20px;">:</td>
+    <td class="head-content" style="padding-top: -20px;">
         {{ date('d-m-Y', strtotime($report_data[0]->pasof_EndDate)) }}
     </td>
 
     @elseif (empty($report_data[0]->pasof_StartDate) AND empty($report_data[0]->pasof_EndDate))
     <td class="head-content" colspan="3" style="padding-top: -20px;">Periode </td>
-    <td class="head-content">:</td>
-    <td class="head-content">
+    <td class="head-content" style="padding-top: -20px;">:</td>
+    <td class="head-content" style="padding-top: -20px;">
+        {{ date('d-m-Y', strtotime($report_data[0]->pperiod_StartDate)) }}
+        s/d
+        {{ date('d-m-Y', strtotime($report_data[0]->pperiod_EndDate)) }}
+    </td>
+    @endif
+</tr>
+@endsection
+
+
+@section('title-footer')
+
+@endsection
+
+
+@section('table-head')
+<tr>
+    <td style="width:20px;"><b>No</b></td>
+    <td style="width:150px;"><b>Customer</b></td>
+    <td style="width:90px;"><b>Phone</b></td>
+    <td style="width:70px;"><b>License Number</b></td>
+    <td style="width:70px;"><b>Brand</b></td>
+    <td style="width:70px;"><b>Brand Type</b></td>
+</tr>
+@endsection
+
+
+@include('layouts.partials.pdf.head')
+@foreach($report_data as $index => $item)
+<tbody class="table-content">
+    <tr>
+        <td>{{ $index+1 }}</td>
+        <td style="text-align:left;">{{ $item->customer_fullName }}</td>
+        <td>{{ $item->customer_phone }}</td>
+        <td>{{ $item->customer_detail_licensePlate }}</td>
+        <td>{{ $item->vehicle_brand_name }}</td>
+        <td>{{ $item->vehicle_model_name }}</td>
+    </tr>
+</tbody>
+@endforeach
+<tfoot>
+</tfoot>
+</table>
+
+</table>
+
+@elseif ( $report_data[0]->pcustomer == 'detail' )
+
+@section('title-caption')
+<tr>
+    <td class="head-content" colspan="3" style="padding-top: -29px; text-transform: capitalize;">
+        {{ $report_data[0]->pcustomer }} Customer </td>
+</tr>
+<tr>
+    <td></td>
+    @if (empty($report_data[0]->pperiod_StartDate) AND empty($report_data[0]->pperiod_EndDate))
+    <td class="head-content" colspan="3" style="padding-top: -20px;">As Of </td>
+    <td class="head-content" style="padding-top: -20px;">:</td>
+    <td class="head-content" style="padding-top: -20px;">
+        {{ date('d-m-Y', strtotime($report_data[0]->pasof_EndDate)) }}
+    </td>
+
+    @elseif (empty($report_data[0]->pasof_StartDate) AND empty($report_data[0]->pasof_EndDate))
+    <td class="head-content" colspan="3" style="padding-top: -20px;">Periode </td>
+    <td class="head-content" style="padding-top: -20px;">:</td>
+    <td class="head-content" style="padding-top: -20px;">
         {{ date('d-m-Y', strtotime($report_data[0]->pperiod_StartDate)) }}
         s/d
         {{ date('d-m-Y', strtotime($report_data[0]->pperiod_EndDate)) }}
@@ -91,29 +157,12 @@ CUSTOMER
 </tbody>
 @endforeach
 <tfoot>
-    {{-- <tr>
-        <td colspan="5"><b>Total</b></td>
-        <td style="text-align:right;"><b>{{ number_format($report_data[0]->SUMTotalPayment) }}</b></td>
-
-    @if (($item->point_of_sales_paid1 + $item->point_of_sales_paid2) >= $item->point_of_sales_totalPayment))
-    <td style="text-align:right;"><b>{{ number_format($report_data[0]->SUMTotalPayment) }}</b></td>
-    <td style="text-align:right;">
-        <b>{{ number_format(($item->point_of_sales_totalPayment)-($item->point_of_sales_totalPayment)) }}</b></td>
-
-    @else
-    <td style="text-align:right;">
-        <b>{{ number_format($item->point_of_sales_paid1 + $item->point_of_sales_paid2) }}</b>
-    </td>
-    <td style="text-align:right;">
-        <b>{{ number_format(($item->point_of_sales_paid1 + $item->point_of_sales_paid2)-($item->point_of_sales_totalPayment)) }}</b>
-    </td>
-    @endif
-    </tr> --}}
 </tfoot>
 </table>
 
 </table>
 
+@endif
 
 <div class="page-no">
     <script type="text/php">

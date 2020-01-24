@@ -58,7 +58,6 @@ MEMBERSHIP
 <tr>
     <td class="head-content"></td>
 </tr>
-
 @endsection
 
 

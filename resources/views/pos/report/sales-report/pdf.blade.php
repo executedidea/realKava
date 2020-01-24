@@ -5,7 +5,6 @@ PENJUALAN
 
 @section('title-caption')
 <tr>
-    <td></td>
     <td class="head-content" colspan="3" style="padding-top: -29px;">Kategori </td>
     <td class="head-content" style="padding-top: -29px;">:</td>
     <td class="head-content" style="padding-top: -29px;">
@@ -17,7 +16,6 @@ PENJUALAN
     </td>
 </tr>
 <tr>
-    <td></td>
     <td></td>
 
 
