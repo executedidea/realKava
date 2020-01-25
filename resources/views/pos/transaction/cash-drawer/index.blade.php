@@ -306,11 +306,45 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary btn-block" id="saveDiscountBtn">Save</button>
-                <button type="button" class="btn bg-transparent" data-container="body" data-toggle="popover" data-placement="left" aria-describedby="popover634014"><i class="fa fa-question-circle" aria-hidden="true"></i></button>
+                <button type="button" class="btn bg-transparent" data-container="body" data-toggle="popover"
+                    data-placement="left" aria-describedby="popover634014"><i class="fa fa-question-circle"
+                        aria-hidden="true"></i></button>
             </div>
         </div>
     </div>
 </div>
+{{-- Cash Modal --}}
+<div class="modal fade" id="cashModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    Add rows here
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#exampleModal').on('show.bs.modal', event => {
+        var button = $(event.relatedTarget);
+        var modal = $(this);
+        // Use above variables to manipulate the DOM
+
+    });
+
+</script>
 @endsection
 @section('script')
 <script src="{{ asset('/modules/select2/dist/js/select2.full.min.js') }}"></script>
@@ -356,27 +390,35 @@
                         '</h4><input type="hidden" name="total_item_price" class="total-item-price" value="' +
                         parseFloat(cst.item_price) +
                         '" id="itemTotalPriceValue' + cst.item_id +
-                        '"/><input type="hidden" id="itemDiscountPercent'+cst.item_id+'" value="0"><input type="hidden" name="item_discount" value="0" id="itemDiscountValue'+cst.item_id+'"><input type="hidden" id="itemAdditionalDiscountPercent'+cst.item_id+'" value="0"><input type="hidden" name="item_additional_discount" value="0" id="itemAdditionalDiscountValue'+cst.item_id+'"><div class="btn-group dropleft"><button type="button" class="btn bg-transparent" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v fa-2x" aria-hidden="true"></i></button><div class="dropdown-menu dropleft"><a class="dropdown-item discount-btn" data-id="' +
+                        '"/><input type="hidden" id="itemDiscountPercent' + cst
+                        .item_id +
+                        '" value="0"><input type="hidden" name="item_discount" value="0" id="itemDiscountValue' +
+                        cst.item_id +
+                        '"><input type="hidden" id="itemAdditionalDiscountPercent' +
+                        cst.item_id +
+                        '" value="0"><input type="hidden" name="item_additional_discount" value="0" id="itemAdditionalDiscountValue' +
+                        cst.item_id +
+                        '"><div class="btn-group dropleft"><button type="button" class="btn bg-transparent" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v fa-2x" aria-hidden="true"></i></button><div class="dropdown-menu dropleft"><a class="dropdown-item discount-btn" data-id="' +
                         cst.item_id +
                         '" data-toggle="modal" data-target="#itemDiscountModal">Discount</a><div class="dropdown-divider"></div><a class="dropdown-item delete-item-btn" data-id="' +
                         cst.item_id +
                         '">Delete</a></div></div></div></div></div></div>'
                     );
                 });
-                // Subtotal Counter
+                /// Subtotal Counter
                 var totalItemPrice = 0;
                 $('.total-item-price').each(function () {
                     totalItemPrice += +$(this).val();
                 });
                 $('#totalDPP').text("Rp " + totalItemPrice);
                 $('#totalDPPValue').val(totalItemPrice);
+                $('#subtotal').text('Rp ' + totalItemPrice);
 
                 // Total Counter
                 $('#totalPrice').text("Rp " + totalItemPrice);
                 $('#totalPriceValue').val(totalItemPrice);
             });
             $('#addCustomerModal').modal('hide');
-
         });
 
         $('.item-col').on('click', function (e) {
@@ -423,14 +465,17 @@
                     '</h4><input type="hidden" name="total_item_price" class="total-item-price" value="' +
                     itemPrice +
                     '" id="itemTotalPriceValue' + id +
-                    '"/><input type="hidden" id="itemDiscountPercent'+id+'" value="0"><input type="hidden" name="item_discount" class="item-discount" value="0" id="itemDiscountValue'+id+'"><input type="hidden" id="itemAdditionalDiscountPercent'+id+'" value="0"><input type="hidden" name="item_additional_discount" class="item-additional-discount" value="0" id="itemAdditionalDiscountValue'+id+'"><div class="btn-group dropleft"><button type="button" class="btn bg-transparent" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v fa-2x" aria-hidden="true"></i></button><div class="dropdown-menu dropleft"><a class="dropdown-item discount-btn" data-id="' +
+                    '"/><input type="hidden" id="itemDiscountPercent' + id +
+                    '" value="0"><input type="hidden" name="item_discount" class="item-discount" value="0" id="itemDiscountValue' +
+                    id + '"><input type="hidden" id="itemAdditionalDiscountPercent' + id +
+                    '" value="0"><input type="hidden" name="item_additional_discount" class="item-additional-discount" value="0" id="itemAdditionalDiscountValue' +
+                    id +
+                    '"><div class="btn-group dropleft"><button type="button" class="btn bg-transparent" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v fa-2x" aria-hidden="true"></i></button><div class="dropdown-menu dropleft"><a class="dropdown-item discount-btn" data-id="' +
                     id +
                     '" data-toggle="modal" data-target="#itemDiscountModal">Discount</a><div class="dropdown-divider"></div><a class="dropdown-item delete-item-btn" data-id="' +
                     id + '" >Delete</a></div></div></div></div></div></div>'
                 );
             }
-
-
         });
         $(document).on('click', '.add', function (e) {
             e.preventDefault();
@@ -448,12 +493,17 @@
             });
             $('#totalDPP').text("Rp " + totalItemPrice);
             $('#totalDPPValue').val(totalItemPrice);
+            $('#subtotal').text('Rp ' + totalItemPrice);
 
             // Total Counter
             $('#totalPrice').text("Rp " + totalItemPrice);
             $('#totalPriceValue').val(totalItemPrice);
 
-
+            $('#totalDiscount').text('Rp ' + 0);
+            $('#totalDiscountValue').val(0);
+            $('.item-discount').each(function () {
+                $(this).val(0);
+            });
         });
 
         $(document).on('click', '.sub', function () {
@@ -471,12 +521,17 @@
             });
             $('#totalDPP').text("Rp " + totalItemPrice);
             $('#totalDPPValue').val(totalItemPrice);
+            $('#subtotal').text('Rp ' + totalItemPrice);
 
             // Total Counter
             $('#totalPrice').text("Rp " + totalItemPrice);
             $('#totalPriceValue').val(totalItemPrice);
 
-
+            $('#totalDiscount').text('Rp ' + 0);
+            $('#totalDiscountValue').val(0);
+            $('.item-discount').each(function () {
+                $(this).val(0);
+            });
         });
         $(document).on('input', '.quantity', function () {
             console.log('ok');
@@ -486,9 +541,9 @@
         $(document).on('click', '.discount-btn', function (e) {
             e.preventDefault();
             var itemID = $(this).data('id');
-            var itemPrice = $('#itemPriceValue'+itemID).val()*$('#quantity'+itemID).val();
-            var itemDiscountPercent = $('#itemDiscountPercent'+itemID).val();
-            var itemAdditionalDiscountPercent = $('#itemAdditionalDiscountPercent'+itemID).val();
+            var itemPrice = $('#itemPriceValue' + itemID).val() * $('#quantity' + itemID).val();
+            var itemDiscountPercent = $('#itemDiscountPercent' + itemID).val();
+            var itemAdditionalDiscountPercent = $('#itemAdditionalDiscountPercent' + itemID).val();
             $('#saveDiscountBtn').removeData('item-id');
             $('#itemDiscount').removeData('item-id');
             $('#itemAdditionalDiscount').removeData('item-id');
@@ -496,7 +551,6 @@
             $('#saveDiscountBtn').attr('data-item-id', itemID);
             $('#itemDiscount').attr('data-item-id', itemID);
             $('#itemAdditionalDiscount').attr('data-item-id', itemID);
-console.log(itemDiscountPercent);
             $('#itemDiscount').val(itemDiscountPercent);
             $('#itemAdditionalDiscount').val(itemAdditionalDiscountPercent);
 
@@ -506,8 +560,8 @@ console.log(itemDiscountPercent);
 
             var quantity = $('#quantity' + itemID).val();
             var itemPrice = $('#itemPriceValue' + itemID).val();
-            var discount = $('#itemDiscount[data-item-id="'+itemID+'"]').val();
-            var additionalDiscount = $('#itemAdditionalDiscount[data-item-id="'+itemID+'"]').val();
+            var discount = $('#itemDiscount[data-item-id="' + itemID + '"]').val();
+            var additionalDiscount = $('#itemAdditionalDiscount[data-item-id="' + itemID + '"]').val();
             var itemTotal = itemPrice * quantity;
             var totalItemDiscount = (discount / 100 * itemTotal);
             var totalAfterDiscount = itemTotal - totalItemDiscount;
@@ -519,18 +573,28 @@ console.log(itemDiscountPercent);
             $('#itemTotalPriceValue' + itemID).val((itemTotal - (totalItemAdditionalDiscount +
                 totalItemDiscount)));
 
-            $('#itemDiscountValue'+itemID).val(totalItemDiscount);
-            $('#itemAdditionalDiscountValue'+itemID).val(totalItemAdditionalDiscount);
-            console.log(discount);
-            $('#itemDiscountPercent'+itemID).val(discount);
-            $('#itemAdditionalDiscountPercent'+itemID).val(additionalDiscount);
+            $('#itemDiscountValue' + itemID).val(totalItemDiscount);
+            $('#itemAdditionalDiscountValue' + itemID).val(totalItemAdditionalDiscount);
+            $('#itemDiscountPercent' + itemID).val(discount);
+            $('#itemAdditionalDiscountPercent' + itemID).val(additionalDiscount);
 
 
-            // Subtotal Counter
             var totalItemPrice = 0;
             $('.total-item-price').each(function () {
                 totalItemPrice += +$(this).val();
             });
+            // Discount Counter
+            var totalDiscount = 0;
+            $('.item-discount').each(function () {
+                totalDiscount += +$(this).val();
+            });
+            // Additional Discount
+            var totalAdditionalDiscount = 0;
+            $('.item-additional-discount').each(function () {
+                totalAdditionalDiscount += +$(this).val();
+            });
+            $('#totalDiscount').text('- Rp ' + (totalDiscount + totalAdditionalDiscount));
+            $('#totalDiscountValue').val(totalDiscount + totalAdditionalDiscount);
             // Total Counter
             $('#totalPrice').text("Rp " + totalItemPrice);
             $('#totalPriceValue').val(totalItemPrice);
