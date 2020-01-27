@@ -128,17 +128,18 @@
 </footer>
 @endsection
 @section('modal')
-<div class="modal animated slideInUp" id="summary" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-    aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Order Sumary</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="" method="post">
+<form action="{{route('POSPay')}}" method="post" id="posForm">
+    @csrf
+    <div class="modal animated slideInUp" id="summary" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Order Sumary</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <div class="modal-body">
                     <div class="container-fluid">
                         <section id="customerInfo">
@@ -190,13 +191,21 @@
                                     invoices.</p>
                                 <div class="images">
                                     <div class="payment-method-card d-flex float-left mr-2" data-method="cash">
-                                        <span class="align-self-center mx-auto font-weight-bold">CASH</span>
+                                        <span class="align-self-center mx-auto font-weight-bold"
+                                            id="cashPayment">CASH</span>
                                     </div>
                                     <div class="payment-method-card d-flex float-left mr-2" data-method="debit">
                                         <span class="align-self-center mx-auto font-weight-bold">DEBIT</span>
                                     </div>
                                     <div class="payment-method-card d-flex" data-method="cc">
                                         <span class="align-self-center mx-auto font-weight-bold">CC</span>
+                                    </div>
+                                </div>
+                                <div class="form-group row py-3">
+                                    <label class="col-form-label col-12 col-lg-2">Balance</label>
+                                    <div class="col-12 col-lg-6 align-items-center">
+                                        <h6 id="balanceDisplay" class="font-weight-bold"></h6>
+                                        <input type="hidden" id="balanceDisplayValue">
                                     </div>
                                 </div>
                             </div>
@@ -209,12 +218,17 @@
                                 <div class="invoice-detail-item">
                                     <div class="invoice-detail-name">Discount</div>
                                     <div class="invoice-detail-value font-weight-bold" id="totalDiscount"> Rp 0</div>
-                                    <input type="hidden" name="total_discount" id="totalDiscountValue">
+                                    <input type="hidden" name="total_discount" id="totalDiscountValue" value="0">
                                 </div>
                                 <div class="invoice-detail-item">
                                     <div class="invoice-detail-name">PPN 10%</div>
                                     <div class="invoice-detail-value font-weight-bold" id="totalPPN"> Rp 0</div>
                                     <input type="hidden" name="total_ppn" id="totalPPNValue">
+                                </div>
+                                <div class="invoice-detail-item">
+                                    <div class="invoice-detail-name">CC Charge</div>
+                                    <div class="invoice-detail-value font-weight-bold" id="totalCCCharge"> Rp 0</div>
+                                    <input type="hidden" name="total_cc_charge" id="totalCCChargeValue" value="0">
                                 </div>
                                 <hr class="mt-2 mb-2">
                                 <div class="invoice-detail-item">
@@ -227,124 +241,144 @@
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-</div>
 
-{{-- Add Customer Modal --}}
-<div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Customer</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="container-fluid">
-                    <div class="row justify-content-center">
-                        <div class="form-group col-12">
-                            <select class="form-control" id="checkedInCustomer">
-                                <option value="" disabled selected>Search Customer
-                                </option>
-                                @foreach ($customer as $item)
-                                <option value="{{$item->customer_detail_id}}">
-                                    <b>{{ $item->customer_fullName}}</b>
-                                    <span class="text-muted">{{ $item->customer_detail_licensePlate }}</span>
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
+    {{-- Add Customer Modal --}}
+    <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Customer</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-{{-- Discount Modal --}}
-<div class="modal fade" id="itemDiscountModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add Discount</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body p-5">
-                <div class="form-group row">
-                    <label class="col-form-label col-12 col-lg-5">Discount</label>
-                    <div class="input-group col-12 col-lg-4">
-                        <input type="text" class="form-control text-right" id="itemDiscount" data-item-id="">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <i class="fa fa-percent" aria-hidden="true"></i>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row justify-content-center">
+                            <div class="form-group col-12">
+                                <select class="form-control" id="checkedInCustomer">
+                                    <option value="" disabled selected>Search Customer
+                                    </option>
+                                    @foreach ($customer as $item)
+                                    <option value="{{$item->customer_detail_id}}">
+                                        <b>{{ $item->customer_fullName}}</b>
+                                        <span class="text-muted">{{ $item->customer_detail_licensePlate }}</span>
+                                    </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label class="col-form-label col-12 col-lg-5">Additional Discount</label>
-                    <div class="input-group col-12 col-lg-4">
-                        <input type="text" class="form-control text-right" id="itemAdditionalDiscount" data-item-id="">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <i class="fa fa-percent" aria-hidden="true"></i>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Discount Modal --}}
+    <div class="modal fade" id="itemDiscountModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Discount</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-5">
+                    <div class="form-group row">
+                        <label class="col-form-label col-12 col-lg-5">Discount</label>
+                        <div class="input-group col-12 col-lg-4">
+                            <input type="text" class="form-control text-right" id="itemDiscount" data-item-id="">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <i class="fa fa-percent" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-12 col-lg-5">Additional Discount</label>
+                        <div class="input-group col-12 col-lg-4">
+                            <input type="text" class="form-control text-right" id="itemAdditionalDiscount"
+                                data-item-id="">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <i class="fa fa-percent" aria-hidden="true"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-block" id="saveDiscountBtn">Save</button>
-                <button type="button" class="btn bg-transparent" data-container="body" data-toggle="popover"
-                    data-placement="left" aria-describedby="popover634014"><i class="fa fa-question-circle"
-                        aria-hidden="true"></i></button>
-            </div>
-        </div>
-    </div>
-</div>
-{{-- Cash Modal --}}
-<div class="modal fade" id="cashModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="container-fluid">
-                    Add rows here
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-block" id="saveDiscountBtn">Save</button>
+                    <button type="button" class="btn bg-transparent" data-container="body" data-toggle="popover"
+                        data-placement="left" aria-describedby="popover634014"><i class="fa fa-question-circle"
+                            aria-hidden="true"></i></button>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save</button>
+        </div>
+    </div>
+    {{-- Cash Modal --}}
+    <div class="modal fade" id="cashModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cash</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="form-group row">
+                            <label class="col-form-label col-12 col-lg-5">Amount</label>
+                            <div class="input-group col-12 col-lg-6">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        Rp
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control text-right" id="paid" name="paid">
+                            </div>
+                        </div>
+                        <div class="form-group row py-3">
+                            <label class="col-form-label col-12 col-lg-5">Balance</label>
+                            <div class="col-12 col-lg-6">
+                                <h6 id="balance"></h6>
+                                <input type="hidden" id="balanceValue">
+                            </div>
+                        </div>
+                        <div class="form-group row py-3">
+                            <label class="col-form-label col-12 col-lg-5">Change</label>
+                            <div class="col-12 col-lg-6">
+                                <h6 id="change">Rp 0</h6>
+                                <input type="hidden" name="change" id="changeValue">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" name="paymentMethod" id="payBtn" class="btn btn-primary">Save</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-<script>
-    $('#exampleModal').on('show.bs.modal', event => {
-        var button = $(event.relatedTarget);
-        var modal = $(this);
-        // Use above variables to manipulate the DOM
-
-    });
-
-</script>
+</form>
+<input type="hidden" id="dataSettingPPN" value="{{$setting[0]->setting_pos_ppn}}">
+@foreach($promos as $item)
+<input type="hidden" class="item-promo" data-promo-item-id="{{$item->item_id}}"
+    data-promo-free-value="{{$item->promo_freeValue}}">
+@endforeach
 @endsection
 @section('script')
 <script src="{{ asset('/modules/select2/dist/js/select2.full.min.js') }}"></script>
@@ -371,7 +405,7 @@
                         '"><div class="card-body"><div class="row"><div class="col-3"><h4 id="itemAddedName' +
                         cst.item_id + '">' + cst.item_name +
                         '</h4><span>@ Rp ' +
-                        parseFloat(cst.item_price) +
+                        thousandFormat(parseFloat(cst.item_price)) +
                         '</span><input type="hidden" name="item_id[]" value="' + cst
                         .item_id +
                         '" id="itemIDValue' + cst.item_id +
@@ -386,17 +420,17 @@
                         cst.item_id +
                         '"><i class="fa fa-plus" aria-hidden="true"></i></button></div><div class="col-5 col-lg-4 d-flex"><h4 class="align-self-center ml-auto" id="itemTotalPrice' +
                         cst.item_id +
-                        '">Rp ' + parseFloat(cst.item_price) +
-                        '</h4><input type="hidden" name="total_item_price" class="total-item-price" value="' +
+                        '">Rp ' + thousandFormat(parseFloat(cst.item_price)) +
+                        '</h4><input type="hidden" name="item_total_price[]" class="total-item-price" value="' +
                         parseFloat(cst.item_price) +
                         '" id="itemTotalPriceValue' + cst.item_id +
                         '"/><input type="hidden" id="itemDiscountPercent' + cst
                         .item_id +
-                        '" value="0"><input type="hidden" name="item_discount" value="0" id="itemDiscountValue' +
+                        '" value="0"><input type="hidden" name="item_discount[]" value="0" class="item-discount" id="itemDiscountValue' +
                         cst.item_id +
                         '"><input type="hidden" id="itemAdditionalDiscountPercent' +
                         cst.item_id +
-                        '" value="0"><input type="hidden" name="item_additional_discount" value="0" id="itemAdditionalDiscountValue' +
+                        '" value="0"><input type="hidden" name="item_additional_discount[]" class="item-additional-discount" value="0" id="itemAdditionalDiscountValue' +
                         cst.item_id +
                         '"><div class="btn-group dropleft"><button type="button" class="btn bg-transparent" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v fa-2x" aria-hidden="true"></i></button><div class="dropdown-menu dropleft"><a class="dropdown-item discount-btn" data-id="' +
                         cst.item_id +
@@ -410,13 +444,32 @@
                 $('.total-item-price').each(function () {
                     totalItemPrice += +$(this).val();
                 });
-                $('#totalDPP').text("Rp " + totalItemPrice);
+                $('#totalDPP').text("Rp " + thousandFormat(totalItemPrice));
                 $('#totalDPPValue').val(totalItemPrice);
-                $('#subtotal').text('Rp ' + totalItemPrice);
+                $('#subtotal').text('Rp ' + thousandFormat(totalItemPrice));
+                var settingPPN = $('#dataSettingPPN').val();
+                if (settingPPN !== '1') {
+                    // Total Counter
+                    $('#totalPrice').text("Rp " + totalItemPrice);
+                    $('#totalPriceValue').val(totalItemPrice);
 
-                // Total Counter
-                $('#totalPrice').text("Rp " + totalItemPrice);
-                $('#totalPriceValue').val(totalItemPrice);
+                    $('#balanceDisplay').text('Rp ' + totalItemPrice);
+                    $('#balanceDisplayValue').val(totalItemPrice);
+                } else {
+                    var ppn = (10 / 100) * totalItemPrice;
+                    var totalAfterPPN = totalItemPrice + ppn;
+                    $('#totalPPN').text('Rp ' + thousandFormat(ppn));
+                    $('#totalPPNValue').val(ppn);
+
+                    // Total Counter
+                    $('#totalPrice').text("Rp " + thousandFormat(totalAfterPPN));
+                    $('#totalPriceValue').val(totalAfterPPN);
+
+                    $('#balanceDisplay').text('Rp ' + thousandFormat(totalAfterPPN));
+                    $('#balanceDisplayValue').val(totalAfterPPN);
+
+                }
+
             });
             $('#addCustomerModal').modal('hide');
         });
@@ -428,18 +481,38 @@
             var itemName = $('#itemName' + id).text();
             var subtotal = parseFloat($('#total').val());
             var total = subtotal + itemPrice;
-            $('#total').val(total);
-            $('#totalDPPValue').val(total);
-            $('#totalDPP').text("Rp " + total);
-            $('#totalPriceValue').val(total);
-            $('#totalPrice').text("Rp " + total);
-            $('#subtotal').text('Rp ' + total);
+            var settingPPN = $('#dataSettingPPN').val();
+            if (settingPPN !== '1') {
+                $('#total').val(total);
+                $('#totalDPPValue').val(total);
+                $('#totalDPP').text("Rp " + thousandFormat(total));
+                $('#totalPriceValue').val(total);
+                $('#totalPrice').text("Rp " + thousandFormat(total));
+                $('#subtotal').text('Rp ' + thousandFormat(total));
+
+                $('#balanceDisplay').text('Rp ' + thousandFormat(total));
+                $('#balanceDisplayValue').val(total);
+            } else {
+                var ppn = (10 / 100) * total;
+                $('#totalPPN').text('Rp ' + thousandFormat(ppn));
+                $('#totalPPNValue').val(ppn);
+                $('#total').val(total);
+                $('#totalDPPValue').val(total);
+                $('#totalDPP').text("Rp " + thousandFormat(total));
+                $('#totalPriceValue').val(total + ppn);
+                $('#totalPrice').text("Rp " + thousandFormat((total + ppn)));
+                $('#subtotal').text('Rp ' + thousandFormat(total));
+
+                $('#balanceDisplay').text('Rp ' + thousandFormat((total + ppn)));
+                $('#balanceDisplayValue').val(total + ppn);
+            }
 
 
             if ($('#itemCard' + id).length > 0) {
                 $('#quantity' + id).val(parseFloat($('#quantity' + id).val()) + 1);
-                $('#itemTotalPrice' + id).text("Rp " + parseFloat($('#quantity' + id).val()) *
-                    itemPrice);
+                $('#itemTotalPrice' + id).text("Rp " + thousandFormat(parseFloat($('#quantity' + id)
+                        .val()) *
+                    itemPrice));
 
             } else {
                 $('#customerItems').append(
@@ -447,7 +520,7 @@
                     '"><div class="card-body"><div class="row"><div class="col-3"><h4 id="itemAddedName' +
                     id + '">' + itemName +
                     '</h4><span>@ Rp ' +
-                    itemPrice +
+                    thousandFormat(itemPrice) +
                     '</span><input type="hidden" name="item_id[]" value="' + id +
                     '" id="itemIDValue' + id +
                     '" /><input type="hidden" name="item_price[]" value="' +
@@ -461,14 +534,14 @@
                     id +
                     '"><i class="fa fa-plus" aria-hidden="true"></i></button></div><div class="col-5 col-lg-4 d-flex"><h4 class="align-self-center ml-auto" id="itemTotalPrice' +
                     id +
-                    '">Rp ' + itemPrice +
-                    '</h4><input type="hidden" name="total_item_price" class="total-item-price" value="' +
+                    '">Rp ' + thousandFormat(itemPrice) +
+                    '</h4><input type="hidden" name="item_total_price[]" class="total-item-price" value="' +
                     itemPrice +
                     '" id="itemTotalPriceValue' + id +
                     '"/><input type="hidden" id="itemDiscountPercent' + id +
-                    '" value="0"><input type="hidden" name="item_discount" class="item-discount" value="0" id="itemDiscountValue' +
+                    '" value="0"><input type="hidden" name="item_discount[]" class="item-discount" value="0" id="itemDiscountValue' +
                     id + '"><input type="hidden" id="itemAdditionalDiscountPercent' + id +
-                    '" value="0"><input type="hidden" name="item_additional_discount" class="item-additional-discount" value="0" id="itemAdditionalDiscountValue' +
+                    '" value="0"><input type="hidden" name="item_additional_discount[]" class="item-additional-discount" value="0" id="itemAdditionalDiscountValue' +
                     id +
                     '"><div class="btn-group dropleft"><button type="button" class="btn bg-transparent" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v fa-2x" aria-hidden="true"></i></button><div class="dropdown-menu dropleft"><a class="dropdown-item discount-btn" data-id="' +
                     id +
@@ -483,21 +556,41 @@
             var itemPrice = $('#itemPrice' + itemID).val();
             $(this).prev().val(+$(this).prev().val() + 1);
 
-            $('#itemTotalPrice' + itemID).text("Rp " + $('#quantity' + itemID).val() * itemPrice);
+            $('#itemTotalPrice' + itemID).text("Rp " + thousandFormat($('#quantity' + itemID).val() *
+                itemPrice));
             $('#itemTotalPriceValue' + itemID).val($('#quantity' + itemID).val() * itemPrice);
 
-            // Subtotal Counter
+            //// Subtotal Counter
             var totalItemPrice = 0;
             $('.total-item-price').each(function () {
                 totalItemPrice += +$(this).val();
             });
-            $('#totalDPP').text("Rp " + totalItemPrice);
+            $('#totalDPP').text("Rp " + thousandFormat(totalItemPrice));
             $('#totalDPPValue').val(totalItemPrice);
-            $('#subtotal').text('Rp ' + totalItemPrice);
+            $('#subtotal').text('Rp ' + thousandFormat(totalItemPrice));
+            var settingPPN = $('#dataSettingPPN').val();
+            if (settingPPN !== '1') {
+                // Total Counter
+                $('#totalPrice').text("Rp " + thousandFormat(totalItemPrice));
+                $('#totalPriceValue').val(totalItemPrice);
 
-            // Total Counter
-            $('#totalPrice').text("Rp " + totalItemPrice);
-            $('#totalPriceValue').val(totalItemPrice);
+                $('#balanceDisplay').text('Rp ' + thousandFormat(totalItemPrice));
+                $('#balanceDisplayValue').val(totalItemPrice);
+            } else {
+                var ppn = (10 / 100) * totalItemPrice;
+                var totalAfterPPN = totalItemPrice + ppn;
+                $('#totalPPN').text('Rp ' + thousandFormat(ppn))
+                $('#totalPPNValue').val(ppn)
+
+                // Total Counter
+                $('#totalPrice').text("Rp " + thousandFormat(totalAfterPPN));
+                $('#totalPriceValue').val(totalAfterPPN);
+
+                $('#balanceDisplay').text('Rp ' + thousandFormat(totalAfterPPN));
+                $('#balanceDisplayValue').val(totalAfterPPN);
+
+            }
+
 
             $('#totalDiscount').text('Rp ' + 0);
             $('#totalDiscountValue').val(0);
@@ -511,30 +604,46 @@
             var itemPrice = $('#itemPrice' + itemID).val();
             if ($(this).next().val() > 1) $(this).next().val(+$(this).next().val() - 1);
 
-            $('#itemTotalPrice' + itemID).text("Rp " + $('#quantity' + itemID).val() * itemPrice);
+            $('#itemTotalPrice' + itemID).text("Rp " + thousandFormat($('#quantity' + itemID).val() *
+                itemPrice));
             $('#itemTotalPriceValue' + itemID).val($('#quantity' + itemID).val() * itemPrice);
 
-            // Subtotal Counter
+            //// Subtotal Counter
             var totalItemPrice = 0;
             $('.total-item-price').each(function () {
                 totalItemPrice += +$(this).val();
             });
-            $('#totalDPP').text("Rp " + totalItemPrice);
+            $('#totalDPP').text("Rp " + thousandFormat(totalItemPrice));
             $('#totalDPPValue').val(totalItemPrice);
-            $('#subtotal').text('Rp ' + totalItemPrice);
+            $('#subtotal').text('Rp ' + thousandFormat(totalItemPrice));
+            var settingPPN = $('#dataSettingPPN').val();
+            if (settingPPN !== '1') {
+                // Total Counter
+                $('#totalPrice').text("Rp " + thousandFormat(totalItemPrice));
+                $('#totalPriceValue').val(totalItemPrice);
 
-            // Total Counter
-            $('#totalPrice').text("Rp " + totalItemPrice);
-            $('#totalPriceValue').val(totalItemPrice);
+                $('#balanceDisplay').text('Rp ' + thousandFormat(totalItemPrice));
+                $('#balanceDisplayValue').val(totalItemPrice);
+            } else {
+                var ppn = (10 / 100) * totalItemPrice;
+                var totalAfterPPN = totalItemPrice + ppn;
+                $('#totalPPN').text('Rp ' + thousandFormat(ppn))
+                $('#totalPPNValue').val(ppn)
+
+                // Total Counter
+                $('#totalPrice').text("Rp " + thousandFormat(totalAfterPPN));
+                $('#totalPriceValue').val(totalAfterPPN);
+
+                $('#balanceDisplay').text('Rp ' + thousandFormat(totalAfterPPN));
+                $('#balanceDisplayValue').val(totalAfterPPN);
+
+            }
 
             $('#totalDiscount').text('Rp ' + 0);
             $('#totalDiscountValue').val(0);
             $('.item-discount').each(function () {
                 $(this).val(0);
             });
-        });
-        $(document).on('input', '.quantity', function () {
-            console.log('ok');
         });
 
 
@@ -565,11 +674,12 @@
             var itemTotal = itemPrice * quantity;
             var totalItemDiscount = (discount / 100 * itemTotal);
             var totalAfterDiscount = itemTotal - totalItemDiscount;
-            var totalItemAdditionalDiscount = additionalDiscount / 100 * totalItemDiscount;
+            var totalItemAdditionalDiscount = additionalDiscount / 100 * totalAfterDiscount;
             var totalAfterAdditionalDiscount = totalAfterDiscount - totalItemAdditionalDiscount;
 
-            $('#itemTotalPrice' + itemID).text('Rp ' + (itemTotal - (totalItemAdditionalDiscount +
-                totalItemDiscount)));
+            $('#itemTotalPrice' + itemID).text('Rp ' + thousandFormat((itemTotal - (
+                totalItemAdditionalDiscount +
+                totalItemDiscount))));
             $('#itemTotalPriceValue' + itemID).val((itemTotal - (totalItemAdditionalDiscount +
                 totalItemDiscount)));
 
@@ -593,11 +703,17 @@
             $('.item-additional-discount').each(function () {
                 totalAdditionalDiscount += +$(this).val();
             });
-            $('#totalDiscount').text('- Rp ' + (totalDiscount + totalAdditionalDiscount));
+            var ppn = (10 / 100) * totalItemPrice;
+            $('#totalPPNValue').val(ppn);
+            $('#totalPPN').text('Rp ' + thousandFormat(ppn));
+
+            $('#totalDiscount').text('Rp ' + thousandFormat((totalDiscount + totalAdditionalDiscount)));
             $('#totalDiscountValue').val(totalDiscount + totalAdditionalDiscount);
             // Total Counter
-            $('#totalPrice').text("Rp " + totalItemPrice);
-            $('#totalPriceValue').val(totalItemPrice);
+            $('#totalPrice').text("Rp " + thousandFormat((totalItemPrice + ppn)));
+            $('#totalPriceValue').val((totalItemPrice + ppn));
+            $('#balanceDisplay').text('Rp ' + thousandFormat((totalItemPrice + ppn)));
+            $('#balanceDisplayValue').val((totalItemPrice + ppn));
         });
 
         $(document).on('click', '.delete-item-btn', function () {
@@ -609,15 +725,64 @@
             $('.total-item-price').each(function () {
                 totalItemPrice += +$(this).val();
             });
-            $('#totalDPP').text("Rp " + totalItemPrice);
+            $('#totalDPP').text("Rp " + thousandFormat(totalItemPrice));
             $('#totalDPPValue').val(totalItemPrice);
-            $('#subtotal').text('Rp ' + totalItemPrice);
+            $('#subtotal').text('Rp ' + thousandFormat(totalItemPrice));
 
             // Total Counter
-            $('#totalPrice').text("Rp " + totalItemPrice);
+            $('#totalPrice').text("Rp " + thousandFormat(totalItemPrice));
             $('#totalPriceValue').val(totalItemPrice);
+            $('#balanceDisplay').text('Rp ' + thousandFormat(totalItemPrice));
+            $('#balanceDisplayValue').val(totalItemPrice);
+        });
+
+        $('#cashPayment').on('click', function () {
+            var totalPrice = $('#totalPriceValue').val();
+            $('#balance').text('Rp ' + thousandFormat(totalPrice));
+            $('#balanceValue').val(totalPrice);
+
+            $('#cashModal').modal('show');
+        });
+        $('#paid').on('input', function () {
+            var value = parseFloat($(this).val());
+            var totalPrice = parseFloat($('#totalPriceValue').val());
+
+            if (value > totalPrice) {
+                $('#balance').text('Rp 0');
+                $('#balanceValue').val(0);
+                $('#balanceDisplay').text('Rp 0');
+                $('#change').text('Rp ' + thousandFormat(Math.abs(totalPrice - value)));
+                $('#changeValue').val(Math.abs(totalPrice - value));
+            } else {
+                $('#balance').text('Rp ' + thousandFormat((totalPrice - value)));
+                $('#balanceValue').val(totalPrice - value);
+                $('#balanceDisplay').text('Rp ' + thousandFormat((totalPrice - value)));
+
+                $('#change').text('Rp 0');
+                $('#change').val(0);
+            }
+        });
+        $(document).on('click', '#payBtn', function (e) {
+            var balance = $('#balanceValue').val();
+            if (balance > 0) {
+                alert('Kurang coy');
+            } else {
+                $('#posForm').submit();
+            }
         });
     });
+
+    function thousandFormat(nStr) {
+        nStr += '';
+        var x = nStr.split('.');
+        var x1 = x[0];
+        var x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+            x1 = x1.replace(rgx, '$1' + ',' + '$2');
+        }
+        return x1 + x2;
+    }
 
 </script>
 @endsection

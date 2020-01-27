@@ -194,6 +194,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/pos/report/payment-report', 'POS\Report\PaymentReportController@index')->name('paymentReport');
 
             Route::get('/pos/transaction/cashdrawer', 'POS\Transaction\CashDrawerController@index');
+            Route::post('/pos/transaction/cashdrawer/store', 'POS\Transaction\CashDrawerController@store')->name('POSPay');
 
 
 
