@@ -190,14 +190,14 @@
                                     pay
                                     invoices.</p>
                                 <div class="images">
-                                    <div class="payment-method-card d-flex float-left mr-2" data-method="cash">
+                                    <div class="payment-method-card d-flex float-left mr-2" data-method="cash" id="cashPayment">
                                         <span class="align-self-center mx-auto font-weight-bold"
-                                            id="cashPayment">CASH</span>
+                                            >CASH</span>
                                     </div>
-                                    <div class="payment-method-card d-flex float-left mr-2" data-method="debit">
+                                    <div class="payment-method-card d-flex float-left mr-2" data-method="debit" id="debitPayment">
                                         <span class="align-self-center mx-auto font-weight-bold">DEBIT</span>
                                     </div>
-                                    <div class="payment-method-card d-flex" data-method="cc">
+                                    <div class="payment-method-card d-flex" data-method="cc" id="ccPayment">
                                         <span class="align-self-center mx-auto font-weight-bold">CC</span>
                                     </div>
                                 </div>
@@ -207,6 +207,9 @@
                                         <h6 id="balanceDisplay" class="font-weight-bold"></h6>
                                         <input type="hidden" id="balanceDisplayValue">
                                     </div>
+                                </div>
+                                <div class="form-group row py-3">
+                                    <button type="button" class="btn btn-primary" id="payBtn">Process Payment</button>
                                 </div>
                             </div>
                             <div class="col-lg-4 text-right">
@@ -275,7 +278,6 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary">Save</button>
                 </div>
             </div>
@@ -320,15 +322,12 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary btn-block" id="saveDiscountBtn">Save</button>
-                    <button type="button" class="btn bg-transparent" data-container="body" data-toggle="popover"
-                        data-placement="left" aria-describedby="popover634014"><i class="fa fa-question-circle"
-                            aria-hidden="true"></i></button>
                 </div>
             </div>
         </div>
     </div>
     {{-- Cash Modal --}}
-    <div class="modal fade" id="cashModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+    <div class="modal fade payment-method-modal" id="cashModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -348,33 +347,110 @@
                                         Rp
                                     </div>
                                 </div>
-                                <input type="text" class="form-control text-right" id="paid" name="paid">
+                                <input type="text" class="form-control text-right" id="paid" name="paid1">
                             </div>
                         </div>
                         <div class="form-group row py-3">
                             <label class="col-form-label col-12 col-lg-5">Balance</label>
                             <div class="col-12 col-lg-6">
                                 <h6 id="balance"></h6>
-                                <input type="hidden" id="balanceValue">
+                                <input type="hidden" id="balanceValue" class="balanceValue">
                             </div>
                         </div>
                         <div class="form-group row py-3">
                             <label class="col-form-label col-12 col-lg-5">Change</label>
                             <div class="col-12 col-lg-6">
                                 <h6 id="change">Rp 0</h6>
-                                <input type="hidden" name="change" id="changeValue">
+                                <input type="hidden" name="change" id="changeValue" value="0">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" name="paymentMethod" id="payBtn" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-primary btn-block payment-method-btn" data-method="1">Save</button>
                 </div>
             </div>
         </div>
     </div>
+    {{-- Debit Modal --}}
+    <div class="modal fade" id="debitModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Debit</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                    <div class="form-group row py-3">
+                        <label class="col-form-label col-12 col-lg-5">Bank</label>
+                        <div class="col-12 col-lg-6">
+                            <select name="bank" id="bank" disabled>
+                                <option value="1">Mandiri</option>
+                                <option value="2">BCA</option>
+                                <option value="3">BRI</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-12 col-lg-5">Card Number</label>
+                        <div class="col-12 col-lg-6">
+                            <input type="text" class="form-control text-right" id="cardNumber" name="card_number" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-12 col-lg-5">Amount</label>
+                        <div class="input-group col-12 col-lg-6">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    Rp
+                                </div>
+                            </div>
+                            <input type="text" class="form-control text-right" class="paid" id="paidBank" name="paid1" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group row py-3">
+                        <label class="col-form-label col-12 col-lg-5">Balance</label>
+                        <div class="col-12 col-lg-6">
+                            <h6 id="balanceBank"></h6>
+                            <input type="hidden" id="balanceValueBank">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-block payment-method-btn" data-method="2">Save</button>  
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- AddPaymentModal --}}
+    <div class="modal fade" id="addPaymentMethodModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Payment Method</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid" id="paymentMethod2ModalBody">
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-block" data-dismiss="modal">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" name="payment_method1" id="paymentMethod1">
+    <input type="hidden" name="payment_method2" id="paymentMethod2" disabled>
 </form>
 <input type="hidden" id="dataSettingPPN" value="{{$setting[0]->setting_pos_ppn}}">
+
 @foreach($promos as $item)
 <input type="hidden" class="item-promo" data-promo-item-id="{{$item->item_id}}"
     data-promo-free-value="{{$item->promo_freeValue}}">
@@ -743,6 +819,19 @@
 
             $('#cashModal').modal('show');
         });
+        $('#debitPayment').on('click', function () {
+            var totalPrice = $('#totalPriceValue').val();
+            $('.balance').text('Rp ' + thousandFormat(totalPrice));
+            $('.balanceValue').val(totalPrice);
+
+            $('#bank').prop('disabled', false);
+            $('#paidBank').prop('disabled', false);
+
+            $('#debitModal').modal('show');
+            $('#bank').on('change', function() {
+                $('#cardNumber').prop('disabled', false);
+            });
+        });
         $('#paid').on('input', function () {
             var value = parseFloat($(this).val());
             var totalPrice = parseFloat($('#totalPriceValue').val());
@@ -750,25 +839,117 @@
             if (value > totalPrice) {
                 $('#balance').text('Rp 0');
                 $('#balanceValue').val(0);
+                $('#balanceDisplayValue').val(0);
                 $('#balanceDisplay').text('Rp 0');
                 $('#change').text('Rp ' + thousandFormat(Math.abs(totalPrice - value)));
                 $('#changeValue').val(Math.abs(totalPrice - value));
             } else {
                 $('#balance').text('Rp ' + thousandFormat((totalPrice - value)));
                 $('#balanceValue').val(totalPrice - value);
+                $('#balanceDisplayValue').val(totalPrice - value);
                 $('#balanceDisplay').text('Rp ' + thousandFormat((totalPrice - value)));
 
                 $('#change').text('Rp 0');
                 $('#change').val(0);
             }
         });
-        $(document).on('click', '#payBtn', function (e) {
+        $('#paidBank').on('input', function () {
+            var value = parseFloat($(this).val());
+            var totalPrice = parseFloat($('#totalPriceValue').val());
+
+            if (value > totalPrice) {
+                $('#balance').text('Rp 0');
+                $('#balanceBank').text('Rp 0');
+                $('#balanceValue').val(0);
+                $('#balanceValueBank').val(0);
+                $('#balanceDisplayValue').val(0);
+                $('#balanceDisplay').text('Rp 0');
+                $('#change').text('Rp ' + thousandFormat(Math.abs(totalPrice - value)));
+                $('#changeValue').val(Math.abs(totalPrice - value));
+            } else {
+                $('#balance').text('Rp ' + thousandFormat((totalPrice - value)));
+                $('#balanceBank').text('Rp ' + thousandFormat((totalPrice - value)));
+                $('#balanceValueBank').val(totalPrice - value);
+                $('#balanceValue').val(totalPrice - value);
+                $('#balanceDisplayValue').val(totalPrice - value);
+                $('#balanceDisplay').text('Rp ' + thousandFormat((totalPrice - value)));
+
+                $('#change').text('Rp 0');
+                $('#change').val(0);
+            }
+        });
+        
+        $(document).on('click', '.payment-method-btn', function (e) {
+            var method = $(this).data('method');
+            $('#paymentMethod1').val(method);
+            $('.payment-method-modal').modal('hide');
+            
+        });
+        $('#payBtn').on('click', function() {
             var balance = $('#balanceValue').val();
-            if (balance > 0) {
-                alert('Kurang coy');
+            var totalPrice = $('#totalPriceValue').val();
+
+            if(balance > 0){
+                Swal.fire({
+                    title: 'Payment error',
+                    text: "The amount of payment is lower than total price!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Add payment method'
+                    }).then((result) => {
+                    if (result.value) {
+                        $('#addPaymentMethodModal').modal('show');
+                    }
+                })
+            } else if(balance == totalPrice){
+                Swal.fire(
+                    'Choose payment method first',
+                    'warning'
+                )
             } else {
                 $('#posForm').submit();
             }
+        });
+        $('#addPaymentMethodModal').on('show.bs.modal', function() {
+            $('#paymentMethod2ModalBody').empty();
+            $('#paymentMethod2ModalBody').append('<div class="row justify-content-center"><div class="col text-center"><div class="images mx-auto text-center"><div class="payment-method-card d-flex float-left mr-2 payment-method-2" data-method="1"> <span class="align-self-center mx-auto font-weight-bold">CASH</span></div><div class="payment-method-card d-flex float-left mr-2 payment-method-2" data-method="2"><span class="align-self-center mx-auto font-weight-bold">DEBIT</span></div><div class="payment-method-card d-flex float-left mr-2 payment-method-2" data-method="3"><span class="align-self-center mx-auto font-weight-bold">CC</span></div><div class="payment-method-card d-flex float-left mr-2 payment-method-2" data-method="4"><span class="align-self-center mx-auto font-weight-bold">GOPAY</span></div><div class="payment-method-card d-flex float-left mr-2 payment-method-2" data-method="5"><span class="align-self-center mx-auto font-weight-bold">OVO</span></div></div></div></div>');
+        });
+        $(document).on('click', '.payment-method-2', function() {
+            var method = $(this).data('method');
+            if(method == 1){
+                $('#paymentMethod2').prop('disabled', false);
+                $('#paymentMethod2').val(method);
+                var balance = $('#balanceDisplayValue').val();
+                $('#paymentMethod2ModalBody').empty();
+                $('#paymentMethod2ModalBody').append('<div class="form-group row"><label class="col-form-label col-12 col-lg-5">Amount</label><div class="input-group col-12 col-lg-6"><div class="input-group-prepend"> <div class="input-group-text">Rp</div></div><input type="text" class="form-control text-right" id="paid2" name="paid2"></div></div><div class="form-group row py-3"><label class="col-form-label col-12 col-lg-5">Balance</label><div class="col-12 col-lg-6"><h6 id="balance2">Rp '+thousandFormat(balance)+'</h6><input type="hidden" id="balanceValue2" value="'+balance+'"></div></div><div class="form-group row py-3"><label class="col-form-label col-12 col-lg-5">Change</label><div class="col-12 col-lg-6"><h6 id="change2">Rp 0</h6><input type="hidden" name="change" id="changeValue2"></div></div>');
+                $('paymentMethod2').prop('disabled', false);
+                $('paymentMethod2').val(method);
+            }
+            $('#paid2').on('input', function () {
+                var value = parseFloat($(this).val());
+                var totalPrice = parseFloat($('#totalPriceValue').val()) -  parseFloat($('#paid').val());
+
+                if (value > totalPrice) {
+                    $('#balance2').text('Rp 0');
+                    $('#balanceValue2').val(0);
+                    $('#balanceValue').val(0);
+                    $('#balanceDisplay').text('Rp 0');
+                    $('#balanceDisplayValue').val(0);
+                    $('#change2').text('Rp ' + thousandFormat(Math.abs(totalPrice - value)));
+                    $('#changeValue2').val(Math.abs(totalPrice - value));
+                } else {
+                    $('#balance2').text('Rp ' + thousandFormat((totalPrice - value)));
+                    $('#balanceValue2').val(totalPrice - value);
+                    $('#balanceValue').val(totalPrice - value);
+                    $('#balanceDisplayValue').val(totalPrice - value);
+                    $('#balanceDisplay').text('Rp ' + thousandFormat((totalPrice - value)));
+
+                    $('#change2').text('Rp 0');
+                    $('#change2').val(0);
+                }
+            });
         });
     });
 
