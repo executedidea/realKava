@@ -373,7 +373,7 @@
         </div>
     </div>
     {{-- Debit Modal --}}
-    <div class="modal fade" id="debitModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal fade payment-method-modal" id="debitModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -388,6 +388,7 @@
                         <label class="col-form-label col-12 col-lg-5">Bank</label>
                         <div class="col-12 col-lg-6">
                             <select name="bank" id="bank" disabled>
+                                <option selected disabled>Select Bank</option>
                                 <option value="1">Mandiri</option>
                                 <option value="2">BCA</option>
                                 <option value="3">BRI</option>
@@ -918,38 +919,74 @@
         });
         $(document).on('click', '.payment-method-2', function() {
             var method = $(this).data('method');
+            $('#paymentMethod2').prop('disabled', false);
+            $('#paymentMethod2').val(method);
+            $('#paymentMethod2').prop('disabled', false);
+            $('#paymentMethod2').val(method);
+            var balance = $('#balanceDisplayValue').val();
             if(method == 1){
-                $('#paymentMethod2').prop('disabled', false);
-                $('#paymentMethod2').val(method);
-                var balance = $('#balanceDisplayValue').val();
                 $('#paymentMethod2ModalBody').empty();
                 $('#paymentMethod2ModalBody').append('<div class="form-group row"><label class="col-form-label col-12 col-lg-5">Amount</label><div class="input-group col-12 col-lg-6"><div class="input-group-prepend"> <div class="input-group-text">Rp</div></div><input type="text" class="form-control text-right" id="paid2" name="paid2"></div></div><div class="form-group row py-3"><label class="col-form-label col-12 col-lg-5">Balance</label><div class="col-12 col-lg-6"><h6 id="balance2">Rp '+thousandFormat(balance)+'</h6><input type="hidden" id="balanceValue2" value="'+balance+'"></div></div><div class="form-group row py-3"><label class="col-form-label col-12 col-lg-5">Change</label><div class="col-12 col-lg-6"><h6 id="change2">Rp 0</h6><input type="hidden" name="change" id="changeValue2"></div></div>');
                 $('paymentMethod2').prop('disabled', false);
                 $('paymentMethod2').val(method);
-            }
-            $('#paid2').on('input', function () {
+                $('#paid2').on('input', function () {
+                    var value = parseFloat($(this).val());
+                    var totalPrice = parseFloat($('#totalPriceValue').val()) -  parseFloat($('#paid').val());
+
+                    if (value > totalPrice) {
+                        $('#balance2').text('Rp 0');
+                        $('#balanceValue2').val(0);
+                        $('#balanceValue').val(0);
+                        $('#balanceDisplay').text('Rp 0');
+                        $('#balanceDisplayValue').val(0);
+                        $('#change2').text('Rp ' + thousandFormat(Math.abs(totalPrice - value)));
+                        $('#changeValue2').val(Math.abs(totalPrice - value));
+                    } else {
+                        $('#balance2').text('Rp ' + thousandFormat((totalPrice - value)));
+                        $('#balanceValue2').val(totalPrice - value);
+                        $('#balanceValue').val(totalPrice - value);
+                        $('#balanceDisplayValue').val(totalPrice - value);
+                        $('#balanceDisplay').text('Rp ' + thousandFormat((totalPrice - value)));
+
+                        $('#change2').text('Rp 0');
+                        $('#change2').val(0);
+                    }
+                });
+            } else if(method == 2) {
+
+                $('#paymentMethod2ModalBody').empty();
+                $('#paymentMethod2ModalBody').append('<div class="form-group row py-3"><label class="col-form-label col-12 col-lg-5">Bank</label><div class="col-12 col-lg-6"><select name="bank" id="bank2" disabled><option selected disabled>Select Bank</option><option value="1">Mandiri</option><option value="2">BCA</option><option value="3">BRI</option></select></div></div><div class="form-group row"><label class="col-form-label col-12 col-lg-5">Card Number</label><div class="col-12 col-lg-6"><input type="text" class="form-control text-right" id="cardNumber2" name="card_number" disabled></div></div><div class="form-group row"><label class="col-form-label col-12 col-lg-5">Amount</label><div class="input-group col-12 col-lg-6"><div class="input-group-prepend"><div class="input-group-text">Rp</div></div><input type="text" class="form-control text-right" class="paid" id="paidBank2" name="paid2" disabled></div></div><div class="form-group row py-3"><label class="col-form-label col-12 col-lg-5">Balance</label><div class="col-12 col-lg-6"><h6 id="balanceBank2"></h6><input type="hidden" id="balanceValueBank2"></div></div>');
+                $('#bank2').prop('disabled', false);
+                $('#paidBank2').prop('disabled', false);
+                $('#bank2').on('change', function() {
+                    $('#cardNumber2').prop('disabled', false);
+                });
+                $('#paidBank2').on('input', function () {
                 var value = parseFloat($(this).val());
                 var totalPrice = parseFloat($('#totalPriceValue').val()) -  parseFloat($('#paid').val());
 
                 if (value > totalPrice) {
-                    $('#balance2').text('Rp 0');
-                    $('#balanceValue2').val(0);
+                    $('#balance').text('Rp 0');
+                    $('#balanceBank2').text('Rp 0');
                     $('#balanceValue').val(0);
-                    $('#balanceDisplay').text('Rp 0');
+                    $('#balanceValueBank2').val(0);
                     $('#balanceDisplayValue').val(0);
-                    $('#change2').text('Rp ' + thousandFormat(Math.abs(totalPrice - value)));
-                    $('#changeValue2').val(Math.abs(totalPrice - value));
+                    $('#balanceDisplay').text('Rp 0');
+                    $('#change').text('Rp ' + thousandFormat(Math.abs(totalPrice - value)));
+                    $('#changeValue').val(Math.abs(totalPrice - value));
                 } else {
-                    $('#balance2').text('Rp ' + thousandFormat((totalPrice - value)));
-                    $('#balanceValue2').val(totalPrice - value);
+                    $('#balance').text('Rp ' + thousandFormat((totalPrice - value)));
+                    $('#balanceBank2').text('Rp ' + thousandFormat((totalPrice - value)));
+                    $('#balanceValueBank2').val(totalPrice - value);
                     $('#balanceValue').val(totalPrice - value);
                     $('#balanceDisplayValue').val(totalPrice - value);
                     $('#balanceDisplay').text('Rp ' + thousandFormat((totalPrice - value)));
 
-                    $('#change2').text('Rp 0');
-                    $('#change2').val(0);
+                    $('#change').text('Rp 0');
+                    $('#change').val(0);
                 }
             });
+            }
         });
     });
 

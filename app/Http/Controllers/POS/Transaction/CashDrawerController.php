@@ -24,6 +24,7 @@ class CashDrawerController extends Controller
         $customer                             = CheckInOut::getTodayCustomer($outlet_id);
         $setting                              = SettingPOS::getSettingByOutletID($outlet_id);
         $promos                               = PromoItem::getTodaysPromo($outlet_id);
+        dd($promos);
         return view('pos.transaction.cash-drawer.index', compact('bank_name_list', 'items', 'customer', 'setting', 'promos'));
     }
 
