@@ -211,6 +211,8 @@ Route::group(['middleware' => 'auth'], function () {
             // index
             Route::get('/pos/report/close-store-report', 'POS\Report\CloseStoreReportController@index')->name('closeStoreReport');
 
+            Route::get('/pos/transaction/cashdrawer', 'POS\Transaction\CashDrawerController@index');
+            Route::post('/pos/transaction/cashdrawer/store', 'POS\Transaction\CashDrawerController@store')->name('POSPay');
 
 
 

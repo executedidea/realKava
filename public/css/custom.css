@@ -116,19 +116,6 @@ em {
     outline: none;
 }
 
-
-#customerItems :disabled {}
-
-#customerItems thead {}
-
-#vehicle {
-    background-color: #eafbea;
-}
-
-#licensePlate {
-    background-color: #eafbea;
-}
-
 #calculated input {
     background-color: #ecfcff !important;
 }
