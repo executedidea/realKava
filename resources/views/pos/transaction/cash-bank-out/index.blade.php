@@ -24,7 +24,7 @@
                             <div class="form-group text-center col-4">
 
                                 <select name="payment_source" class="form-control payment-resource" id="paymentSource">
-                                    <option disabled selected>Source Payment</option>
+                                    <option disabled selected>Payment Source</option>
                                     <option value="pc">Petty Cash</option>
                                     <option value="b">Bank</option>
                                 </select>
@@ -75,11 +75,11 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="form-group col-4">
+                        <div class="form-group col-3">
                             <input type="text" name="cash_bank_date" class="form-control datepicker" id="cashBankDate"
                                 placeholder="Date">
                         </div>
-                        <div class="form-group text-center col-4">
+                        <div class="form-group text-center col-3">
                             <select name="petty_cash_detail_category" class="form-control petty-cash-detail-category"
                                 id="pettyCashDetailCategory">
                                 <option disabled selected>Category</option>
@@ -91,9 +91,18 @@
                             </select>
                         </div>
                         {{-- <input type="hidden" name="bank_out_type" id="bankOutType" class="bank-out-type" value="d"> --}}
-                        <div class="form-group text-center col-4">
+                        <div class="form-group text-center col-3">
                             <input type="text" name="cash_bank_amount" id="cashBankAmount"
                                 class="form-control cash-bank-amount" placeholder="Amount">
+                        </div>
+                        <div class="form-group text-center col-3">
+                            <select name="petty_cash_detail_paymentMethod"
+                                class="form-control petty-cash-detail-paymentmethod" id="pettyCashDetailPaymentMethod">
+                                <option disabled selected>Payment Method</option>
+                                <option value="cash">Cash</option>
+                                <option value="transfer">Transfer</option>
+                                <option value="creditcard">Credit Card</option>
+                            </select>
                         </div>
                         <div class="form-group col-12">
                             <label>Deskripsi</label>
@@ -118,8 +127,4 @@
 <script src="{{ asset('/modules/select2/dist/js/select2.full.min.js') }}"></script>
 <script src="{{asset('js/sweetalert2.all.min.js')}}"></script>
 <script src="{{ asset('/js/kava/pos/cash-bank-out/index.js') }}"></script>
-{{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-resource.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/autonumeric/4.0.3/autoNumeric.js"></script> --}}
 @endsection

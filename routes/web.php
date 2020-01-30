@@ -140,6 +140,11 @@ Route::group(['middleware' => 'auth'], function () {
                     Route::get('/cs/report/complaint-handling-report/pdf','CS\Report\ComplaintHandlingReportController@reportPDF')->name('complaintHandlingReportPrint');
                     // index
                     Route::get('/cs/report/complaint-handling-report', 'CS\Report\ComplaintHandlingReportController@index')->name('complaintHandlingReport');
+                // Service Report
+                    // PDF
+                    Route::get('/cs/report/service-report/pdf','CS\Report\ServiceReportController@reportPDF')->name('serviceReportPrint');
+                    // index
+                    Route::get('/cs/report/service-report', 'CS\Report\ServiceReportController@index')->name('serviceReport');
         // Booking Online
         // Route::get('/cs/transaction/booking-online', 'CS\Transaction\BookingOnlineController@index')->name('bookingOnlineTransaction');
 
@@ -181,6 +186,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/pos/transaction/cash-bank-out/bank-out', 'POS\Transaction\BankOutController@index')->name('bankOutTransaction');
         // Change Shift
         Route::get('/pos/transaction/change-shift', 'POS\Transaction\ChangeShiftController@index')->name('changeShiftTransaction');
+        // Cash Drawer
+        Route::get('/pos/transaction/cashdrawer', 'POS\Transaction\CashDrawerController@index');
+        
         // REPORT-----
         // Sales Report
             // PDF
@@ -192,8 +200,17 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/pos/report/payment-report/pdf','POS\Report\PaymentReportController@reportPDF')->name('paymentReportPrint');
             // index
             Route::get('/pos/report/payment-report', 'POS\Report\PaymentReportController@index')->name('paymentReport');
+        // Receipt Report
+            // PDF
+            Route::get('/pos/report/received-report/pdf','POS\Report\ReceivedReportController@reportPDF')->name('receivedReportPrint');
+            // index
+            Route::get('/pos/report/received-report', 'POS\Report\ReceivedReportController@index')->name('receivedReport');
+        // Close Store Report
+            // PDF
+            Route::get('/pos/report/close-store-report/pdf','POS\Report\CloseStoreReportController@reportPDF')->name('closeStoreReportPrint');
+            // index
+            Route::get('/pos/report/close-store-report', 'POS\Report\CloseStoreReportController@index')->name('closeStoreReport');
 
-            Route::get('/pos/transaction/cashdrawer', 'POS\Transaction\CashDrawerController@index');
 
 
 

@@ -22,7 +22,9 @@ class PaymentReportController extends Controller
      */
     public function index()
     {
-        return view('pos.report.payment-report.index');
+        $outlet_id      = Auth::user()->outlet_id;
+        $outlet_all     = PaymentReport::getOutletAll($outlet_id);
+        return view('pos.report.payment-report.index', compact('outlet_all'));
     }
 
     /**
@@ -109,17 +111,18 @@ class PaymentReportController extends Controller
             $asof_StartDate                     = $request->asof_StartDate;
             $asof_EndDate                       = $request->asof_EndDate;
             $filter_date                        = $request->filter_date;
-            $vehicle_category                   = $request->vehicle_category;
+            $payment_type                       = $request->payment_type;
+            $payment_source                     = $request->payment_source;
             $outlet_id                          = Auth::user()->outlet_id;
             $name                               = Auth::user()->name;
             $date_now                           = date('d-m-Y H:i:s');
             $carwash_data                       = PaymentReport::getCarwashData($outlet_id);
-            $report_data                        = PaymentReport::getReportData($outlet_id, $period_StartDate, $period_EndDate, $asof_StartDate, $asof_EndDate, $filter_date, $vehicle_category);
+            $report_data                        = PaymentReport::getReportData($outlet_id, $period_StartDate, $period_EndDate, $asof_StartDate, $asof_EndDate, $filter_date, $payment_type, $payment_source);
             // dd($report_data);
             // if(empty($report_data)) {              
             //     return back()->with('alert', 'Data kosong');   
             // } elseif(!empty($report_data)) {
-                $pdf                                = PDF::loadView('pos/report/payment-report/pdf', compact('carwash_data', 'name', 'date_now'));
+                $pdf                                = PDF::loadView('pos/report/payment-report/pdf', compact('carwash_data', 'name', 'date_now', 'report_data'));
                 return $pdf->stream('PaymentReport-pdf.pdf');
                 // return $pdf->download('PaymentReport-pdf (' . date('d-m-Y') . ').pdf');
             // }

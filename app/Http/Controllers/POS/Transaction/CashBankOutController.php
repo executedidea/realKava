@@ -39,18 +39,19 @@ class CashBankOutController extends Controller
                 $bank_out_id               = $bank_out_lastID[0]->bank_out_id + 1;
             }
             
-            $bank_out_date                 = $request->cash_bank_date;
-            $bank_out_amount               = $request->cash_bank_amount;
-            // $bank_out_type                 = $request->bank_out_type;
-            $bank_out_desc                 = $request->cash_bank_desc;
-            $bank_account_id               = $request->bank_account_number;
-            $outlet_id                     = Auth::user()->outlet_id;
+            $bank_out_date                          = $request->cash_bank_date;
+            $bank_out_amount                        = $request->cash_bank_amount;
+            // $bank_out_type                       = $request->bank_out_type;
+            $bank_out_desc                          = $request->cash_bank_desc;
+            $bank_account_id                        = $request->bank_account_number;
+            $outlet_id                              = Auth::user()->outlet_id;
 
-            $petty_cash_detail_date        = $request->cash_bank_date;
-            $petty_cash_detail_category    = $request->petty_cash_detail_category;
-            $petty_cash_detail_amount      = $request->cash_bank_amount;
-            $petty_cash_detail_desc        = $request->cash_bank_desc;
-            $petty_cash_id                 = NULL;
+            $petty_cash_detail_date                 = $request->cash_bank_date;
+            $petty_cash_detail_category             = $request->petty_cash_detail_category;
+            $petty_cash_detail_amount               = $request->cash_bank_amount;
+            $petty_cash_detail_desc                 = $request->cash_bank_desc;
+            $petty_cash_id                          = NULL;
+            $petty_cash_detail_paymentMethod        = $request->petty_cash_detail_paymentMethod;
 
             // dd($bank_out_type);
 
@@ -74,7 +75,8 @@ class CashBankOutController extends Controller
                 $petty_cash_detail_desc,
                 $petty_cash_id,
                 $bank_out_id,
-                $outlet_id
+                $outlet_id,
+                $petty_cash_detail_paymentMethod
             );
             
         } elseif ($request->payment_source == 'pc') {
@@ -94,6 +96,8 @@ class CashBankOutController extends Controller
             $petty_cash_id_array                    = PettyCashOut::getPettyCashIDByLastDate($outlet_id);
             $petty_cash_id                          = $petty_cash_id_array[0]->petty_cash_id;
             $bank_out_id                            = NULL;
+            $petty_cash_detail_paymentMethod        = $request->petty_cash_detail_paymentMethod;
+
 
             
             PettyCashOut::setPettyCashOut(
@@ -104,7 +108,8 @@ class CashBankOutController extends Controller
                 $petty_cash_detail_desc,
                 $petty_cash_id,
                 $bank_out_id,
-                $outlet_id
+                $outlet_id,
+                $petty_cash_detail_paymentMethod
             );
         }
         

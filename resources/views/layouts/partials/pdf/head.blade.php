@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
 
-    <title>Report</title>
+    @yield('title-tab')
 
     <style>
         /* PDF */
@@ -31,7 +31,7 @@
         }
 
         .head-title {
-            font-size: 13px;
+            font-size: 15px;
             font-weight: bold;
         }
 
@@ -78,7 +78,7 @@
                 <?php $image_path = 'storage/images/outlet_logo/thumbnails/' . $carwash_data[0]->outlet_logo ; ?>
                 <img src="{{ $image_path }}" height="75px" width="75px">
             </td>
-            <td class="head-title" colspan="19">LAPORAN @yield('title')
+            <td class="head-title" colspan="19">REPORT @yield('title')
             </td>
         </tr>
         <tr>
@@ -87,7 +87,7 @@
             </td>
         </tr>
         <tr>
-            <td class="head-content" colspan="19" style="padding-top: -15px;">
+            <td class="head-content" colspan="19" style="padding-top: -23px;">
                 {{ $carwash_data[0]->outlet_detail_address }}
             </td>
         </tr>

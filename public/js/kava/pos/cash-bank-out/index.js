@@ -157,3 +157,12 @@ $(document).ready(function () {
     // });
 
 });
+
+// Formatting
+var rupiah = new Cleave('#cashBankAmount', {
+    numeral: true,
+    numeralThousandsGroupStyle: 'thousand'
+});
+$('#addCashBankOut').on('submit', function () {
+    $('#cashBankAmount').val(rupiah.getRawValue());
+});

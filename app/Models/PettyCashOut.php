@@ -40,9 +40,9 @@ class PettyCashOut extends Model
         return $petty_cash_balance;
     }
 
-    public static function setPettyCashOut($petty_cash_detail_id, $petty_cash_detail_date, $petty_cash_detail_category, $petty_cash_detail_amount, $petty_cash_detail_desc, $petty_cash_id, $bank_out_id, $outlet_id)
+    public static function setPettyCashOut($petty_cash_detail_id, $petty_cash_detail_date, $petty_cash_detail_category, $petty_cash_detail_amount, $petty_cash_detail_desc, $petty_cash_id, $bank_out_id, $outlet_id, $petty_cash_detail_paymentMethod)
     {
-        $set_petty_cash_out                = DB::select('call SP_PettyCashOut_Insert(?,?,?,?,?,?,?,?)', [$petty_cash_detail_id, $petty_cash_detail_date, $petty_cash_detail_category, $petty_cash_detail_amount, $petty_cash_detail_desc, $petty_cash_id, $bank_out_id, $outlet_id]);
+        $set_petty_cash_out                = DB::select('call SP_PettyCashOut_Insert(?,?,?,?,?,?,?,?,?)', [$petty_cash_detail_id, $petty_cash_detail_date, $petty_cash_detail_category, $petty_cash_detail_amount, $petty_cash_detail_desc, $petty_cash_id, $bank_out_id, $outlet_id, $petty_cash_detail_paymentMethod]);
         return $set_petty_cash_out;
     }
 

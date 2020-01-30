@@ -199,13 +199,14 @@ $('#complaintHandlingForm').on('submit', function () {
     $('#complaintHandlingFee').val(rupiah.getRawValue());
 });
 
-var rupiah = new Cleave('#editComplaintHandlingFee', {
-    numeral: true,
-    numeralThousandsGroupStyle: 'thousand'
-});
-$('#editComplaintHandlingForm').on('submit', function () {
-    $('#editComplaintHandlingFee').val(rupiah.getRawValue());
-});
+// var rupiah = new Cleave('#editComplaintHandlingFee', {
+//     numeral: true,
+//     numeralThousandsGroupStyle: 'thousand'
+// });
+// $('#editComplaintHandlingForm').on('submit', function () {
+//     $('#editComplaintHandlingFee').val(rupiah.getRawValue());
+// });
+
 
 
 

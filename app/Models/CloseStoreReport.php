@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class PaymentReport extends Model
+class CloseStoreReport extends Model
 {
     //
     protected $table        = 'tbl_outlet';
@@ -16,17 +16,11 @@ class PaymentReport extends Model
         return $carwash;
     }
 
-    public static function getReportData($outlet_id, $period_StartDate, $period_EndDate, $asof_StartDate, $asof_EndDate, $filter_date, $payment_type, $payment_source)
+    public static function getReportData($outlet_id, $close_store_date)
     {
-        $report            = DB::select('call SP_PDF_PaymentReport_Select(?,?,?,?,?,?,?,?)', [$outlet_id, $period_StartDate, $period_EndDate, $asof_StartDate, $asof_EndDate, $filter_date, $payment_type, $payment_source]);
+        $report            = DB::select('call SP_PDF_CloseStoreReport_Select(?,?)', [$outlet_id, $close_store_date]);
         return $report;
     }
-
-    // public static function getReportDataNoByCategory($outlet_id, $period_StartDate, $period_EndDate)
-    // {
-    //     $report_nobycategory            = DB::select('call SP_SalesReport_PDF_NoByCategory_Select(?,?,?)', [$outlet_id, $period_StartDate, $period_EndDate]);
-    //     return $report_nobycategory;
-    // }
 
     public static function getOutletAll($outlet_id)
     {

@@ -45,9 +45,9 @@ class ComplaintHandling extends Model
         return $last_id;
     }
 
-    public static function setComplaintHandling($complaint_handling_id, $complaint_handling_date, $complaint_handling_targetDate, $complaint_handling_handler, $complaint_handling_status, $complaint_handling_desc, $complaint_handling_fee, $customer_detail_id, $complaint_type_id, $item_id, $outlet_id)
+    public static function setComplaintHandling($complaint_handling_id, $complaint_handling_date, $complaint_handling_targetDate, $complaint_handling_handler, $complaint_handling_status, $complaint_handling_desc, $complaint_handling_fee, $customer_detail_id, $complaint_type_id, $item_id, $outlet_id, $complaint_handling_detail_id)
     {
-        $set_complaint_handling                = DB::select('call SP_CS_ComplaintHandling_Insert(?,?,?,?,?,?,?,?,?,?,?)', [
+        $set_complaint_handling                = DB::select('call SP_CS_ComplaintHandling_Insert(?,?,?,?,?,?,?,?,?,?,?,?)', [
             $complaint_handling_id, 
             $complaint_handling_date,
             $complaint_handling_targetDate,
@@ -58,7 +58,8 @@ class ComplaintHandling extends Model
             $customer_detail_id,
             $complaint_type_id,
             $item_id,
-            $outlet_id
+            $outlet_id,
+            $complaint_handling_detail_id
         ]);
         return $set_complaint_handling;
     }

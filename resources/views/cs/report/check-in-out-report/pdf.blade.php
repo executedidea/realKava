@@ -1,22 +1,26 @@
+@section('title-tab')
+<title>Check In Out Report</title>
+@endsection
+
 @section('title')
 CHECK IN OUT
 @endsection
 
 @section('title-caption')
 <tr>
-    <td class="head-content" colspan="3" style="padding-top: -29px; text-transform: capitalize;">
+    <td class="head-content" colspan="3" style="padding-top: -47px; text-transform: capitalize;">
         Status
     </td>
-    <td class="head-content" style="padding-top: -29px;">:</td>
-    <td class="head-content" colspan="2" style="padding-top: -29px; text-transform:capitalize;">
+    <td class="head-content" style="padding-top: -47px;">:</td>
+    <td class="head-content" colspan="2" style="padding-top: -47px; text-transform:capitalize;">
         {{ $report_data[0]->pstatus }}
     </td>
 </tr>
 <tr>
     <td></td>
-    <td class="head-content" colspan="3" style="padding-top: -20px;">Date </td>
-    <td class="head-content" style="padding-top: -20px;">:</td>
-    <td class="head-content" style="padding-top: -20px;">
+    <td class="head-content" colspan="3" style="padding-top: -47px;">Date </td>
+    <td class="head-content" style="padding-top: -47px;">:</td>
+    <td class="head-content" style="padding-top: -47px;">
         {{ date('d-m-Y', strtotime($report_data[0]->pcheck_in_out_date)) }}
     </td>
 
@@ -40,13 +44,28 @@ CHECK IN OUT
 </tr>
 @endsection
 
-
 @include('layouts.partials.pdf.head')
+
+@php
+$rowid = 0;
+$rowspan = 0;
+@endphp
 @foreach($report_data as $index => $item)
 <tbody class="table-content">
+    @php
+    $rowid += 1
+    @endphp
     <tr>
-        <td>{{ $index+1 }}</td>
-        <td>{{ $item->check_in_ticket }}</td>
+
+        @if ($index == 0 || $rowspan == $rowid)
+        @php
+        $rowid = 0;
+        $rowspan = $item->checkInCount;
+        @endphp
+
+        <td rowspan="{{ $rowspan }}">{{ $index+1 }}</td>
+        <td rowspan="{{ $rowspan }}">{{ $item->check_in_ticket }}</td>
+        @endif
         @if ( $item->check_out_status == '0' )
         <td>Checked In</td>
         @elseif ( $item->check_out_status == '1' )
@@ -58,6 +77,8 @@ CHECK IN OUT
     </tr>
 </tbody>
 @endforeach
+
+
 <tfoot>
 </tfoot>
 </table>

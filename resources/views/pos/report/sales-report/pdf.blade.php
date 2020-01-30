@@ -1,13 +1,17 @@
+@section('title-tab')
+<title>Sales Report</title>
+@endsection
+
 @section('title')
-PENJUALAN
+SALES
 @endsection
 
 
 @section('title-caption')
 <tr>
-    <td class="head-content" colspan="3" style="padding-top: -29px;">Kategori </td>
-    <td class="head-content" style="padding-top: -29px;">:</td>
-    <td class="head-content" style="padding-top: -29px;">
+    <td class="head-content" colspan="3" style="padding-top: -47px;">Kategori </td>
+    <td class="head-content" style="padding-top: -47px;">:</td>
+    <td class="head-content" style="padding-top: -47px;">
         @if (count($report_data) === 1)
         {{ $report_data[0]->vehicle_category_name }}
         @elseif (count($report_data) > 1)
@@ -20,15 +24,15 @@ PENJUALAN
 
 
     @if (empty($report_data[0]->pperiod_StartDate) AND empty($report_data[0]->pperiod_EndDate))
-    <td class="head-content" colspan="3" style="padding-top: -20px;">As Of </td>
-    <td class="head-content" style="padding-top: -29px;">:</td>
-    <td class="head-content" style="padding-top: -29px;">
+    <td class="head-content" colspan="3" style="padding-top: -47px;">As Of </td>
+    <td class="head-content" style="padding-top: -47px;">:</td>
+    <td class="head-content" style="padding-top: -47px;">
         {{ date('d-m-Y', strtotime($report_data[0]->pasof_EndDate)) }}
     </td>
     @elseif (empty($report_data[0]->pasof_StartDate) AND empty($report_data[0]->pasof_EndDate))
-    <td class="head-content" colspan="3" style="padding-top: -20px;">Periode </td>
-    <td class="head-content">:</td>
-    <td class="head-content">
+    <td class="head-content" colspan="3" style="padding-top: -47px;">Periode </td>
+    <td class="head-content" style="padding-top: -47px;">:</td>
+    <td class="head-content" style="padding-top: -47px;">
         {{ date('d-m-Y', strtotime($report_data[0]->pperiod_StartDate)) }}
         s/d
         {{ date('d-m-Y', strtotime($report_data[0]->pperiod_EndDate)) }}
@@ -88,13 +92,14 @@ $report_data[0]->point_of_sales_totalPayment))
 @section('table-head')
 <tr>
     <td style="width:20px;"><b>No</b></td>
-    <td style="width:150px;"><b>Customer</b></td>
+    <td style="width:60px;"><b>Date</b></td>
+    <td style="width:110px;"><b>Customer</b></td>
     <td style="width:70px;"><b>Plat Nomor</b></td>
     <td style="width:60px;"><b>Jenis</b></td>
-    <td style="width:70px;"><b>Ukuran</b></td>
-    <td style="width:75;"><b>Harga</b></td>
-    <td style="width:75;"><b>Pembayaran</b></td>
-    <td style="width:75;"><b>Sisa</b></td>
+    <td style="width:50px;"><b>Ukuran</b></td>
+    <td style="width:50;"><b>Harga</b></td>
+    <td style="width:50;"><b>Pembayaran</b></td>
+    <td style="width:50;"><b>Sisa</b></td>
 </tr>
 @endsection
 
@@ -104,6 +109,7 @@ $report_data[0]->point_of_sales_totalPayment))
 <tbody class="table-content">
     <tr>
         <td>{{ $index+1 }}</td>
+        <td>{{ date('d-m-Y', strtotime($item->point_of_sales_date)) }} </td>
         <td style="text-align:left;">{{ $item->customer_fullName }}</td>
         <td>{{ $item->customer_detail_licensePlate }}</td>
         <td>{{ $item->vehicle_category_name }}</td>
@@ -125,7 +131,7 @@ $report_data[0]->point_of_sales_totalPayment))
 @endforeach
 <tfoot>
     <tr>
-        <td colspan="5"><b>Total</b></td>
+        <td colspan="6"><b>Total</b></td>
         <td style="text-align:right;"><b>{{ number_format($report_data[0]->SUMTotalPayment) }}</b></td>
 
         @if (($item->point_of_sales_paid1 + $item->point_of_sales_paid2) >= $item->point_of_sales_totalPayment))

@@ -22,6 +22,18 @@ class CustomerReport extends Model
         return $report;
     }
 
+    // public static function getCustomerCount($outlet_id, $period_StartDate, $period_EndDate, $asof_StartDate, $asof_EndDate, $filter_date, $customer, $customer_id)
+    // {
+    //     $report            = DB::select('call SP_PDF_CustomerCount_Select(?,?,?,?,?,?,?,?)', [$outlet_id, $period_StartDate, $period_EndDate, $asof_StartDate, $asof_EndDate, $filter_date, $customer, $customer_id]);
+    //     return $report;
+    // }
+
+    public static function getVehicleCount($outlet_id, $period_StartDate, $period_EndDate, $asof_StartDate, $asof_EndDate, $filter_date, $customer, $customer_id)
+    {
+        $report            = DB::select('call SP_PDF_CustomerReport_Vehicle_Select(?,?,?,?,?,?,?,?)', [$outlet_id, $period_StartDate, $period_EndDate, $asof_StartDate, $asof_EndDate, $filter_date, $customer, $customer_id]);
+        return $report;
+    }
+
     public static function getCustomerAll($outlet_id)
     {
         $customer_all            = DB::select('call SP_CS_One_CustomerList_Select(?)', [$outlet_id]);

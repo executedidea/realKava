@@ -7,9 +7,9 @@
 <link rel="stylesheet" href="{{ asset('/modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}">
 <link rel="stylesheet" href="{{ asset('/modules/bootstrap-daterangepicker/daterangepicker.css') }}">
 @endsection
-@section('title', 'Payment Report | Finance - KAVA')
+@section('title', 'Received Report | Finance - KAVA')
 @section('content')
-<section id="paymentReport">
+<section id="receivedReport">
     <div class="container">
 
         @if(Session::has('alert'))
@@ -29,8 +29,8 @@
             <div class="col-6">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Payment Report</h4>
-                        <form action="{{ route('paymentReportPrint') }}" method="get" class="validate-this ml-auto">
+                        <h4>Received Report</h4>
+                        <form action="{{ route('receivedReportPrint') }}" method="get" class="validate-this ml-auto">
                             @csrf
                             <button type="submit" class="pdf-btn">
                                 <img src="{{asset('img/icons/pdf.png')}}" alt="pdf" height="40px">
@@ -54,28 +54,16 @@
                         </div>
                         <div class="row justify-content-center">
                             <div class="form-group col-10">
-                                <select name="payment_type" class="form-control payment-type">
-                                    <option selected disabled>Payment Type</option>
-                                    <option value="all">
+                                <select name="payment_method" class="form-control payment-method">
+                                    <option selected disabled>Payment Method</option>
+                                    <option value="6">
                                         All
                                     </option>
-                                    <option value="work equipment">Peralatan Kerja</option>
-                                    <option value="operational">Operasional</option>
-                                    <option value="salary">Upah</option>
-                                    <option value="marketing">Marketing</option>
-                                    <option value="etc">Lain-lain</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="form-group col-10">
-                                <select name="payment_source" class="form-control payment-type">
-                                    <option selected disabled>Payment Source</option>
-                                    <option value="all">
-                                        All
-                                    </option>
-                                    <option value="petty cash">Petty Cash</option>
-                                    <option value="bank">Bank</option>
+                                    <option value="1">Cash</option>
+                                    <option value="2">Debit</option>
+                                    <option value="3">Credit Card</option>
+                                    <option value="4">GoPay</option>
+                                    <option value="5">OVO</option>
                                 </select>
                             </div>
                         </div>
@@ -207,20 +195,20 @@
 
                 console.log($('#asofStartDate').val());
                 console.log($('#asofEndDate').val());
-                // var msg = '{{Session::get('
-                // alert ')}}';
-                // var exist = '{{Session::has('
-                // alert ')}}';
-                // if (exist) {
-                //     Swal.fire(
-                //         'No Data',
-                //         'Choose another option!'
-                //     );
-                // }
+
 
             }
 
-
+            var msg = '{{Session::get('
+            alert ')}}';
+            var exist = '{{Session::has('
+            alert ')}}';
+            if (exist) {
+                Swal.fire(
+                    'No Data',
+                    'Choose another option!'
+                );
+            }
 
         });
     });

@@ -7,6 +7,7 @@ use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\ComplaintHandling;
+use App\Models\ComplaintHandlingDetail;
 use App\Models\ComplaintType;
 use App\Models\Item;
 use Illuminate\Support\Facades\Auth;
@@ -88,6 +89,14 @@ class ComplaintHandlingController extends Controller
                 $complaint_type_id             = $complaint_type_lastID[0]->complaint_type_id + 1;
             }
 
+            
+            if (count(ComplaintHandlingDetail::all()) <= 0) {
+                $complaint_handling_detail_id             = 1;
+            } else {
+                $complaint_handling_detail_lastID         = ComplaintHandlingDetail::getComplaintHandlingDetailLastID();
+                $complaint_handling_detail_id             = $complaint_handling_detail_lastID[0]->complaint_handling_detail_id + 1;
+            }
+
             $complaint_handling_date            = $request->complaint_handling_date;
             $complaint_handling_targetDate      = $request->complaint_handling_targetDate;
             $complaint_handling_handler         = $request->complaint_handling_handler;
@@ -97,6 +106,8 @@ class ComplaintHandlingController extends Controller
             $customer_detail_id                 = $request->customer_detail_id;
             $complaint_type_id                  = $request->complaint_type_id;
             $item_id                            = $request->item_id;
+
+            // dd($complaint_handling_fee);
 
             ComplaintHandling::setComplaintHandling(
                 $complaint_handling_id, 
@@ -109,7 +120,8 @@ class ComplaintHandlingController extends Controller
                 $customer_detail_id,
                 $complaint_type_id,
                 $item_id,
-                $outlet_id
+                $outlet_id,
+                $complaint_handling_detail_id
             );
 
             return back()->with('complaintHandlingAdded');
@@ -162,18 +174,20 @@ class ComplaintHandlingController extends Controller
         // if ($validator->fails()) {
             // return back()->withErrors($validator);
         // } else {
-            if (count(ComplaintHandling::all()) <= 0) {
+            if (count(ComplaintHandlingDetail::all()) <= 0) {
                 $complaint_handling_detail_id             = 1;
             } else {
-                $complaint_handling_detail_lastID         = ComplaintHandling::getComplaintHandlingDetailLastID();
+                $complaint_handling_detail_lastID         = ComplaintHandlingDetail::getComplaintHandlingDetailLastID();
                 $complaint_handling_detail_id             = $complaint_handling_detail_lastID[0]->complaint_handling_detail_id + 1;
             }
 
             $complaint_handling_status          = $request->complaint_handling_status;
-            $complaint_handling_desc          = $request->complaint_handling_desc;
+            $complaint_handling_desc            = $request->complaint_handling_desc;
             $complaint_handling_detail_status   = $request->complaint_handling_status;
             $complaint_handling_detail_desc     = $request->complaint_handling_desc;
             $complaint_handling_id              = $request->complaint_handling_id;
+
+            // dd($complaint_handling_detail_id);
 
             ComplaintHandling::setUpdateComplaintHandlingDetailStatus(
                 $complaint_handling_detail_id, 

@@ -1,3 +1,7 @@
+@section('title-tab')
+<title>Complaint Handling Report</title>
+@endsection
+
 @section('title')
 COMPLAINT HANDLING
 @endsection
@@ -5,27 +9,27 @@ COMPLAINT HANDLING
 
 @section('title-caption')
 <tr>
-    <td class="head-content" colspan="3" style="padding-top: -29px; text-transform: capitalize;">
-        Complaint Type
+    <td class="head-content" colspan="3" style="padding-top: -45px; text-transform: capitalize;">
+        Complaint Status
     </td>
-    <td class="head-content" style="padding-top: -29px;">:</td>
-    <td class="head-content" colspan="2" style="padding-top: -29px; text-transform:capitalize;">
+    <td class="head-content" style="padding-top: -45px;">:</td>
+    <td class="head-content" colspan="2" style="padding-top: -45px; text-transform:capitalize;">
         {{ $report_data[0]->pcomplaint_status }}
     </td>
 </tr>
 <tr>
     <td></td>
     @if (empty($report_data[0]->pperiod_StartDate) AND empty($report_data[0]->pperiod_EndDate))
-    <td class="head-content" colspan="3" style="padding-top: -20px;">As Of </td>
-    <td class="head-content" style="padding-top: -20px;">:</td>
-    <td class="head-content" style="padding-top: -20px;">
+    <td class="head-content" colspan="3" style="padding-top: -45px;">As Of </td>
+    <td class="head-content" style="padding-top: -45px;">:</td>
+    <td class="head-content" style="padding-top: -45px;">
         {{ date('d-m-Y', strtotime($report_data[0]->pasof_EndDate)) }}
     </td>
 
     @elseif (empty($report_data[0]->pasof_StartDate) AND empty($report_data[0]->pasof_EndDate))
-    <td class="head-content" colspan="3" style="padding-top: -20px;">Periode </td>
-    <td class="head-content" style="padding-top: -20px;">:</td>
-    <td class="head-content" style="padding-top: -20px;">
+    <td class="head-content" colspan="3" style="padding-top: -45px;">Periode </td>
+    <td class="head-content" style="padding-top: -45px;">:</td>
+    <td class="head-content" style="padding-top: -45px;">
         {{ date('d-m-Y', strtotime($report_data[0]->pperiod_StartDate)) }}
         s/d
         {{ date('d-m-Y', strtotime($report_data[0]->pperiod_EndDate)) }}
@@ -66,12 +70,12 @@ COMPLAINT HANDLING
         <td>{{ $index+1 }}</td>
         <td style="text-align:center; text-transform:capitalize;">{{ $item->complaint_type_name }}</td>
         <td>{{ date('d-m-Y', strtotime($item->complaint_handling_date)) }}</td>
-        @if ( $item->complaint_handling_detail_date > $item->complaint_handling_targetDate)
+        @if ( $item->complaint_handling_detail_date > $item->complaint_handling_detail_date)
         {{-- <td>{{ date('d-m-Y', strtotime($item->complaint_handling_detail_date)) }}</td> --}}
-        <td>{{ date('d-m-Y', strtotime($item->complaint_handling_targetDate)) }}</td>
+        <td>{{ date('d-m-Y', strtotime($item->complaint_handling_detail_date)) }}</td>
 
         @else
-        <td>{{ date('d-m-Y', strtotime($item->complaint_handling_targetDate)) }}</td>
+        <td>{{ date('d-m-Y', strtotime($item->complaint_handling_detail_date)) }}</td>
         @endif
         <td>{{ $item->complaint_handling_dateDifference }}</td>
         <td>{{ $item->complaint_handling_handler }}</td>

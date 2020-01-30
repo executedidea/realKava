@@ -1,3 +1,7 @@
+@section('title-tab')
+<title>Membership Report</title>
+@endsection
+
 @section('title')
 MEMBERSHIP
 @endsection
@@ -5,20 +9,20 @@ MEMBERSHIP
 
 @section('title-caption')
 <tr>
-    <td class="head-content" colspan="3" style="padding-top: -29px; text-transform: capitalize;">
-        Membership
+    <td class="head-content" colspan="3" style="padding-top: -47px; text-transform: capitalize;">
+        Membership Status
     </td>
-    <td class="head-content" style="padding-top: -29px;">:</td>
-    <td class="head-content" style="padding-top: -29px; text-transform: capitalize;">
+    <td class="head-content" style="padding-top: -47px;">:</td>
+    <td class="head-content" style="padding-top: -47px; text-transform: capitalize;">
         {{ $report_data[0]->pmembership }}
     </td>
 </tr>
 <tr>
     <td></td>
     @if (empty($report_data[0]->pperiod_StartDate) AND empty($report_data[0]->pperiod_EndDate))
-    <td class="head-content" colspan="3" style="padding-top: -25px;">As Of </td>
-    <td class="head-content" style="padding-top: -25px;">:</td>
-    <td class="head-content" style="padding-top: -25px;">
+    <td class="head-content" colspan="3" style="padding-top: -47px;">As Of </td>
+    <td class="head-content" style="padding-top: -47px;">:</td>
+    <td class="head-content" style="padding-top: -47px;">
         {{ date('d-m-Y', strtotime($report_data[0]->pasof_EndDate)) }}
     </td>
 
@@ -68,7 +72,7 @@ MEMBERSHIP
         <td>{{ $index+1 }}</td>
         <td>{{ $item->customer_fullName }}</td>
         <td>{{ $item->membership_name }}</td>
-        <td></td>
+        <td>{{ $item->membership_id }}</td>
         <td>{{ date('d-m-Y', strtotime($item->membership_joinDate)) }}</td>
         <td>{{ date('d-m-Y', strtotime($item->membership_expiredDate)) }}</td>
         @if ( $item->status_name == 'member' )

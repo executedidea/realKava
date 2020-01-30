@@ -3,16 +3,17 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 @section('css')
+{{-- <link rel="stylesheet" href="{{ asset('css/kava/cs/service-report.css') }}"> --}}
 <link rel="stylesheet" href="{{ asset('/modules/select2/dist/css/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('/modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}">
 <link rel="stylesheet" href="{{ asset('/modules/bootstrap-daterangepicker/daterangepicker.css') }}">
 @endsection
-@section('title', 'Payment Report | Finance - KAVA')
+@section('title', 'Service Report | Customer Service - KAVA')
 @section('content')
-<section id="paymentReport">
+<section id="serviceReport">
     <div class="container">
 
-        @if(Session::has('alert'))
+        {{-- @if(Session::has('alert'))
         <div class="row justify-content-center">
             <div class="col-6">
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -23,14 +24,14 @@
                 </div>
             </div>
         </div>
-        @endif
+        @endif --}}
 
         <div class="row justify-content-center">
             <div class="col-6">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Payment Report</h4>
-                        <form action="{{ route('paymentReportPrint') }}" method="get" class="validate-this ml-auto">
+                        <h4>Service Report</h4>
+                        <form action="{{ route('serviceReportPrint') }}" method="get" class="validate-this ml-auto">
                             @csrf
                             <button type="submit" class="pdf-btn">
                                 <img src="{{asset('img/icons/pdf.png')}}" alt="pdf" height="40px">
@@ -52,30 +53,28 @@
                                 </select>
                             </div>
                         </div>
+
                         <div class="row justify-content-center">
                             <div class="form-group col-10">
-                                <select name="payment_type" class="form-control payment-type">
-                                    <option selected disabled>Payment Type</option>
+                                <select name="customer" class="form-control customer">
+                                    <option selected disabled>Customer</option>
                                     <option value="all">
-                                        All
+                                        All Customer
                                     </option>
-                                    <option value="work equipment">Peralatan Kerja</option>
-                                    <option value="operational">Operasional</option>
-                                    <option value="salary">Upah</option>
-                                    <option value="marketing">Marketing</option>
-                                    <option value="etc">Lain-lain</option>
+                                    <option value="detail">
+                                        Detail Customer
+                                    </option>
                                 </select>
                             </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="form-group col-10">
-                                <select name="payment_source" class="form-control payment-type">
-                                    <option selected disabled>Payment Source</option>
-                                    <option value="all">
-                                        All
+                            <div id="customerFullName" class="form-group col-10">
+                                <select name="customer_fullName" class="form-control customer-fullname">
+                                    <option selected disabled>Customer Name</option>
+                                    @foreach ($customer as $item)
+                                    <option value="{{ $item->customer_detail_id }}">
+                                        <b>{{ $item->customer_fullName }}</b>
+                                        <span class="text-muted">{{ $item->customer_detail_licensePlate }}</span>
                                     </option>
-                                    <option value="petty cash">Petty Cash</option>
-                                    <option value="bank">Bank</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -134,13 +133,19 @@
 <script src="{{asset('js/sweetalert2.all.min.js')}}"></script>
 <script>
     $(document).ready(function () {
-        // $('#periodStartDate').val('Start Date');
-        // $('#periodEndDate').val('End Date');
         $('.asof-date').hide();
         $('.period-date-date').hide();
-
         $('#asofStartDate').hide();
+        $('#customerFullName').hide();
 
+
+        $('.customer').on('change', function () {
+            if ($('.customer').val() == 'all') {
+                $('#customerFullName').hide();
+            } else if ($('.customer').val() == 'detail') {
+                $('#customerFullName').show();
+            }
+        });
 
         $('.filter-date').on('change', function () {
 

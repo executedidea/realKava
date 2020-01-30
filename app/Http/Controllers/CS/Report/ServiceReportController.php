@@ -3,18 +3,18 @@
 namespace App\Http\Controllers\CS\Report;
 
 use App\Http\Controllers\Controller;
+use App\Models\CheckInOut;
 use Illuminate\Http\Request;
-use App\Models\CustomerReport;
+use App\Models\ServiceReport;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade as PDF;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 // use Barryvdh\Snappy\Facade as PDF;
 
 
 
-class CustomerReportController extends Controller
+class ServiceReportController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,9 +24,10 @@ class CustomerReportController extends Controller
     public function index()
     {
         $outlet_id      = Auth::user()->outlet_id;
-        $outlet_all     = CustomerReport::getOutletAll($outlet_id);
-        $customer_all   = CustomerReport::getCustomerAll($outlet_id);
-        return view('cs.report.customer-report.index', compact('outlet_all', 'customer_all'));
+        $outlet_all     = ServiceReport::getOutletAll($outlet_id);
+        $customer_all   = ServiceReport::getCustomerAll($outlet_id);
+        $customer       = ServiceReport::getCustomerAndLicense($outlet_id);
+        return view('cs.report.service-report.index', compact('outlet_all', 'customer_all', 'customer'));
     }
 
     /**
@@ -108,31 +109,27 @@ class CustomerReportController extends Controller
         // if ($validator->fails()) {
         //     return back()->withErrors($validator);
         // } else {
+            $customer_detail                    = $request->customer_fullName;
             $customer                           = $request->customer;
-            $customer_id                        = $request->customer_fullName;
             $period_StartDate                   = $request->period_StartDate;
             $period_EndDate                     = $request->period_EndDate;
             $asof_StartDate                     = $request->asof_StartDate;
             $asof_EndDate                       = $request->asof_EndDate;
             $filter_date                        = $request->filter_date;
-            $vehicle_category                   = $request->vehicle_category;
-            $customer_detail_count              = DB::table('tbl_customer_detail')
-                                                ->selectRaw('customer_id, count(customer_id) as customerCount')->groupBy('customer_id')->get()->toArray();
+            
 
             $outlet_id                          = Auth::user()->outlet_id;
             $name                               = Auth::user()->name;
             $date_now                           = date('d-m-Y H:i:s');
-            $carwash_data                       = CustomerReport::getCarwashData($outlet_id);
-            $report_data                        = CustomerReport::getReportData($outlet_id, $period_StartDate, $period_EndDate, $asof_StartDate, $asof_EndDate, $filter_date, $customer, $customer_id);
-            $vehicle_count                      = CustomerReport::getVehicleCount($outlet_id, $period_StartDate, $period_EndDate, $asof_StartDate, $asof_EndDate, $filter_date, $customer, $customer_id);
-            // $customer_count                     = CustomerReport::getCustomerCount($outlet_id);
-            // dd($customer_count);
+            $carwash_data                       = ServiceReport::getCarwashData($outlet_id);
+            $report_data                        = ServiceReport::getReportData($outlet_id, $period_StartDate, $period_EndDate, $asof_StartDate, $asof_EndDate, $filter_date, $customer_detail, $customer);
+            // dd($report_data);    
             // if(empty($report_data)) {              
             //     return back()->with('alert', 'Data kosong');   
             // } elseif(!empty($report_data)) {
-                $pdf                                = PDF::loadView('cs/report/customer-report/pdf', compact('name', 'date_now', 'carwash_data', 'report_data', 'customer_detail_count', 'vehicle_count'));
-                return $pdf->stream('CustomerReport-pdf.pdf');
-                // return $pdf->download('CustomerReport-pdf (' . date('d-m-Y') . ').pdf');
+                $pdf                                = PDF::loadView('cs/report/service-report/pdf', compact('name', 'date_now', 'carwash_data', 'report_data'));
+                return $pdf->stream('ServiceReport-pdf.pdf');
+                // return $pdf->download('ServiceReport-pdf (' . date('d-m-Y') . ').pdf');
             // }
         // }
     }
