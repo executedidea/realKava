@@ -22,6 +22,12 @@ class CloseStoreReport extends Model
         return $report;
     }
 
+    public static function getReportDataTable($outlet_id, $close_store_date)
+    {
+        $report            = DB::select('call SP_PDF_CloseStoreReport_TableContent_Select(?,?)', [$outlet_id, $close_store_date]);
+        return $report;
+    }
+
     public static function getOutletAll($outlet_id)
     {
         $outlet_all            = DB::select('call SP_Outlet_All_Select(?)', [$outlet_id]);

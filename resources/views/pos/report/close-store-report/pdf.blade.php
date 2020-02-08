@@ -190,8 +190,9 @@ CLOSE STORE
 
 @section('table-head')
 <tr>
-    <td style="width:5px; font-size:9px;" rowspan="2"><b>No</b></td>
-    <td style="width:40px; font-size:9px;" rowspan="2"><b>Service & Item </b></td>
+    <td style="width:0; font-size:9px; " rowspan="2"><b>No</b></td>
+    <td style="width:0; font-size:9px;" rowspan="2"><b>Service & Item </b></td>
+    <td style="width:0; font-size:9px;" rowspan="2"><b>Qty. </b></td>
     <td style="width:150px; font-size:9px;" colspan="6"><b>Received</b></td>
     <td style="width:10px; font-size:9px;" rowspan="2"><b>License No</b></td>
 </tr>
@@ -199,35 +200,167 @@ CLOSE STORE
 
 @section('table-head-sub')
 <tr>
-    <td style="font-size:9px;"><b>Cash</b></td>
-    <td style="font-size:9px;"><b>Debit</b></td>
-    <td style="font-size:9px;"><b>Credit Card</b></td>
-    <td style="font-size:9px;"><b>CC Charge</b></td>
-    <td style="font-size:9px;"><b>GoPay</b></td>
-    <td style="font-size:9px;"><b>OVO</b></td>
+    <td style="font-size:9px; width:10px;"><b>Cash</b></td>
+    <td style="font-size:9px; width:10px;"><b>Debit</b></td>
+    <td style="font-size:9px; width:10px;"><b>Credit Card</b></td>
+    <td style="font-size:9px; width:10px;"><b>CC Charge</b></td>
+    <td style="font-size:9px; width:10px;"><b>GoPay</b></td>
+    <td style="font-size:9px; width:10px;"><b>OVO</b></td>
 </tr>
 @endsection
 
 
 @include('layouts.partials.pdf.head')
-@foreach($report_data as $index => $item)
+@foreach($report_data_tbl as $index => $item)
 <tbody class="table-content">
     <tr>
-        <td>{{ $index+1 }}</td>
-        <td style="text-transform:capitalize; text-align:center;">{{ $item->item_name }}</td>
-        <td>{{ number_format($item->TotalReceivedCash) }}</td>
-        <td>{{ number_format($item->TotalReceivedDebit) }}</td>
-        <td>{{ number_format($item->TotalReceivedCreditCard) }}</td>
-        <td>{{ number_format($item->TotalReceivedCreditCardCharge) }}</td>
-        <td>{{ number_format($item->TotalReceivedGopay) }}</td>
-        <td>{{ number_format($item->TotalReceivedOvo) }}</td>
-        <td></td>
+
+        
+
+        <td style="font-size:9px;">{{ $index+1 }}</td>
+        <td style="text-transform:capitalize; text-align:left; font-size:9px;">{{ $item->item_name }}</td>
+        <td style="font-size:9px;">{{ $item->point_of_sales_detail_quantity }}</td>
+        {{-- ==================================== CASH ====================================  --}}
+        @if ($item->paymentMethod1 == 1 && $item->paymentMethod2 !== 1 && $item->paymentMethod2 !== 0  ) 
+            @if ($item->paid1 > 0 && $item->paid2 < 1) 
+                @if ($item->paid1 > 0 && $item->paid2 > 0) 
+                    <td style="font-size:9px; text-align:right;">{{ number_format($item->totalAddDiscPercentPPN - $item->paid1) }}</td>
+                @else 
+                    <td style="font-size:9px; text-align:right;">{{ number_format($item->totalAddDiscPercentPPN) }}</td>
+                @endif
+            @elseif ($item->paid1 > 0 && $item->paid2 > 0)
+                <td style="font-size:9px; text-align:right;">{{ number_format($item->paid1) }}</td>
+            @endif
+        @elseif ($item->paymentMethod1 == 1 && $item->paymentMethod2 == 0)
+            @if ($item->paid1 > 0 && $item->paid2 < 1) 
+                <td style="font-size:9px; text-align:right;">{{ number_format($item->totalAddDiscPercentPPN) }}</td>
+            @elseif ($item->paid1 > 0 && $item->paid2 > 0)
+                <td style="font-size:9px; text-align:right;">{{ number_format($item->paid1) }}</td>
+            @endif
+        @elseif ($item->paymentMethod1 !== 1 && $item->paymentMethod2 == 1)
+                @if ($item->paid1 > 0 && $item->paid2 > 0) 
+                    <td style="font-size:9px; text-align:right;">{{ number_format($item->totalAddDiscPercentPPN - $item->paid1) }}</td>
+                @else 
+                    <td style="font-size:9px; text-align:right;">{{ number_format($item->totalAddDiscPercentPPN) }}</td>
+                @endif
+        @else 
+            <td style="font-size:9px; text-align:right;">0</td>
+        @endif
+        {{-- ==================================== DEBIT ====================================  --}}
+        @if ($item->paymentMethod1 == 2 && $item->paymentMethod2 !== 2 && $item->paymentMethod2 !== 0  ) 
+            @if ($item->paid1 > 0 && $item->paid2 < 1) 
+                @if ($item->paid1 > 0 && $item->paid2 > 0) 
+                    <td style="font-size:9px; text-align:right;">{{ number_format($item->totalAddDiscPercentPPN - $item->paid1) }}</td>
+                @else 
+                    <td style="font-size:9px; text-align:right;">{{ number_format($item->totalAddDiscPercentPPN) }}</td>
+                @endif
+            @elseif ($item->paid1 > 0 && $item->paid2 > 0)
+                <td style="font-size:9px; text-align:right;">{{ number_format($item->paid1/$item->paidCount) }}</td>
+            @endif
+        @elseif ($item->paymentMethod1 == 2 && $item->paymentMethod2 == 0)
+            @if ($item->paid1 > 0 && $item->paid2 < 1) 
+                <td style="font-size:9px; text-align:right;"> {{ number_format($item->totalAddDiscPercentPPN) }}</td>
+            @elseif ($item->paid1 > 0 && $item->paid2 > 0)
+                <td style="font-size:9px; text-align:right;">{{ number_format($item->paid1) }}</td>
+            @endif
+        @elseif ($item->paymentMethod1 !== 2 && $item->paymentMethod2 == 2)
+            @if ($item->paid1 > 0 && $item->paid2 > 0) 
+                <td style="font-size:9px; text-align:right;">{{ number_format($item->totalAddDiscPercentPPN - $item->paid1) }}</td>
+            @else 
+                <td style="font-size:9px; text-align:right;">{{ number_format($item->totalAddDiscPercentPPN) }}</td>
+            @endif
+        @else 
+            <td style="font-size:9px; text-align:right;">0</td>
+        @endif
+        {{-- ==================================== CC ====================================  --}}
+        @if ($item->paymentMethod1 == 3 && $item->paymentMethod2 !== 3 && $item->paymentMethod2 !== 0  ) 
+            @if ($item->paid1 > 0 && $item->paid2 < 1)
+                @if ($item->paid1 > 0 && $item->paid2 > 0) 
+                    <td style="font-size:9px; text-align:right;">{{ number_format($item->totalAddDiscPercentPPN - $item->paid1) }}</td>
+                @else 
+                    <td style="font-size:9px; text-align:right;">{{ number_format($item->totalAddDiscPercentPPN) }}</td>
+                @endif
+            @elseif ($item->paid1 > 0 && $item->paid2 > 0)
+                <td style="font-size:9px; text-align:right;">{{ number_format($item->paid1) }}</td>
+            @endif
+        @elseif ($item->paymentMethod1 == 3 && $item->paymentMethod2 == 0)
+            @if ($item->paid1 > 0 && $item->paid2 < 1) 
+                <td style="font-size:9px; text-align:right;"> {{ number_format($item->totalAddDiscPercentPPN) }}</td>
+            @elseif ($item->paid1 > 0 && $item->paid2 > 0)
+                <td style="font-size:9px; text-align:right;">{{ number_format($item->paid1) }}</td>
+            @endif
+        @elseif ($item->paymentMethod1 !== 3 && $item->paymentMethod2 == 3)
+                @if ($item->paid1 > 0 && $item->paid2 > 0) 
+                    <td style="font-size:9px; text-align:right;">{{ number_format($item->totalAddDiscPercentPPN - $item->paid1) }}</td>
+                @else 
+                    <td style="font-size:9px; text-align:right;">{{ number_format($item->totalAddDiscPercentPPN) }}</td>
+                @endif
+        @else 
+            <td style="font-size:9px; text-align:right;">0</td>
+        @endif
+        {{-- ==================================== CC CHARGE ====================================  --}}
+        <td style="font-size:9px; text-align:right;">0</td>
+        {{-- ==================================== GOPAY ====================================  --}}
+        @if ($item->paymentMethod1 == 4 && $item->paymentMethod2 !== 4 && $item->paymentMethod2 !== 0  ) 
+            @if ($item->paid1 > 0 && $item->paid2 < 1) 
+                @if ($item->paid1 > 0 && $item->paid2 > 0) 
+                    <td style="font-size:9px; text-align:right;">{{ number_format($item->totalAddDiscPercentPPN - $item->paid1) }}</td>
+                @else 
+                    <td style="font-size:9px; text-align:right;">{{ number_format($item->totalAddDiscPercentPPN) }}</td>
+                @endif
+            @elseif ($item->paid1 > 0 && $item->paid2 > 0)
+                <td style="font-size:9px; text-align:right;">{{ number_format($item->paid1) }}</td>
+            @endif
+        @elseif ($item->paymentMethod1 == 4 && $item->paymentMethod2 == 0)
+            @if ($item->paid1 > 0 && $item->paid2 < 1) 
+                <td style="font-size:9px; text-align:right;"> {{ number_format($item->totalAddDiscPercentPPN) }}</td>
+            @elseif ($item->paid1 > 0 && $item->paid2 > 0)
+                <td style="font-size:9px; text-align:right;">{{ number_format($item->paid1) }}</td>
+            @endif
+        @elseif ($item->paymentMethod1 !== 4 && $item->paymentMethod2 == 4)
+                @if ($item->paid1 > 0 && $item->paid2 > 0) 
+                    <td style="font-size:9px; text-align:right;">{{ number_format($item->totalAddDiscPercentPPN - $item->paid1) }}</td>
+                @else 
+                    <td style="font-size:9px; text-align:right;">{{ number_format($item->totalAddDiscPercentPPN) }}</td>
+                @endif
+        @else 
+            <td style="font-size:9px; text-align:right;">0</td>
+        @endif
+        {{-- ==================================== OVO ====================================  --}}
+        @if ($item->paymentMethod1 == 4 && $item->paymentMethod2 !== 4 && $item->paymentMethod2 !== 0  ) 
+        @if ($item->paid1 > 0 && $item->paid2 < 1) 
+                @if ($item->paid1 > 0 && $item->paid2 > 0) 
+                    <td style="font-size:9px; text-align:right;">{{ number_format($item->totalAddDiscPercentPPN - $item->paid1) }}</td>
+                @else 
+                    <td style="font-size:9px; text-align:right;">{{ number_format($item->totalAddDiscPercentPPN) }}</td>
+                @endif
+        @elseif ($item->paid1 > 0 && $item->paid2 > 0)
+            <td style="font-size:9px; text-align:right;">{{ number_format($item->paid1) }}</td>
+        @endif
+        @elseif ($item->paymentMethod1 == 4 && $item->paymentMethod2 == 0)
+            @if ($item->paid1 > 0 && $item->paid2 < 1) 
+                <td style="font-size:9px; text-align:right;"> {{ number_format($item->totalAddDiscPercentPPN) }}</td>
+            @elseif ($item->paid1 > 0 && $item->paid2 > 0)
+                <td style="font-size:9px; text-align:right;">{{ number_format($item->paid1) }}</td>
+            @endif
+        @elseif ($item->paymentMethod1 !== 4 && $item->paymentMethod2 == 4)
+                @if ($item->paid1 > 0 && $item->paid2 > 0) 
+                    <td style="font-size:9px; text-align:right;">{{ number_format($item->totalAddDiscPercentPPN - $item->paid1) }}</td>
+                @else 
+                    <td style="font-size:9px; text-align:right;">{{ number_format($item->totalAddDiscPercentPPN) }}</td>
+                @endif
+        @else 
+            <td style="font-size:9px; text-align:right;">0</td>
+        @endif
+
+        <td style="font-size:9px; text-align:center;">{{ $item->customer_detail_licensePlate }}</td>
     </tr>
 </tbody>
 @endforeach
 <tfoot>
     <tr>
         <td colspan="2" style="font-size:9px;"><b>Total</b></td>
+        <td style="text-align:right;" style="font-size:9px;"><b></b></td>
         <td style="text-align:right;" style="font-size:9px;"><b></b></td>
         <td style="text-align:right;" style="font-size:9px;"><b></b></td>
         <td style="text-align:right;" style="font-size:9px;"><b></b></td>

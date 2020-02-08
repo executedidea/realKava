@@ -187,7 +187,8 @@ Route::group(['middleware' => 'auth'], function () {
         // Change Shift
         Route::get('/pos/transaction/change-shift', 'POS\Transaction\ChangeShiftController@index')->name('changeShiftTransaction');
         // Cash Drawer
-        Route::get('/pos/transaction/cashdrawer', 'POS\Transaction\CashDrawerController@index');
+            Route::get('/pos/transaction/cashdrawer', 'POS\Transaction\CashDrawerController@index');
+            Route::post('/pos/transaction/cashdrawer/store', 'POS\Transaction\CashDrawerController@store')->name('POSPay');
         
         // REPORT-----
         // Sales Report
@@ -211,8 +212,6 @@ Route::group(['middleware' => 'auth'], function () {
             // index
             Route::get('/pos/report/close-store-report', 'POS\Report\CloseStoreReportController@index')->name('closeStoreReport');
 
-            Route::get('/pos/transaction/cashdrawer', 'POS\Transaction\CashDrawerController@index');
-            Route::post('/pos/transaction/cashdrawer/store', 'POS\Transaction\CashDrawerController@store')->name('POSPay');
 
 
 

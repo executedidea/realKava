@@ -114,12 +114,13 @@ class CloseStoreReportController extends Controller
             $date_now                           = date('d-m-Y H:i:s');
             $carwash_data                       = CloseStoreReport::getCarwashData($outlet_id);
             $report_data                        = CloseStoreReport::getReportData($outlet_id, $close_store_date);
+            $report_data_tbl                    = CloseStoreReport::getReportDataTable($outlet_id, $close_store_date);
             
             // dd($report_data);
             // if(empty($report_data)) {              
             //     return redirect()->back()->with('alert', 'Data kosong');   
             // } elseif(!empty($report_data)) {
-                $pdf                                = PDF::loadView('pos/report/close-store-report/pdf', compact('carwash_data', 'name', 'date_now', 'report_data'));
+                $pdf                                = PDF::loadView('pos/report/close-store-report/pdf', compact('carwash_data', 'name', 'date_now', 'report_data', 'report_data_tbl'));
                 return $pdf->stream('CloseStoreReport-pdf.pdf');
                 // return $pdf->download('SalesReport-pdf (' . date('d-m-Y') . ').pdf');
             // }
